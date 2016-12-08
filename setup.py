@@ -66,19 +66,18 @@ if sys.version_info[0] == 2:
         test_requirements.append('unittest2')
 
 setup(name='goose-extractor',
-      version=version.__version__,
-      description=description,
-      long_description=long_description,
-      keywords='scrapping, extractor, web scrapping',
-      classifiers=CLASSIFIERS,
-      author='Xavier Grangier',
-      author_email='grangier@gmail.com',
-      url='https://github.com/grangier/python-goose',
-      license='Apache',
-      packages=find_packages(),
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=requirements,
-      test_suite="tests",
-      tests_require=test_requirements
-      )
+    version=version.__version__,
+    description=description,
+    long_description=long_description,
+    keywords='scrapping, extractor, web scrapping',
+    classifiers=CLASSIFIERS,
+    author='Xavier Grangier',
+    author_email='grangier@gmail.com',
+    url='https://github.com/grangier/python-goose',
+    license='Apache',
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'bs4', 'nltk'],
+    test_suite="tests"
+)
