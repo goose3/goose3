@@ -3,6 +3,6 @@ Pillow
 lxml
 cssselect
 jieba
-beautifulsoup  # Only on python2
+bs4
 nltk
 six
