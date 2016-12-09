@@ -41,7 +41,7 @@ class Goose(object):
     def extend_config(self):
         if isinstance(self.config, dict):
             config = Configuration()
-            for k, v in self.config.items():
+            for k, v in list(self.config.items()):
                 if hasattr(config, k):
                     setattr(config, k, v)
             self.config = config

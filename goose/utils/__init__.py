@@ -96,6 +96,7 @@ class RawHelper(object):
     @classmethod
     def get_parsing_candidate(self, url, raw_html):
         if isinstance(raw_html, six.text_type):
+
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)
@@ -120,7 +121,7 @@ class StringReplacement(object):
 
     def replaceAll(self, string):
         if not string:
-            return u''
+            return ''
         return string.replace(self.pattern, self.replaceWith)
 
 
@@ -131,7 +132,7 @@ class ReplaceSequence(object):
 
     #@classmethod
     def create(self, firstPattern, replaceWith=None):
-        result = StringReplacement(firstPattern, replaceWith or u'')
+        result = StringReplacement(firstPattern, replaceWith or '')
         self.replacements.append(result)
         return self
 
@@ -140,7 +141,7 @@ class ReplaceSequence(object):
 
     def replaceAll(self, string):
         if not string:
-            return u''
+            return ''
 
         mutatedString = string
 

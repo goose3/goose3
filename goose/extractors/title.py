@@ -25,7 +25,7 @@ import re
 from goose.extractors import BaseExtractor
 
 
-TITLE_SPLITTERS = [u"|", u"-", u"»", u":"]
+TITLE_SPLITTERS = ["|", "-", "»", ":"]
 
 
 class TitleExtractor(BaseExtractor):
@@ -36,7 +36,7 @@ class TitleExtractor(BaseExtractor):
         and use TITLE_SPLITTERS to reformat title
         """
         # check if we have the site name in opengraph data
-        if "site_name" in self.article.opengraph.keys():
+        if "site_name" in list(self.article.opengraph.keys()):
             site_name = self.article.opengraph['site_name']
             # remove the site name from title
             title = title.replace(site_name, '').strip()
@@ -54,7 +54,7 @@ class TitleExtractor(BaseExtractor):
         # check for an empty title
         # so that we don't get an IndexError below
         if len(title_words) == 0:
-            return u""
+            return ""
 
         # check if first letter is in TITLE_SPLITTERS
         # if so remove it
@@ -67,7 +67,7 @@ class TitleExtractor(BaseExtractor):
             title_words.pop(-1)
 
         # rebuild the title
-        title = u" ".join(title_words).strip()
+        title = " ".join(title_words).strip()
 
         return title
 
@@ -78,7 +78,7 @@ class TitleExtractor(BaseExtractor):
         title = ''
 
         # rely on opengraph in case we have the data
-        if "title" in self.article.opengraph.keys():
+        if "title" in list(self.article.opengraph.keys()):
             title = self.article.opengraph['title']
             return self.clean_title(title)
 

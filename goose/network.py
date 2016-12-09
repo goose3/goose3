@@ -38,6 +38,8 @@ class NetworkFetcher(object):
         self._connection.headers['User-agent'] = self.config.browser_user_agent
 
         self._url = None
+        self.response = None
+        self.headers = None
 
     def get_url(self):
         return self._url
@@ -47,14 +49,14 @@ class NetworkFetcher(object):
         if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
-        response = self._connection.get(url, timeout=self.config.http_timeout)
-        if response.ok:
-            self._url = response.url
-            text = response.content
+        self.response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        if self.response.ok:
+            self._url = self.response.url
+            text = self.response.content
         else:
             self._url = None
             text = None
             if self.config.strict:
-                raise NetworkError(response.status_code, response.reason)
+                raise NetworkError(self.response.status_code, self.response.reason)
 
         return text

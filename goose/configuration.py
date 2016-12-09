@@ -102,7 +102,7 @@ class Configuration(object):
         self.additional_data_extractor = None
 
         # Parser type
-        self.available_parsers = AVAILABLE_PARSERS.keys()
+        self.available_parsers = list(AVAILABLE_PARSERS.keys())
         self.parser_class = 'lxml'
 
         # set the local storage path
