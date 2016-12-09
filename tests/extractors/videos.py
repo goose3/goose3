@@ -38,7 +38,7 @@ class ImageExtractionTests(TestExtractionBase):
         # check values
         for c, video in enumerate(result_value):
             expected = expected_value[c]
-            for k, v in expected.items():
+            for k, v in list(expected.items()):
                 r = getattr(video, k)
                 self.assertEqual(r, v)
 

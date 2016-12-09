@@ -111,28 +111,28 @@ class ImageExtractionTests(TestExtractionBase):
 
     def getExpectedImage(self, expected_value):
         image = Image()
-        for k, v in expected_value.items():
+        for k, v in list(expected_value.items()):
             setattr(image, k, v)
         return image
 
     def assert_top_image(self, fields, expected_value, result_image):
         # test if the result value
         # is an Goose Image instance
-        msg = u"Result value is not a Goose Image instance"
+        msg = "Result value is not a Goose Image instance"
         self.assertTrue(isinstance(result_image, Image), msg=msg)
 
         # expected image
         expected_image = self.getExpectedImage(expected_value)
-        msg = u"Expected value is not a Goose Image instance"
+        msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
         # check
-        msg = u"Returned Image is not the one expected"
+        msg = "Returned Image is not the one expected"
         self.assertEqual(expected_image.src, result_image.src, msg=msg)
 
         fields = vars(expected_image)
-        for k, v in fields.items():
-            msg = u"Returned Image attribute %s is not the one expected" % k
+        for k, v in list(fields.items()):
+            msg = "Returned Image attribute %s is not the one expected" % k
             self.assertEqual(getattr(expected_image, k), getattr(result_image, k), msg=msg)
 
     def test_basic_image(self):
@@ -198,7 +198,7 @@ class ImageUtilsTests(unittest.TestCase):
         self.assertTrue(isinstance(image_detail, ImageDetails))
 
         # test image_detail attribute
-        for k, v in self.expected_results.items():
+        for k, v in list(self.expected_results.items()):
             self.assertEqual(getattr(image_detail, k), v)
 
     def test_detail(self):
@@ -208,11 +208,11 @@ class ImageUtilsTests(unittest.TestCase):
         self.assertTrue(isinstance(image_detail, ImageDetails))
 
         # test image_detail attribute
-        for k, v in self.expected_results.items():
+        for k, v in list(self.expected_results.items()):
             self.assertEqual(getattr(image_detail, k), v)
 
         # test image_detail get_ methode
-        for k, v in self.expected_results.items():
+        for k, v in list(self.expected_results.items()):
             attr = 'get_%s' % k
             self.assertEqual(getattr(image_detail, attr)(), v)
 
@@ -223,10 +223,10 @@ class ImageUtilsTests(unittest.TestCase):
             'mime_type': 'PNG'
         }
 
-        for k, v in expected_results.items():
+        for k, v in list(expected_results.items()):
             attr = 'set_%s' % k
             getattr(image_detail, attr)(v)
 
-        for k, v in expected_results.items():
+        for k, v in list(expected_results.items()):
             attr = 'get_%s' % k
             self.assertEqual(getattr(image_detail, attr)(), v)

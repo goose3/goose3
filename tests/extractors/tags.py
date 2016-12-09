@@ -37,8 +37,8 @@ class TestArticleTags(TestExtractionBase):
         expected_value = set(expected_value)
 
         # check if both have the same number of items
-        msg = (u"expected tags set and result tags set"
-                u"don't have the same number of items")
+        msg = ("expected tags set and result tags set"
+                "don't have the same number of items")
         self.assertEqual(len(result_value), len(expected_value), msg=msg)
 
         # check if each tag in result_value is in expected_value

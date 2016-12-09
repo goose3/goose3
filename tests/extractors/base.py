@@ -22,6 +22,7 @@ limitations under the License.
 """
 import os
 import json
+
 import unittest
 import socket
 import requests_mock
@@ -30,6 +31,7 @@ try:
     import urllib2
 except ImportError:
     import urllib.request as urllib2
+
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -52,7 +54,6 @@ class MockResponse:
 
     def contents(self):
         pass
-
 
 class BaseMockTests(unittest.TestCase):
     """\
@@ -144,16 +145,16 @@ class TestExtractionBase(BaseMockTests):
         # print result_value
 
         # cleaned_text is Null
-        msg = u"Resulting article text was NULL!"
+        msg = "Resulting article text was NULL!"
         self.assertNotEqual(result_value, None, msg=msg)
 
         # cleaned_text length
-        msg = u"Article text was not as long as expected beginning!"
+        msg = "Article text was not as long as expected beginning!"
         self.assertTrue(len(expected_value) <= len(result_value), msg=msg)
 
         # clean_text value
         result_value = result_value[0:len(expected_value)]
-        msg = u"The beginning of the article text was not as expected!"
+        msg = "The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
 
     def runArticleAssertions(self, article, fields):
@@ -171,7 +172,7 @@ class TestExtractionBase(BaseMockTests):
                 continue
 
             # default assertion
-            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+            msg = "Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
