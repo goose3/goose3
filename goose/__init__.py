@@ -23,16 +23,17 @@ limitations under the License.
 import os
 from tempfile import mkstemp
 
-from goose.version import version_info, __version__
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
 from goose.crawler import Crawler
+from goose.version import version_info, __version__
 
 
 class Goose(object):
     """\
 
     """
+
     def __init__(self, config=None):
         self.config = config or Configuration()
         self.extend_config()
@@ -57,16 +58,16 @@ class Goose(object):
     def shutdown_network(self):
         pass
 
-    def crawl(self, crawl_candiate):
+    def crawl(self, crawl_candidate):
         parsers = list(self.config.available_parsers)
         parsers.remove(self.config.parser_class)
         try:
             crawler = Crawler(self.config)
-            article = crawler.crawl(crawl_candiate)
+            article = crawler.crawl(crawl_candidate)
         except (UnicodeDecodeError, ValueError) as e:
             if parsers:
                 self.config.parser_class = parsers[0]
-                return self.crawl(crawl_candiate)
+                return self.crawl(crawl_candidate)
             else:
                 raise e
         return article
@@ -75,7 +76,7 @@ class Goose(object):
         # we don't need to go further if image extractor or
         # local_storage is not set
         if not self.config.local_storage_path or \
-           not self.config.enable_image_fetching:
+                not self.config.enable_image_fetching:
             return
         # test if config.local_storage_path
         # is a directory
@@ -84,9 +85,9 @@ class Goose(object):
 
         if not os.path.isdir(self.config.local_storage_path):
             raise Exception(self.config.local_storage_path +
-                " directory does not seem to exist, "
-                "you need to set this for image processing downloads"
-            )
+                            " directory does not seem to exist, "
+                            "you need to set this for image processing downloads"
+                            )
 
         # test to write a dummy file to the directory
         # to check is directory is writtable
@@ -97,6 +98,6 @@ class Goose(object):
             os.remove(path)
         except IOError:
             raise Exception(self.config.local_storage_path +
-                " directory is not writeble, "
-                "you need to set this for image processing downloads"
-            )
+                            " directory is not writeble, "
+                            "you need to set this for image processing downloads"
+                            )

@@ -143,10 +143,10 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def test_yahoo(self):
-        article = self.getArticle()
-        fields = ['cleaned_text']
-        self.runArticleAssertions(article=article, fields=fields)
+    # def test_yahoo(self):
+    #     article = self.getArticle()
+    #     fields = ['cleaned_text']
+    #     self.runArticleAssertions(article=article, fields=fields)
 
     def test_politico(self):
         article = self.getArticle()

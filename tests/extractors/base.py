@@ -209,4 +209,4 @@ class TestExtractionBase(BaseMockTests):
 
         # run goose
         g = Goose(config=config)
-        return self.extract(g)
+        return g.extract(url=self.data['url'])

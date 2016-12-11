@@ -29,14 +29,13 @@ from .base import TestExtractionBase
 class TestArticleAuthor(TestExtractionBase):
 
     def test_author_schema(self):
-        article = self.getArticle()
         field = 'authors'
 
         # Do not call self.runArticleAssertions because need to sort results,
         # because set not save ordering, so test failed;
 
         expected_value = self.data['expected'][field]
-        result_value = getattr(article, field, None)
+        result_value = getattr(self.getArticle(), field, None)
 
         expected_value.sort()
         result_value.sort()
