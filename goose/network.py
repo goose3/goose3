@@ -49,14 +49,14 @@ class NetworkFetcher(object):
         if isinstance(url, six.text_type) and six.PY2:
             url = url.encode('utf-8')
 
-        self.response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
-        if self.response.ok:
-            self._url = self.response.url
-            text = self.response.content
+        response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        if response.ok:
+            self._url = response.url
+            text = response.content
         else:
             self._url = None
             text = None
             if self.config.strict:
-                raise NetworkError(self.response.status_code, self.response.reason)
+                raise NetworkError(response.status_code, response.reason)
 
         return text
