@@ -97,7 +97,6 @@ class ImageExtractionTests(TestExtractionBase):
                 "data",
                 suite,
                 module,
-                func,
                 "%s.json" % func)
 
         path = os.path.abspath(path)
@@ -128,11 +127,11 @@ class ImageExtractionTests(TestExtractionBase):
 
         # check
         msg = "Returned Image is not the one expected"
-        self.assertEqual(expected_image.src, result_image.src, msg=msg)
+        self.assertIn(result_image.src, expected_image.src, msg=msg)
 
         fields = vars(expected_image)
         for k, v in list(fields.items()):
-            msg = "Returned Image attribute %s is not the one expected" % k
+            msg = "Returned Image attribute '%s' is not the one expected" % k
             self.assertEqual(getattr(expected_image, k), getattr(result_image, k), msg=msg)
 
     def test_basic_image(self):

@@ -32,11 +32,9 @@ try:
 except ImportError:
     import urllib.request as urllib2
 
-
 from goose import Goose
 from goose.utils import FileHelper
 from goose.configuration import Configuration
-
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -55,64 +53,35 @@ class MockResponse:
     def contents(self):
         pass
 
-class BaseMockTests(unittest.TestCase):
-    """\
-    Base Mock test case
-    """
-    callback = MockResponse
-
-    def setUp(self):
-        # patch DNS
-        self.original_getaddrinfo = socket.getaddrinfo
-        socket.getaddrinfo = self.new_getaddrinfo
-
-    def tearDown(self):
-        # DNS
-        socket.getaddrinfo = self.original_getaddrinfo
-
-    def new_getaddrinfo(self, *args):
-        return [(2, 1, 6, '', ('127.0.0.1', 0))]
-
-    def _get_current_testname(self):
-        return self.id().split('.')[-1:][0]
-
 
 class MockResponseExtractors(MockResponse):
     def contents(self):
         test, suite, module, cls, func = self.cls.id().split('.')
         path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.html" % func)
+            os.path.dirname(CURRENT_PATH),
+            "data",
+            suite,
+            module,
+            "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         yield self.cls.data['url'], content.encode('utf-8')
 
 
-class TestExtractionBase(BaseMockTests):
+class TestExtractionBase(unittest.TestCase):
     """\
     Extraction test case
     """
     callback = MockResponseExtractors
 
-    def setUp(self):
-        # patch DNS
-        self.original_getaddrinfo = socket.getaddrinfo
-        socket.getaddrinfo = self.new_getaddrinfo
-
-    def tearDown(self):
-        socket.getaddrinfo = self.original_getaddrinfo
-
     def getRawHtml(self):
         test, suite, module, cls, func = self.id().split('.')
         path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.html" % func)
+            os.path.dirname(CURRENT_PATH),
+            "data",
+            suite,
+            module,
+            "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         return content
@@ -123,14 +92,25 @@ class TestExtractionBase(BaseMockTests):
         """
         test, suite, module, cls, func = self.id().split('.')
         path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.json" % func)
+            os.path.dirname(CURRENT_PATH),
+            "data",
+            suite,
+            module,
+            "%s.json" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         self.data = json.loads(content)
+
+    def loadHtml(self):
+        test, suite, module, cls, func = self.id().split('.')
+        path = os.path.join(
+            os.path.dirname(CURRENT_PATH),
+            "data",
+            suite,
+            module,
+            "%s.html" % func)
+        path = os.path.abspath(path)
+        self.html = FileHelper.loadResourceFile(path)
 
     def assert_cleaned_text(self, field, expected_value, result_value):
         """\
@@ -194,6 +174,7 @@ class TestExtractionBase(BaseMockTests):
         """
         # load test case data
         self.loadData()
+        self.loadHtml()
 
         # basic configuration
         # no image fetching
@@ -207,6 +188,8 @@ class TestExtractionBase(BaseMockTests):
             config.target_language = target_language
             config.use_meta_language = False
 
-        # run goose
-        g = Goose(config=config)
-        return g.extract(url=self.data['url'])
+        with requests_mock.Mocker(real_http=True) as m:
+            m.get(self.data['url'], text=self.html)
+            # run goose
+            g = Goose(config=config)
+            return g.extract(url=self.data['url'])

@@ -4,11 +4,11 @@
         "cleaned_text" : "TextNode 1 - The Scala supported IDE is one of the few pain points of developers who want to start u",
         "top_image": {
             "extraction_type": "known", 
-            "src": "http://go.com/images/465395/", 
+            "src": "http://go.com/images/465395/",
             "confidence_score": 90, 
-            "bytes": 0, 
-            "height": 0, 
-            "width": 0, 
+            "bytes": 0,
+            "height": 0,
+            "width": 0,
             "top_image_node": null
         }
     }
