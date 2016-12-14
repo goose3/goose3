@@ -27,8 +27,8 @@ import json
 import hashlib
 import unittest
 
-from .base import MockResponse
-from .base import TestExtractionBase
+from .test_base import MockResponse
+from .test_base import TestExtractionBase
 
 from goose.configuration import Configuration
 from goose.image import Image
@@ -85,23 +85,23 @@ class ImageExtractionTests(TestExtractionBase):
     """\
     Base Mock test case
     """
-    callback = MockResponseImage
+    # callback = MockResponseImage
 
-    def loadData(self):
-        """\
-
-        """
-        test, suite, module, cls, func = self.id().split('.')
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                suite,
-                module,
-                "%s.json" % func)
-
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        self.data = json.loads(content)
+    # def loadData(self):
+    #     """\
+    #
+    #     """
+    #     test, suite, module, cls, func = self.id().split('.')
+    #     path = os.path.join(
+    #             os.path.dirname(CURRENT_PATH),
+    #             "data",
+    #             suite,
+    #             module,
+    #             "%s.json" % func)
+    #
+    #     path = os.path.abspath(path)
+    #     content = FileHelper.loadResourceFile(path)
+    #     self.data = json.loads(content)
 
     def getConfig(self):
         config = Configuration()
@@ -183,7 +183,7 @@ class ImageExtractionTests(TestExtractionBase):
 class ImageUtilsTests(unittest.TestCase):
 
     def setUp(self):
-        self.path = 'tests/data/extractors/images/test_basic_image/50850547cc7310bc53e30e802c6318f1'
+        self.path = 'data/images/50850547cc7310bc53e30e802c6318f1'
         self.expected_results = {
             'width': 476,
             'height': 317,

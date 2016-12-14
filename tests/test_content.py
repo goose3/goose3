@@ -22,7 +22,7 @@ limitations under the License.
 """
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 from goose.text import StopWordsChinese
 from goose.text import StopWordsArabic

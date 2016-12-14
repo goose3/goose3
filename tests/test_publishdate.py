@@ -23,9 +23,23 @@ limitations under the License.
 
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
-class TestMetas(TestExtractionBase):
+class TestPublishDate(TestExtractionBase):
 
-    pass
+    def test_publish_date(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_rnews(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_article(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_schema(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])

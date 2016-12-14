@@ -23,7 +23,7 @@ limitations under the License.
 
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
 class TestArticleTags(TestExtractionBase):

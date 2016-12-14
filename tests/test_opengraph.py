@@ -23,17 +23,12 @@ limitations under the License.
 
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
-class TestTitle(TestExtractionBase):
+class TestOpenGraph(TestExtractionBase):
 
-    def test_title_opengraph(self):
+    def test_opengraph(self):
         article = self.getArticle()
-        fields = ['title']
-        self.runArticleAssertions(article=article, fields=fields)
-
-    def test_title_empty(self):
-        article = self.getArticle()
-        fields = ['title']
+        fields = ['opengraph']
         self.runArticleAssertions(article=article, fields=fields)

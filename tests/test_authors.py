@@ -20,15 +20,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
-class TestArticleTweet(TestExtractionBase):
+class TestArticleAuthor(TestExtractionBase):
 
-    def test_tweet(self):
+    def test_author_schema(self):
+        field = 'authors'
+
+        # Do not call self.runArticleAssertions because need to sort results,
+        # because set not save ordering, so test failed;
         article = self.getArticle()
-        number_tweets = len(article.tweets)
-        expected_number_tweets = self.data['expected']['tweets']
-        self.assertEqual(number_tweets, expected_number_tweets)
+
+        expected_value = self.data['expected'][field]
+        result_value = getattr(article, field, None)
+
+        expected_value.sort()
+        result_value.sort()
+
+        # default assertion
+        msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+        self.assertEqual(expected_value, result_value, msg=msg)

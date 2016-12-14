@@ -20,16 +20,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
-class TestArticleLinks(TestExtractionBase):
+class TestArticleTweet(TestExtractionBase):
 
-    def test_links(self):
+    def test_tweet(self):
         article = self.getArticle()
-        number_links = len(article.links)
-        expected_number_links = self.data['expected']['links']
-        self.assertEqual(number_links, expected_number_links)
+        number_tweets = len(article.tweets)
+        expected_number_tweets = self.data['expected']['tweets']
+        self.assertEqual(number_tweets, expected_number_tweets)

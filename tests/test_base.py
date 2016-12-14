@@ -72,7 +72,7 @@ class TestExtractionBase(unittest.TestCase):
     """\
     Extraction test case
     """
-    callback = MockResponseExtractors
+    # callback = MockResponseExtractors
 
     def getRawHtml(self):
         test, suite, module, cls, func = self.id().split('.')
@@ -80,7 +80,7 @@ class TestExtractionBase(unittest.TestCase):
             os.path.dirname(CURRENT_PATH),
             "data",
             suite,
-            module,
+            module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
@@ -90,24 +90,27 @@ class TestExtractionBase(unittest.TestCase):
         """\
 
         """
-        test, suite, module, cls, func = self.id().split('.')
+        full_id = self.id().split('.')
+
+        test, module, cls, func = full_id
         path = os.path.join(
             os.path.dirname(CURRENT_PATH),
+            'tests',
             "data",
-            suite,
-            module,
+            # suite,
+            module.partition('test_')[2],
             "%s.json" % func)
         path = os.path.abspath(path)
         content = FileHelper.loadResourceFile(path)
         self.data = json.loads(content)
 
     def loadHtml(self):
-        test, suite, module, cls, func = self.id().split('.')
+        test, module, cls, func = self.id().split('.')
         path = os.path.join(
             os.path.dirname(CURRENT_PATH),
+            'tests',
             "data",
-            suite,
-            module,
+            module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
         self.html = FileHelper.loadResourceFile(path)
@@ -155,13 +158,13 @@ class TestExtractionBase(unittest.TestCase):
             msg = "Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
-    def extract(self, instance):
-        article_url = self.data['url']
-        with requests_mock.mock() as m:
-            for url, content in self.callback(self).contents():
-                m.get(url, content=content)
-            article = instance.extract(url=article_url)
-            return article
+    # def extract(self, instance):
+    #     article_url = self.data['url']
+    #     with requests_mock.mock() as m:
+    #         for url, content in self.callback(self).contents():
+    #             m.get(url, content=content)
+    #         article = instance.extract(url=article_url)
+    #         return article
 
     def getConfig(self):
         config = Configuration()

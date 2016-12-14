@@ -23,23 +23,17 @@ limitations under the License.
 
 from __future__ import absolute_import
 
-from .base import TestExtractionBase
+from .test_base import TestExtractionBase
 
 
-class TestPublishDate(TestExtractionBase):
+class TestTitle(TestExtractionBase):
 
-    def test_publish_date(self):
+    def test_title_opengraph(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
+        fields = ['title']
+        self.runArticleAssertions(article=article, fields=fields)
 
-    def test_publish_date_rnews(self):
+    def test_title_empty(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-    def test_publish_date_article(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
-
-    def test_publish_date_schema(self):
-        article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date'])
+        fields = ['title']
+        self.runArticleAssertions(article=article, fields=fields)
