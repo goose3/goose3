@@ -20,11 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import os
 import json
-
+import os
 import unittest
-import socket
+
 import requests_mock
 
 try:
@@ -37,35 +36,6 @@ from goose.utils import FileHelper
 from goose.configuration import Configuration
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-# Response
-class MockResponse:
-    """\
-    Base mock response class
-    """
-    code = 200
-    msg = "OK"
-
-    def __init__(self, cls):
-        self.cls = cls
-
-    def contents(self):
-        pass
-
-
-class MockResponseExtractors(MockResponse):
-    def contents(self):
-        test, suite, module, cls, func = self.cls.id().split('.')
-        path = os.path.join(
-            os.path.dirname(CURRENT_PATH),
-            "data",
-            suite,
-            module,
-            "%s.html" % func)
-        path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
-        yield self.cls.data['url'], content.encode('utf-8')
 
 
 class TestExtractionBase(unittest.TestCase):
@@ -116,9 +86,6 @@ class TestExtractionBase(unittest.TestCase):
         self.html = FileHelper.loadResourceFile(path)
 
     def assert_cleaned_text(self, field, expected_value, result_value):
-        """\
-
-        """
         # # TODO : handle verbose level in tests
         # print "\n=======================::. ARTICLE REPORT %s .::======================\n" % self.id()
         # print 'expected_value (%s) \n' % len(expected_value)

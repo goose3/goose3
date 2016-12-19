@@ -23,96 +23,24 @@ limitations under the License.
 from __future__ import absolute_import
 
 import os
-import json
-import hashlib
 import unittest
-
-from .test_base import MockResponse
-from .test_base import TestExtractionBase
 
 from goose.configuration import Configuration
 from goose.image import Image
 from goose.image import ImageDetails
-from goose.utils import FileHelper
 from goose.utils.images import ImageUtils
+from .test_base import TestExtractionBase
 
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
-class MockResponseImage(MockResponse):
-
-    def image_content(self, url):
-        md5_hash = hashlib.md5(url.encode('utf-8')).hexdigest()
-        current_test = self.cls._get_current_testname()
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                "extractors",
-                "images",
-                current_test,
-                md5_hash)
-        path = os.path.abspath(path)
-        try:
-            f = open(path, 'rb')
-            content = f.read()
-            f.close()
-            return content
-        except Exception:
-            return None
-
-    def html_content(self):
-        current_test = self.cls._get_current_testname()
-        path = os.path.join(
-                os.path.dirname(CURRENT_PATH),
-                "data",
-                "extractors",
-                "images",
-                current_test,
-                "%s.html" % current_test)
-        path = os.path.abspath(path)
-        return FileHelper.loadResourceFile(path).encode('utf-8')
-
-    def contents(self):
-        yield self.cls.data['url'], self.html_content()
-        img_url = self.cls.data['expected']['top_image']['src']
-        if img_url:
-            yield img_url, self.image_content(img_url)
-        # self.image_content()
-
-
 class ImageExtractionTests(TestExtractionBase):
-    """\
-    Base Mock test case
-    """
-    # callback = MockResponseImage
-
-    # def loadData(self):
-    #     """\
-    #
-    #     """
-    #     test, suite, module, cls, func = self.id().split('.')
-    #     path = os.path.join(
-    #             os.path.dirname(CURRENT_PATH),
-    #             "data",
-    #             suite,
-    #             module,
-    #             "%s.json" % func)
-    #
-    #     path = os.path.abspath(path)
-    #     content = FileHelper.loadResourceFile(path)
-    #     self.data = json.loads(content)
 
     def getConfig(self):
         config = Configuration()
         config.enable_image_fetching = True
         return config
-
-    def getExpectedImage(self, expected_value):
-        image = Image()
-        for k, v in list(expected_value.items()):
-            setattr(image, k, v)
-        return image
 
     def assert_top_image(self, fields, expected_value, result_image):
         # test if the result value
@@ -121,7 +49,9 @@ class ImageExtractionTests(TestExtractionBase):
         self.assertTrue(isinstance(result_image, Image), msg=msg)
 
         # expected image
-        expected_image = self.getExpectedImage(expected_value)
+        expected_image = Image()
+        for k, v in list(expected_value.items()):
+            setattr(expected_image, k, v)
         msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
