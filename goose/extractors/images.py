@@ -360,18 +360,14 @@ class ImageExtractor(BaseExtractor):
         doc = self.article.raw_doc
 
         def _check_elements(elements):
-            image = None
             for element in elements:
                 tag = self.parser.getTag(element)
                 if tag == 'img':
-                    image = element
-                    return image
-                else:
-                    images = self.parser.getElementsByTag(element, tag='img')
-                    if images:
-                        image = images[0]
-                        return image
-            return image
+                    return element
+                images = self.parser.getElementsByTag(element, tag='img')
+                if images:
+                    return images[0]
+            return None
 
         # check for elements with known id
         for css in KNOWN_IMG_DOM_NAMES:

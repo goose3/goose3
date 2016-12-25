@@ -3,6 +3,8 @@ Pillow
 lxml
 cssselect
 jieba
-bs4
+beautifulsoup4
 nltk
 six
+nose
+requests_mock

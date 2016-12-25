@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import hashlib
+import logging
 import os
 
 from PIL import Image
@@ -29,6 +30,7 @@ from goose.utils.encoding import smart_str
 from goose.image import ImageDetails
 from goose.image import LocallyStoredImage
 
+log = logging.getLogger(__name__)
 
 class ImageUtils(object):
 
@@ -43,6 +45,7 @@ class ImageUtils(object):
             image_details.set_height(height)
         except IOError:
             image_details.set_mime_type('NA')
+            log.exception("File not found")
         return image_details
 
     @classmethod
@@ -118,4 +121,5 @@ class ImageUtils(object):
         try:
             return http_client.fetch(src)
         except Exception:
+            log.exception("Unable to Fetch")
             return None
