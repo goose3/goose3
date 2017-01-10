@@ -35,17 +35,36 @@ class Goose(object):
     """
 
     def __init__(self, config=None):
-        self.config = config or Configuration()
-        self.extend_config()
-        self.initialize()
+        self.config = Configuration()
+        if isinstance(config, dict):
+            for k, v in list(config.items()):
+                if hasattr(self.config, k):
+                    setattr(self.config, k, v)
+        # we don't need to go further if image extractor or local_storage is not set
+        if not self.config.local_storage_path or \
+                not self.config.enable_image_fetching:
+            return
+        # test if config.local_storage_path is a directory
+        if not os.path.isdir(self.config.local_storage_path):
+            os.makedirs(self.config.local_storage_path)
 
-    def extend_config(self):
-        if isinstance(self.config, dict):
-            config = Configuration()
-            for k, v in list(self.config.items()):
-                if hasattr(config, k):
-                    setattr(config, k, v)
-            self.config = config
+        if not os.path.isdir(self.config.local_storage_path):
+            raise Exception(self.config.local_storage_path +
+                            " directory does not seem to exist, "
+                            "you need to set this for image processing downloads"
+                            )
+
+        # test to write a dummy file to the directory to check is directory is writable
+        level, path = mkstemp(dir=self.config.local_storage_path)
+        try:
+            f = os.fdopen(level, "w")
+            f.close()
+            os.remove(path)
+        except IOError:
+            raise Exception(self.config.local_storage_path +
+                            " directory is not writeble, "
+                            "you need to set this for image processing downloads"
+                            )
 
     def extract(self, url=None, raw_html=None):
         """\
@@ -71,33 +90,3 @@ class Goose(object):
             else:
                 raise e
         return article
-
-    def initialize(self):
-        # we don't need to go further if image extractor or
-        # local_storage is not set
-        if not self.config.local_storage_path or \
-                not self.config.enable_image_fetching:
-            return
-        # test if config.local_storage_path
-        # is a directory
-        if not os.path.isdir(self.config.local_storage_path):
-            os.makedirs(self.config.local_storage_path)
-
-        if not os.path.isdir(self.config.local_storage_path):
-            raise Exception(self.config.local_storage_path +
-                            " directory does not seem to exist, "
-                            "you need to set this for image processing downloads"
-                            )
-
-        # test to write a dummy file to the directory
-        # to check is directory is writtable
-        level, path = mkstemp(dir=self.config.local_storage_path)
-        try:
-            f = os.fdopen(level, "w")
-            f.close()
-            os.remove(path)
-        except IOError:
-            raise Exception(self.config.local_storage_path +
-                            " directory is not writeble, "
-                            "you need to set this for image processing downloads"
-                            )

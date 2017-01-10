@@ -43,7 +43,6 @@ from goose.network import NetworkFetcher
 
 
 class CrawlCandidate(object):
-
     def __init__(self, config, url, raw_html):
         self.config = config
         # parser
@@ -53,7 +52,6 @@ class CrawlCandidate(object):
 
 
 class Crawler(object):
-
     def __init__(self, config):
         # config
         self.config = config
@@ -102,10 +100,8 @@ class Crawler(object):
         # html fetcher
         self.fetcher = NetworkFetcher(self.config)
 
-        # image extrator
+        # image extractor
         self.image_extractor = self.get_image_extractor()
-
-
 
         # TODO : log prefix
         self.logPrefix = "crawler:"
