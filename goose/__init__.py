@@ -26,7 +26,7 @@ from tempfile import mkstemp
 from goose.configuration import Configuration
 from goose.crawler import CrawlCandidate
 from goose.crawler import Crawler
-from goose.version import version_info, __version__
+# from goose.version import version_info, __version__
 
 
 class Goose(object):

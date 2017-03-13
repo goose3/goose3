@@ -38,18 +38,15 @@ CLASSIFIERS = [
     'Operating System :: POSIX',
     'Operating System :: Microsoft :: Windows',
     'Programming Language :: Python',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.6',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
     'Topic :: Internet',
     'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules']
 
-description = "Html Content / Article Extractor, web scrapping"
+description = "Html Content / Article Extractor, web scrapping for Python3"
 
 # read long description
 try:
@@ -58,26 +55,20 @@ try:
 except Exception:
     long_description = description
 
-requirements = ['Pillow', 'lxml', 'cssselect', 'jieba', 'nltk', 'six', 'requests', 'six', 'requests_mock', 'nose']
-test_requirements = ['requests_mock']
-if sys.version_info[0] == 2:
-    requirements.append('beautifulsoup')
-    if sys.version_info[1] < 7:
-        test_requirements.append('unittest2')
-
-setup(name='goose-extractor',
-    version=version.__version__,
-    description=description,
-    long_description=long_description,
-    keywords='scrapping, extractor, web scrapping',
-    classifiers=CLASSIFIERS,
-    author='Xavier Grangier',
-    author_email='grangier@gmail.com',
-    url='https://github.com/grangier/python-goose',
-    license='Apache',
-    packages=find_packages(),
-    include_package_data=True,
-    zip_safe=False,
-    install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup4', 'nltk', 'six', 'requests_mock', 'nose'],
-    test_suite="tests"
-)
+setup(name='goose3',
+      version=version.__version__,
+      description=description,
+      long_description=long_description,
+      keywords='scrapping, extractor, web scrapping',
+      classifiers=CLASSIFIERS,
+      maintainer='Mahmoud Lababidi',
+      maintainer_email='lababidi+py@gmail.com',
+      url='https://github.com/goose3/goose3',
+      license='Apache',
+      packages=['goose3'],
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup4', 'nltk', 'six'],
+      test_requires=['nose', 'requests_mock'],
+      test_suite="tests"
+      )
