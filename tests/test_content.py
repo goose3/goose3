@@ -24,9 +24,9 @@ from __future__ import absolute_import
 
 from .test_base import TestExtractionBase
 
-from goose.text import StopWordsChinese
-from goose.text import StopWordsArabic
-from goose.text import StopWordsKorean
+from goose3.text import StopWordsChinese
+from goose3.text import StopWordsArabic
+from goose3.text import StopWordsKorean
 
 
 class TestExtractions(TestExtractionBase):

@@ -23,9 +23,9 @@ limitations under the License.
 import os
 from tempfile import mkstemp
 
-from goose.configuration import Configuration
-from goose.crawler import CrawlCandidate
-from goose.crawler import Crawler
+from goose3.configuration import Configuration
+from goose3.crawler import CrawlCandidate
+from goose3.crawler import Crawler
 # from goose.version import version_info, __version__
 
 

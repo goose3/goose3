@@ -25,7 +25,7 @@ import re
 
 from six.moves.urllib.parse import urlparse, urljoin
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
 
 
 RE_LANG = r'^[A-Za-z]{2}$'

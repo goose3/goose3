@@ -31,9 +31,9 @@ try:
 except ImportError:
     import urllib.request as urllib2
 
-from goose import Goose
-from goose.utils import FileHelper
-from goose.configuration import Configuration
+from goose3 import Goose
+from goose3.utils import FileHelper
+from goose3.configuration import Configuration
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 

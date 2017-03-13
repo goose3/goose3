@@ -25,10 +25,10 @@ import tempfile
 
 import six
 
-from goose.text import StopWords
-from goose.parsers import Parser
-from goose.parsers import ParserSoup
-from goose.version import __version__
+from goose3.text import StopWords
+from goose3.parsers import Parser
+from goose3.parsers import ParserSoup
+from goose3.version import __version__
 
 HTTP_DEFAULT_TIMEOUT = 30
 

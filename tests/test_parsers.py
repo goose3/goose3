@@ -28,9 +28,9 @@ except ImportError:
 
 import six
 
-from goose.utils import FileHelper
-from goose.parsers import Parser
-from goose.parsers import ParserSoup
+from goose3.utils import FileHelper
+from goose3.parsers import Parser
+from goose3.parsers import ParserSoup
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 

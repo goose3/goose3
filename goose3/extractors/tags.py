@@ -21,22 +21,31 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
+
+A_REL_TAG_SELECTOR = "a[rel=tag]"
+A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], a[href*='?keyword=']"
 
 
-class TweetsExtractor(BaseExtractor):
+class TagsExtractor(BaseExtractor):
 
     def extract(self):
-        tweets = []
-        items = self.parser.getElementsByTag(
-                        self.article.top_node,
-                        tag='blockquote',
-                        attr="class",
-                        value="twitter-tweet")
+        node = self.article.doc
+        tags = []
 
-        for i in items:
-            for attr in ['gravityScore', 'gravityNodes']:
-                self.parser.delAttribute(i, attr)
-            tweets.append(self.parser.nodeToString(i))
+        # node doesn't have chidren
+        if len(list(node)) == 0:
+            return tags
 
-        return tweets
+        elements = self.parser.css_select(node, A_REL_TAG_SELECTOR)
+        if not elements:
+            elements = self.parser.css_select(node, A_HREF_TAG_SELECTOR)
+            if not elements:
+                return tags
+
+        for el in elements:
+            tag = self.parser.getText(el)
+            if tag:
+                tags.append(tag)
+
+        return list(set(tags))

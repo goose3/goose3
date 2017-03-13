@@ -26,9 +26,9 @@ import os
 
 from PIL import Image
 
-from goose.utils.encoding import smart_str
-from goose.image import ImageDetails
-from goose.image import LocallyStoredImage
+from goose3.utils.encoding import smart_str
+from goose3.image import ImageDetails
+from goose3.image import LocallyStoredImage
 
 log = logging.getLogger(__name__)
 

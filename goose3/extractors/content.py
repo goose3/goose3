@@ -22,7 +22,7 @@ limitations under the License.
 """
 from copy import deepcopy
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
 
 
 class ContentExtractor(BaseExtractor):

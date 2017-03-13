@@ -21,16 +21,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
 
 
-class LinksExtractor(BaseExtractor):
+class OpenGraphExtractor(BaseExtractor):
 
     def extract(self):
-        links = []
-        items = self.parser.getElementsByTag(self.article.top_node, 'a')
-        for i in items:
-            attr = self.parser.getAttribute(i, 'href')
-            if attr:
-                links.append(attr)
-        return links
+        opengraph_dict = {}
+        node = self.article.doc
+        metas = self.parser.getElementsByTag(node, 'meta')
+        for meta in metas:
+            attr = self.parser.getAttribute(meta, 'property')
+            if attr is not None and attr.startswith("og:"):
+                value = self.parser.getAttribute(meta, 'content')
+                if value:
+                    opengraph_dict.update({attr.split(":")[1]: value})
+        return opengraph_dict

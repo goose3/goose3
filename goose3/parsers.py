@@ -26,7 +26,7 @@ import six
 
 from lxml import etree
 from copy import deepcopy
-from goose.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
+from goose3.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
 
 
 class Parser(object):

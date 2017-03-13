@@ -23,23 +23,23 @@ limitations under the License.
 import os
 import glob
 from copy import deepcopy
-from goose.article import Article
-from goose.utils import URLHelper, RawHelper
-from goose.extractors.content import StandardContentExtractor
-from goose.extractors.videos import VideoExtractor
-from goose.extractors.title import TitleExtractor
-from goose.extractors.images import ImageExtractor
-from goose.extractors.links import LinksExtractor
-from goose.extractors.tweets import TweetsExtractor
-from goose.extractors.authors import AuthorsExtractor
-from goose.extractors.tags import TagsExtractor
-from goose.extractors.opengraph import OpenGraphExtractor
-from goose.extractors.publishdate import PublishDateExtractor
-from goose.extractors.metas import MetasExtractor
-from goose.cleaners import StandardDocumentCleaner
-from goose.outputformatters import StandardOutputFormatter
+from goose3.article import Article
+from goose3.utils import URLHelper, RawHelper
+from goose3.extractors.content import StandardContentExtractor
+from goose3.extractors.videos import VideoExtractor
+from goose3.extractors.title import TitleExtractor
+from goose3.extractors.images import ImageExtractor
+from goose3.extractors.links import LinksExtractor
+from goose3.extractors.tweets import TweetsExtractor
+from goose3.extractors.authors import AuthorsExtractor
+from goose3.extractors.tags import TagsExtractor
+from goose3.extractors.opengraph import OpenGraphExtractor
+from goose3.extractors.publishdate import PublishDateExtractor
+from goose3.extractors.metas import MetasExtractor
+from goose3.cleaners import StandardDocumentCleaner
+from goose3.outputformatters import StandardOutputFormatter
 
-from goose.network import NetworkFetcher
+from goose3.network import NetworkFetcher
 
 
 class CrawlCandidate(object):

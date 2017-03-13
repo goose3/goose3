@@ -21,26 +21,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
 
 
-class AuthorsExtractor(BaseExtractor):
+class TweetsExtractor(BaseExtractor):
 
     def extract(self):
-        authors = []
-        author_nodes = self.parser.getElementsByTag(
-                            self.article.doc,
-                            attr='itemprop',
-                            value='author')
+        tweets = []
+        items = self.parser.getElementsByTag(
+                        self.article.top_node,
+                        tag='blockquote',
+                        attr="class",
+                        value="twitter-tweet")
 
-        for author in author_nodes:
-            name_nodes = self.parser.getElementsByTag(
-                            author,
-                            attr='itemprop',
-                            value='name')
+        for i in items:
+            for attr in ['gravityScore', 'gravityNodes']:
+                self.parser.delAttribute(i, attr)
+            tweets.append(self.parser.nodeToString(i))
 
-            if len(name_nodes) > 0:
-                name = self.parser.getText(name_nodes[0])
-                authors.append(name)
-
-        return list(set(authors))
+        return tweets

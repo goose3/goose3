@@ -25,10 +25,10 @@ import os
 
 from six.moves.urllib.parse import urlparse, urljoin
 
-from goose.extractors import BaseExtractor
-from goose.image import Image
-from goose.utils import FileHelper
-from goose.utils.images import ImageUtils
+from goose3.extractors import BaseExtractor
+from goose3.image import Image
+from goose3.utils import FileHelper
+from goose3.utils.images import ImageUtils
 
 KNOWN_IMG_DOM_NAMES = [
     "yn-story-related-media",

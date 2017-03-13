@@ -25,10 +25,10 @@ from __future__ import absolute_import
 import os
 import unittest
 
-from goose.configuration import Configuration
-from goose.image import Image
-from goose.image import ImageDetails
-from goose.utils.images import ImageUtils
+from goose3.configuration import Configuration
+from goose3.image import Image
+from goose3.image import ImageDetails
+from goose3.utils.images import ImageUtils
 from .test_base import TestExtractionBase
 
 

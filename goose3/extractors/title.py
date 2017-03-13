@@ -22,7 +22,7 @@ limitations under the License.
 """
 import re
 
-from goose.extractors import BaseExtractor
+from goose3.extractors import BaseExtractor
 
 
 TITLE_SPLITTERS = ["|", "-", "»", ":"]

@@ -24,7 +24,7 @@ import os
 import tempfile
 import unittest
 
-from goose import Goose
+from goose3 import Goose
 
 
 class TestTempDir(unittest.TestCase):

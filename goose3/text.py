@@ -26,10 +26,10 @@ import string
 
 import six
 
-from goose.utils import FileHelper
-from goose.utils.encoding import smart_unicode
-from goose.utils.encoding import smart_str
-from goose.utils.encoding import DjangoUnicodeDecodeError
+from goose3.utils import FileHelper
+from goose3.utils.encoding import smart_unicode
+from goose3.utils.encoding import smart_str
+from goose3.utils.encoding import DjangoUnicodeDecodeError
 
 SPACE_SYMBOLS = re.compile(r'[\s\xa0\t]')
 TABSSPACE = re.compile(r'[\s\t]+')

@@ -24,7 +24,7 @@ import time
 import hashlib
 import re
 import os
-import goose
+import goose3
 import codecs
 
 import six
@@ -72,7 +72,7 @@ class FileHelper(object):
     @classmethod
     def loadResourceFile(self, filename):
         if not os.path.isabs('filename'):
-            dirpath = os.path.dirname(goose.__file__)
+            dirpath = os.path.dirname(goose3.__file__)
             path = os.path.join(dirpath, 'resources', filename)
         else:
             path = filename

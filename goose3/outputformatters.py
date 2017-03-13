@@ -26,7 +26,7 @@ try:
 except Exception:
     from six.moves.html_parser import HTMLParser
 
-from goose.text import innerTrim
+from goose3.text import innerTrim
 
 
 class OutputFormatter(object):

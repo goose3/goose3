@@ -22,7 +22,7 @@ limitations under the License.
 """
 from __future__ import unicode_literals
 
-from goose.utils import ReplaceSequence
+from goose3.utils import ReplaceSequence
 
 
 class DocumentCleaner(object):

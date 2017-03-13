@@ -22,7 +22,7 @@ limitations under the License.
 """
 
 import unittest
-from goose.article import Article
+from goose3.article import Article
 
 
 class TestArticle(unittest.TestCase):
