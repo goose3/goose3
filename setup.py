@@ -22,10 +22,9 @@ limitations under the License.
 """
 
 import os
-import sys
-
-from setuptools import setup, find_packages
 from imp import load_source
+
+from setuptools import setup
 
 version = load_source("version", os.path.join("goose3", "version.py"))
 
