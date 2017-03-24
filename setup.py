@@ -27,7 +27,7 @@ import sys
 from setuptools import setup, find_packages
 from imp import load_source
 
-version = load_source("version", os.path.join("goose", "version.py"))
+version = load_source("version", os.path.join("goose3", "version.py"))
 
 CLASSIFIERS = [
     'Development Status :: 4 - Beta',
