@@ -1,3 +1,4 @@
 recursive-include goose3/resources/images *
 recursive-include goose3/resources/text *
-recursive-include goose3/extractors * recursive-include goose3/utils *
+recursive-include goose3/extractors *
+recursive-include goose3/utils *
