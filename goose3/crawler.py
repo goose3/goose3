@@ -126,7 +126,7 @@ class Crawler(object):
 
         # article
         self.article.final_url = final_url
-        self.article.link_hash = link_hashimages
+        self.article.link_hash = link_hash
         self.article.raw_html = raw_html
         self.article.doc = doc
         self.article.raw_doc = deepcopy(doc)
