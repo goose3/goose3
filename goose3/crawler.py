@@ -117,12 +117,16 @@ class Crawler(object):
         if raw_html is None:
             return self.article
 
+        return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
+
+    def process(self, raw_html, final_url, link_hash):
+
         # create document
         doc = self.get_document(raw_html)
 
         # article
-        self.article.final_url = parse_candidate.url
-        self.article.link_hash = parse_candidate.link_hash
+        self.article.final_url = final_url
+        self.article.link_hash = link_hashimages
         self.article.raw_html = raw_html
         self.article.doc = doc
         self.article.raw_doc = deepcopy(doc)

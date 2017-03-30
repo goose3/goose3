@@ -61,7 +61,7 @@ class ImageUtils(object):
             return image
 
         # no cache found download the image
-        data = self.fetch(http_client, src)
+        data = http_client.fetch(src)
         if data:
             image = self.write_localfile(data, link_hash, src, config)
             if image:
@@ -118,8 +118,5 @@ class ImageUtils(object):
 
     @classmethod
     def fetch(self, http_client, src):
-        try:
-            return http_client.fetch(src)
-        except Exception:
-            log.exception("Unable to Fetch")
-            return None
+        return http_client.fetch(src)
+
