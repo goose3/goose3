@@ -22,6 +22,7 @@ limitations under the License.
 """
 import re
 import os
+from urllib3.util import parse_url
 
 from six.moves.urllib.parse import urlparse, urljoin
 
