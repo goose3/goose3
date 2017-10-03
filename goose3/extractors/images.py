@@ -171,7 +171,6 @@ class ImageExtractor(BaseExtractor):
         for image in images[:30]:
             src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
-            src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
             width = local_image.width
             height = local_image.height
@@ -291,7 +290,6 @@ class ImageExtractor(BaseExtractor):
                 return good_images
             src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
-            src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
             if local_image:
                 bytes = local_image.bytes
@@ -414,10 +412,3 @@ class ImageExtractor(BaseExtractor):
         for line in lines:
             domain, css = line.split('^')
             self.custom_site_mapping.update({domain: css})
-    
-    def add_schema_if_none(self, src):
-        src_test = parse_url(src)
-        if not src_test.scheme:
-            target = parse_url(self.article.final_url)
-            return str(target.scheme) + ':' + src
-        return src
