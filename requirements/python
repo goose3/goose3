@@ -1,0 +1,9 @@
+urllib3
+requests
+Pillow
+lxml
+cssselect
+jieba
+beautifulsoup4
+nltk
+six
