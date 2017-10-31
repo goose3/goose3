@@ -41,16 +41,19 @@ class TestExtractions(TestExtractionBase):
         fields = ['title', 'cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_businessWeek1(self):
     #     article = self.getArticle()
     #     fields = ['title', 'cleaned_text']
     #     self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_businessWeek2(self):
     #     article = self.getArticle()
     #     fields = ['title', 'cleaned_text']
     #     self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_businessWeek3(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -81,6 +84,7 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_techcrunch1(self):
     #     article = self.getArticle()
     #     fields = ['title', 'cleaned_text']
@@ -96,6 +100,7 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_huffingtonPost2(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -116,6 +121,7 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_msn1(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -138,11 +144,13 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_cnet(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
     #     self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_yahoo(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -168,11 +176,13 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    # def test_issue24(self):
+    # ERROR'd
+      # def test_issue24(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
     #     self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_issue25(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -188,6 +198,7 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    # ERROR'd
     # def test_issue4(self):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
@@ -263,7 +274,7 @@ class TestExtractChinese(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-
+# ERROR'd
 # class TestExtractArabic(TestExtractionBase):
 #
 #     def getConfig(self):

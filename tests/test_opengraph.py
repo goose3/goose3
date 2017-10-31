@@ -28,6 +28,7 @@ from .test_base import TestExtractionBase
 
 class TestOpenGraph(TestExtractionBase):
 
+    # ERROR'd
     # def test_opengraph(self):
     #     article = self.getArticle()
     #     fields = ['opengraph']
