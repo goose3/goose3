@@ -123,8 +123,6 @@ class WordStats(object):
 
 
 class StopWords(object):
-    # This not work in python3.6 and is not used in project
-    # PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
     _cached_stop_words = {}
 
     def __init__(self, language='en'):

@@ -1,3 +1,4 @@
+urllib3
 requests
 Pillow
 lxml
@@ -6,5 +7,3 @@ jieba
 beautifulsoup4
 nltk
 six
-nose
-requests_mock

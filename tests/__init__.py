@@ -21,6 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import unittest
+import logging
+
+
+# turn off logging for the tests!
+logging.disable(logging.CRITICAL)
+
 
 if __name__ == '__main__':
     unittest.main()

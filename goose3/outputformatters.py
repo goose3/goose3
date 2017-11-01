@@ -20,11 +20,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-# <<<<<<< HEAD
-try:
-    from html.parser import HTMLParser
-except Exception:
-    from six.moves.html_parser import HTMLParser
+
+import html
 
 from goose3.text import innerTrim
 
@@ -71,14 +68,12 @@ class OutputFormatter(object):
         self.remove_fewwords_paragraphs()
         return self.convert_to_text()
 
-    _text_parser = HTMLParser()
-
     def convert_to_text(self):
         txts = []
         for node in list(self.get_top_node()):
             txt = self.parser.getText(node)
             if txt:
-                txt = self._text_parser.unescape(txt)
+                txt = html.unescape(txt)
                 txt_lis = innerTrim(txt).split(r'\n')
                 txts.extend(txt_lis)
         return '\n\n'.join(txts)
