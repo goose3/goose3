@@ -123,7 +123,6 @@ class WordStats(object):
 
 
 class StopWords(object):
-
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
