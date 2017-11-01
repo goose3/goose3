@@ -41,6 +41,9 @@ class NetworkFetcher(object):
         self.response = None
         self.headers = None
 
+    def __del__(self):
+        self._connection.close()
+
     def get_url(self):
         return self._url
 

@@ -24,7 +24,14 @@ limitations under the License.
 import os
 from imp import load_source
 
-from setuptools import setup
+from setuptools import (setup, find_packages)
+
+
+def read_file(filepath):
+    ''' read the file '''
+    with open(filepath, 'r') as filepointer:
+        res = filepointer.read()
+    return res
 
 version = load_source("version", os.path.join("goose3", "version.py"))
 
@@ -49,8 +56,7 @@ description = "Html Content / Article Extractor, web scrapping for Python3"
 
 # read long description
 try:
-    with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
-        long_description = f.read()
+    long_description = read_file('README.rst')
 except Exception:
     long_description = description
 
@@ -64,10 +70,10 @@ setup(name='goose3',
       maintainer_email='lababidi+py@gmail.com',
       url='https://github.com/goose3/goose3',
       license='Apache',
-      packages=['goose3'],
+      packages=find_packages(exclude=['tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=['Pillow', 'lxml', 'cssselect', 'jieba', 'beautifulsoup4', 'nltk', 'six'],
-      test_requires=['nose', 'requests_mock'],
+      install_requires=read_file('./requirements/python').splitlines(),
+      test_requires=read_file('./requirements/python-dev').splitlines(),
       test_suite="tests"
       )

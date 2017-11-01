@@ -38,9 +38,11 @@ class ImageUtils(object):
     def get_image_dimensions(self, identify_program, path):
         image_details = ImageDetails()
         try:
-            with Image.open(path) as image:
-                image_details.set_mime_type(image.format)
-                width, height = image.size
+            # workaround to force the file to actually be closed by Pillow
+            with open(path, 'rb') as img_file:
+                with Image.open(img_file) as image:
+                    image_details.set_mime_type(image.format)
+                    width, height = image.size
             image_details.set_width(width)
             image_details.set_height(height)
         except IOError:
@@ -119,4 +121,3 @@ class ImageUtils(object):
     @classmethod
     def fetch(self, http_client, src):
         return http_client.fetch(src)
-
