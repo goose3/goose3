@@ -49,10 +49,9 @@ class Goose(object):
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            raise Exception(self.config.local_storage_path +
-                            " directory does not seem to exist, "
-                            "you need to set this for image processing downloads"
-                            )
+            msg = ('{} directory does not seem to exist, you need to set this for image processing '
+                   'downloads').format(self.config.local_storage_path)
+            raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
         level, path = mkstemp(dir=self.config.local_storage_path)
@@ -61,10 +60,9 @@ class Goose(object):
             f.close()
             os.remove(path)
         except IOError:
-            raise Exception(self.config.local_storage_path +
-                            " directory is not writeble, "
-                            "you need to set this for image processing downloads"
-                            )
+            msg = ('{} directory is not writeble, you need to set this for image processing '
+                   'downloads').format(self.config.local_storage_path)
+            raise Exception(msg)
 
     def extract(self, url=None, raw_html=None):
         """\

@@ -42,9 +42,7 @@ class ContentExtractor(BaseExtractor):
     def get_known_article_tags(self):
         nodes = []
         for item in self.config.known_context_patterns:
-            nodes.extend(self.parser.getElementsByTag(
-                         self.article.doc,
-                         **item))
+            nodes.extend(self.parser.getElementsByTag(self.article.doc, **item))
         if len(nodes):
             return nodes
         return None
@@ -88,7 +86,7 @@ class ContentExtractor(BaseExtractor):
         for node in nodes_with_text:
             boost_score = float(0)
             # boost
-            if(self.is_boostable(node)):
+            if self.is_boostable(node):
                 if cnt >= 0:
                     boost_score = float((1.0 / starting_boost) * 50)
                     starting_boost += 1

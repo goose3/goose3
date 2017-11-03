@@ -20,10 +20,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import lxml.html
-
-from lxml import etree
 from copy import deepcopy
+import lxml.html
+from lxml import etree
+
 from goose3.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
 
 

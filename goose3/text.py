@@ -126,10 +126,10 @@ class StopWords(object):
     def __init__(self, language='en'):
         # TODO replace 'x' with class
         # to generate dynamic path for file to load
-        if not language in self._cached_stop_words:
+        if language not in self._cached_stop_words:
             path = os.path.join('text', 'stopwords-%s.txt' % language)
             try:
-                content = FileHelper.loadResourceFile(path)
+                content = FileHelper.load_resource_file(path)
                 word_list = content.splitlines()
             except IOError:
                 word_list = []
@@ -217,7 +217,7 @@ class StopWordsKorean(StopWords):
         candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
         c = 0
-        for w in candiate_words:
+        for _ in candiate_words:
             c += 1
             for stop_word in self.STOP_WORDS:
                 overlapping_stopwords.append(stop_word)

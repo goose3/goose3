@@ -26,11 +26,6 @@ import unittest
 
 import requests_mock
 
-try:
-    import urllib2
-except ImportError:
-    import urllib.request as urllib2
-
 from goose3 import Goose
 from goose3.utils import FileHelper
 from goose3.configuration import Configuration
@@ -53,7 +48,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = FileHelper.load_resource_file(path)
         return content
 
     def loadData(self):
@@ -71,7 +66,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.json" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = FileHelper.load_resource_file(path)
         self.data = json.loads(content)
 
     def loadHtml(self):
@@ -83,7 +78,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        self.html = FileHelper.loadResourceFile(path)
+        self.html = FileHelper.load_resource_file(path)
 
     def assert_cleaned_text(self, field, expected_value, result_value):
         # # TODO : handle verbose level in tests

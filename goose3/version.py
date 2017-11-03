@@ -23,3 +23,6 @@ limitations under the License.
 
 version_info = (3, 0, 6)
 __version__ = ".".join(map(str, version_info))
+
+
+install_location = __file__
