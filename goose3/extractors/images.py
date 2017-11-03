@@ -22,7 +22,6 @@ limitations under the License.
 """
 import re
 import os
-from urllib3.util import parse_url
 
 from urllib.parse import urlparse, urljoin
 
@@ -417,8 +416,8 @@ class ImageExtractor(BaseExtractor):
             self.custom_site_mapping.update({domain: css})
 
     def add_schema_if_none(self, src):
-        src_test = parse_url(src)
+        src_test = urlparse(src)
         if not src_test.scheme:
-            target = parse_url(self.article.final_url)
+            target = urlparse(self.article.final_url)
             return str(target.scheme) + ':' + src
         return src
