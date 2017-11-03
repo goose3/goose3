@@ -20,7 +20,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import six
 import requests
 
 
@@ -48,10 +47,6 @@ class NetworkFetcher(object):
         return self._url
 
     def fetch(self, url):
-        # utf-8 encode unicode url
-        if isinstance(url, six.text_type) and six.PY2:
-            url = url.encode('utf-8')
-
         response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
         if response.ok:
             self._url = response.url

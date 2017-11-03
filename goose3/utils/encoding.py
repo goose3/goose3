@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 
-import six
-
 from decimal import Decimal
 
 
@@ -48,7 +46,7 @@ def is_protected_type(obj):
     """
     return isinstance(obj, (
         type(None),
-        six.integer_types,
+        int,
         datetime.datetime, datetime.date, datetime.time,
         float, Decimal)
     )
@@ -64,17 +62,17 @@ def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
     # Handle the common case first, saves 30-40% in performance when s
     # is an instance of unicode. This function gets called often in that
     # setting.
-    if isinstance(s, six.text_type):
+    if isinstance(s, str):
         return s
     if strings_only and is_protected_type(s):
         return s
     try:
-        if not isinstance(s, six.string_types,):
+        if not isinstance(s, str):
             if hasattr(s, '__unicode__'):
                 s = s.__unicode__()
             else:
                 try:
-                    s = six.text_type(s, encoding, errors)
+                    s = str(s, encoding, errors)
                 except UnicodeEncodeError:
                     if not isinstance(s, Exception):
                         raise
@@ -86,7 +84,7 @@ def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
                     # output should be.
                     s = ' '.join([force_unicode(arg, encoding, strings_only,
                             errors) for arg in s])
-        elif not isinstance(s, six.text_type):
+        elif not isinstance(s, str):
             # Note: We use .decode() here, instead of unicode(s, encoding,
             # errors), so that if s is a SafeString, it ends up being a
             # SafeUnicode at the end.
@@ -115,12 +113,10 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
         return s
     # if isinstance(s, Promise):
     #     return unicode(s).encode(encoding, errors)
-    if isinstance(s, six.text_type):
+    if isinstance(s, str):
         return s.encode(encoding, errors)
-    elif not isinstance(s, six.binary_type):
+    elif not isinstance(s, bytes):
         try:
-            if six.PY2:
-                return str(s)
             return str(s).encode(encoding, errors)
         except UnicodeEncodeError:
             if isinstance(s, Exception):
@@ -129,6 +125,6 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
                 # further exception.
                 return ' '.join([smart_str(arg, encoding, strings_only,
                         errors) for arg in s])
-            return six.text_type(s).encode(encoding, errors)
+            return str(s).encode(encoding, errors)
     else:
         return s

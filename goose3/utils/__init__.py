@@ -27,12 +27,7 @@ import os
 import goose3
 import codecs
 
-import six
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 
 class BuildURL(object):
@@ -95,8 +90,7 @@ class ParsingCandidate(object):
 class RawHelper(object):
     @classmethod
     def get_parsing_candidate(self, url, raw_html):
-        if isinstance(raw_html, six.text_type):
-
+        if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)
@@ -108,7 +102,7 @@ class URLHelper(object):
         # replace shebang is urls
         final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in url_to_crawl else url_to_crawl
-        url = final_url.encode("utf-8") if isinstance(final_url, six.text_type) else final_url
+        url = final_url.encode("utf-8") if isinstance(final_url,str) else final_url
         link_hash = '%s.%s' % (hashlib.md5(url).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 

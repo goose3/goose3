@@ -24,7 +24,7 @@ import re
 import os
 from urllib3.util import parse_url
 
-from six.moves.urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin
 
 from goose3.extractors import BaseExtractor
 from goose3.image import Image
@@ -415,7 +415,7 @@ class ImageExtractor(BaseExtractor):
         for line in lines:
             domain, css = line.split('^')
             self.custom_site_mapping.update({domain: css})
-    
+
     def add_schema_if_none(self, src):
         src_test = parse_url(src)
         if not src_test.scheme:

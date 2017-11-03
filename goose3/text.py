@@ -24,8 +24,6 @@ import os
 import re
 import string
 
-import six
-
 from goose3.utils import FileHelper
 from goose3.utils.encoding import smart_unicode
 from goose3.utils.encoding import smart_str
@@ -42,7 +40,7 @@ def get_encodings_from_content(content):
     Return encodings from given content string.
     :param content: string to extract encodings from.
     """
-    if isinstance(content, six.binary_type) and six.PY3:
+    if isinstance(content, bytes):
         find_charset = re.compile(
             br'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
         ).findall
@@ -70,7 +68,7 @@ def get_encodings_from_content(content):
 
 
 def innerTrim(value):
-    if isinstance(value, (six.text_type, six.string_types)):
+    if isinstance(value, str):
         # remove tab and white space
         value = re.sub(TABSSPACE, ' ', value)
         value = ''.join(value.splitlines())
@@ -141,7 +139,7 @@ class StopWords(object):
     def remove_punctuation(self, content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
-        if not isinstance(content, six.text_type):
+        if not isinstance(content, str):
             content = content.decode('utf-8')
         tbl = dict.fromkeys(ord(x) for x in string.punctuation)
         return content.translate(tbl)

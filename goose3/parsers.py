@@ -22,8 +22,6 @@ limitations under the License.
 """
 import lxml.html
 
-import six
-
 from lxml import etree
 from copy import deepcopy
 from goose3.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
@@ -64,7 +62,7 @@ class Parser(object):
 
     @classmethod
     def nodeToString(self, node):
-        return etree.tostring(node, encoding=six.text_type)
+        return etree.tostring(node, encoding=str)
 
     @classmethod
     def replaceTag(self, node, tag):

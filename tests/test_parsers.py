@@ -21,12 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
-try:
-    import unittest2 as unittest  # Need to support skipIf in python 2.6
-except ImportError:
-    import unittest
+import unittest
 
-import six
 
 from goose3.utils import FileHelper
 from goose3.parsers import Parser
@@ -277,10 +273,3 @@ class ParserBase(unittest.TestCase):
 
 class TestParser(ParserBase):
     pass
-
-
-class TestParserSoup(ParserBase):
-
-    @unittest.skipIf(six.PY3, "supported only in python2")
-    def setUp(self):
-        self.parser = ParserSoup
