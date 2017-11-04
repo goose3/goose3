@@ -210,10 +210,10 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, fields=fields)
 
     # ERROR'd (only travis-ci)
-    # def test_okaymarketing(self):
-    #     article = self.getArticle()
-    #     fields = ['cleaned_text']
-    #     self.runArticleAssertions(article=article, fields=fields)
+    def test_okaymarketing(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
 
     def test_issue129(self):
         article = self.getArticle()
@@ -266,18 +266,17 @@ class TestExtractWithUrl(TestExtractionBase):
 #         fields = ['cleaned_text']
 #         self.runArticleAssertions(article=article, fields=fields)
 
-# ERROR'd
-# class TestExtractArabic(TestExtractionBase):
-#
-#     def getConfig(self):
-#         config = super(TestExtractArabic, self).getConfig()
-#         config.stopwords_class = StopWordsArabic
-#         return config
-#
-#     def test_cnn_arabic(self):
-#         article = self.getArticle()
-#         fields = ['cleaned_text']
-#         self.runArticleAssertions(article=article, fields=fields)
+class TestExtractArabic(TestExtractionBase):
+
+    def getConfig(self):
+        config = super(TestExtractArabic, self).getConfig()
+        config.stopwords_class = StopWordsArabic
+        return config
+
+    def test_cnn_arabic(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
 
 
 # FAILED
