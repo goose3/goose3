@@ -188,7 +188,7 @@ class DocumentCleaner(object):
             elif self.parser.isTextNode(kid):
                 kid_text_node = kid
                 kid_text = self.parser.getText(kid)
-                replace_text = self.tablines_replacements.replace_all(kid_text)
+                replace_text = self.tablines_replacements.replaceAll(kid_text)
                 if(len(replace_text)) > 1:
                     previous_sibling_node = self.parser.previousSibling(kid_text_node)
                     while previous_sibling_node is not None \

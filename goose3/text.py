@@ -150,20 +150,20 @@ class StopWords(object):
     def get_stopword_count(self, content):
         if not content:
             return WordStats()
-        ws = WordStats()
+        wstat = WordStats()
         stripped_input = self.remove_punctuation(content)
         candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
-        c = 0
-        for w in candiate_words:
-            c += 1
-            if w.lower() in self.STOP_WORDS:
-                overlapping_stopwords.append(w.lower())
+        cnt = 0
+        for word in candiate_words:
+            cnt += 1
+            if word.lower() in self.STOP_WORDS:
+                overlapping_stopwords.append(word.lower())
 
-        ws.set_word_count(c)
-        ws.set_stopword_count(len(overlapping_stopwords))
-        ws.set_stop_words(overlapping_stopwords)
-        return ws
+        wstat.set_word_count(cnt)
+        wstat.set_stopword_count(len(overlapping_stopwords))
+        wstat.set_stop_words(overlapping_stopwords)
+        return wstat
 
 
 class StopWordsChinese(StopWords):
@@ -212,17 +212,17 @@ class StopWordsKorean(StopWords):
     def get_stopword_count(self, content):
         if not content:
             return WordStats()
-        ws = WordStats()
+        wstat = WordStats()
         stripped_input = self.remove_punctuation(content)
         candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
-        c = 0
+        cnt = 0
         for _ in candiate_words:
-            c += 1
+            cnt += 1
             for stop_word in self.STOP_WORDS:
                 overlapping_stopwords.append(stop_word)
 
-        ws.set_word_count(c)
-        ws.set_stopword_count(len(overlapping_stopwords))
-        ws.set_stop_words(overlapping_stopwords)
-        return ws
+        wstat.set_word_count(cnt)
+        wstat.set_stopword_count(len(overlapping_stopwords))
+        wstat.set_stop_words(overlapping_stopwords)
+        return wstat

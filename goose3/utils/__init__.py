@@ -55,7 +55,7 @@ class ParsingCandidate(object):
 
 class RawHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url, raw_html):
+    def get_parsing_candidate(cls, url, raw_html):
         if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '{}.{}'.format(hashlib.md5(raw_html).hexdigest(), time.time())
@@ -64,7 +64,7 @@ class RawHelper(object):
 
 class URLHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url_to_crawl):
+    def get_parsing_candidate(cls, url_to_crawl):
         # replace shebang is urls
         if '#!' in url_to_crawl:
             final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
@@ -76,14 +76,14 @@ class URLHelper(object):
 
 class StringReplacement(object):
 
-    def __init__(self, pattern, replace_with):
+    def __init__(self, pattern, replaceWith):
         self.pattern = pattern
-        self.replace_with = replace_with
+        self.replaceWith = replaceWith
 
-    def replace_all(self, string):
+    def replaceAll(self, string):
         if not string:
             return ''
-        return string.replace(self.pattern, self.replace_with)
+        return string.replace(self.pattern, self.replaceWith)
 
 
 class ReplaceSequence(object):
@@ -91,21 +91,20 @@ class ReplaceSequence(object):
     def __init__(self):
         self.replacements = []
 
-    #@classmethod
-    def create(self, first_pattern, replace_with=None):
-        result = StringReplacement(first_pattern, replace_with or '')
+    def create(self, firstPattern, replaceWith=None):
+        result = StringReplacement(firstPattern, replaceWith or '')
         self.replacements.append(result)
         return self
 
-    def append(self, pattern, replace_with=None):
-        return self.create(pattern, replace_with)
+    def append(self, pattern, replaceWith=None):
+        return self.create(pattern, replaceWith)
 
-    def replace_all(self, string):
+    def replaceAll(self, string):
         if not string:
             return ''
 
         mutated_string = string
 
         for reps in self.replacements:
-            mutated_string = reps.replace_all(mutated_string)
+            mutated_string = reps.replaceAll(mutated_string)
         return mutated_string
