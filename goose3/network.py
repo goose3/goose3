@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import requests
+import weakref
 
 
 class NetworkError(RuntimeError):
@@ -35,14 +36,14 @@ class NetworkFetcher(object):
         self.config = config
         self._connection = requests.Session()
         self._connection.headers['User-agent'] = self.config.browser_user_agent
+        self._finalizer = weakref.finalize(self, self._close)
 
         self._url = None
         self.response = None
         self.headers = None
 
-    def __del__(self):
-        if hasattr(self, '_connection'):
-            self._connection.close()
+    def _close(self):
+        self._connection.close()
 
     def get_url(self):
         return self._url
