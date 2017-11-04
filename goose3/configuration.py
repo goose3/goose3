@@ -113,6 +113,9 @@ class Configuration(object):
         # Strict mode. Generate exceptions on errors instead of swallowing them
         self.strict = True
 
+    def to_dict(self):
+        return self.__dict__
+
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]
 

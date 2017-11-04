@@ -151,6 +151,7 @@ class TestExtractionBase(unittest.TestCase):
         target_language = self.data.get('target_language')
         if target_language:
             config.target_language = target_language
+            config.browser_user_agent = 'Mozilla/5.0'
             config.use_meta_language = False
 
         with requests_mock.Mocker(real_http=True) as m:
