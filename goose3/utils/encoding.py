@@ -112,14 +112,6 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
     if isinstance(s, str):
         return s.encode(encoding, errors)
     elif not isinstance(s, bytes):
-        try:
-            return str(s).encode(encoding, errors)
-        except UnicodeEncodeError:
-            if isinstance(s, Exception):
-                # An Exception subclass containing non-ASCII data that doesn't
-                # know how to print itself properly. We shouldn't raise a
-                # further exception.
-                return ' '.join([smart_str(arg, encoding, strings_only, errors) for arg in s])
-            return str(s).encode(encoding, errors)
+        return str(s).encode(encoding, errors)
     else:
         return s
