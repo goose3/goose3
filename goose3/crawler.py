@@ -110,6 +110,7 @@ class Crawler(object):
 
         # parser candidate
         parse_candidate = self.get_parse_candidate(crawl_candidate)
+        print(parse_candidate)
 
         # raw html
         raw_html = self.get_html(crawl_candidate, parse_candidate)
@@ -139,6 +140,7 @@ class Crawler(object):
 
         # meta
         metas = self.metas_extractor.extract()
+        # print(metas)
         self.article.meta_lang = metas['lang']
         self.article.meta_favicon = metas['favicon']
         self.article.meta_description = metas['description']

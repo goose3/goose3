@@ -26,11 +26,6 @@ import unittest
 
 import requests_mock
 
-try:
-    import urllib2
-except ImportError:
-    import urllib.request as urllib2
-
 from goose3 import Goose
 from goose3.utils import FileHelper
 from goose3.configuration import Configuration
