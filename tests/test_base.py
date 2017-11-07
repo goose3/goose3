@@ -158,7 +158,7 @@ class TestExtractionBase(unittest.TestCase):
             config.target_language = target_language
             config.use_meta_language = False
 
-        with requests_mock.Mocker(real_http=False) as m:
+        with requests_mock.Mocker(real_http=True) as m:
             m.get(self.data['url'], text=self.html)
             # run goose
             g = Goose(config=config)
