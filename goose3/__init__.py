@@ -35,14 +35,20 @@ class Goose(object):
     """
 
     def __init__(self, config=None):
-        self.config = Configuration()
+        # Use the passed in configuration if it is of the right type, otherwise
+        # use the default as a base
+        if isinstance(config, Configuration):
+            self.config = config
+        else:
+            self.config = Configuration()
+
+        # if config was a passed in dict, parse it into the stored configuration
         if isinstance(config, dict):
             for k, v in list(config.items()):
                 if hasattr(self.config, k):
                     setattr(self.config, k, v)
         # we don't need to go further if image extractor or local_storage is not set
-        if not self.config.local_storage_path or \
-                not self.config.enable_image_fetching:
+        if not self.config.local_storage_path or not self.config.enable_image_fetching:
             return
         # test if config.local_storage_path is a directory
         if not os.path.isdir(self.config.local_storage_path):

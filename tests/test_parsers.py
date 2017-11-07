@@ -279,8 +279,8 @@ class TestParser(ParserBase):
     pass
 
 
-class TestParserSoup(ParserBase):
-
-    @unittest.skipIf(six.PY3, "supported only in python2")
-    def setUp(self):
-        self.parser = ParserSoup
+# class TestParserSoup(ParserBase):
+#
+#     @unittest.skipIf(six.PY3, "supported only in python2")
+#     def setUp(self):
+#         self.parser = ParserSoup
