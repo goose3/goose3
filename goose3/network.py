@@ -20,8 +20,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import six
 import requests
+import weakref
 
 
 class NetworkError(RuntimeError):
@@ -36,22 +36,21 @@ class NetworkFetcher(object):
         self.config = config
         self._connection = requests.Session()
         self._connection.headers['User-agent'] = self.config.browser_user_agent
+        self._finalizer = weakref.finalize(self, self.close)
 
         self._url = None
         self.response = None
         self.headers = None
 
-    def __del__(self):
-        self._connection.close()
+    def close(self):
+        if self._connection is not None:
+            self._connection.close()
+            self._connection = None
 
     def get_url(self):
         return self._url
 
     def fetch(self, url):
-        # utf-8 encode unicode url
-        if isinstance(url, six.text_type) and six.PY2:
-            url = url.encode('utf-8')
-
         response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
         if response.ok:
             self._url = response.url

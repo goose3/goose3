@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 
-import six
-
 from decimal import Decimal
 
 
@@ -13,8 +11,7 @@ class DjangoUnicodeDecodeError(UnicodeDecodeError):
 
     def __str__(self):
         original = UnicodeDecodeError.__str__(self)
-        return '%s. You passed in %r (%s)' % (original, self.obj,
-                type(self.obj))
+        return '{}. You passed in {} ({})'.format(original, self.obj, type(self.obj))
 
 
 class StrAndUnicode(object):
@@ -46,12 +43,13 @@ def is_protected_type(obj):
     Objects of protected types are preserved as-is when passed to
     force_unicode(strings_only=True).
     """
-    return isinstance(obj, (
-        type(None),
-        six.integer_types,
-        datetime.datetime, datetime.date, datetime.time,
-        float, Decimal)
-    )
+    return isinstance(obj, (type(None),
+                            int,
+                            datetime.datetime,
+                            datetime.date,
+                            datetime.time,
+                            float,
+                            Decimal))
 
 
 def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
@@ -64,17 +62,15 @@ def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
     # Handle the common case first, saves 30-40% in performance when s
     # is an instance of unicode. This function gets called often in that
     # setting.
-    if isinstance(s, six.text_type):
-        return s
-    if strings_only and is_protected_type(s):
+    if isinstance(s, str) or (strings_only and is_protected_type(s)):
         return s
     try:
-        if not isinstance(s, six.string_types,):
+        if not isinstance(s, str):
             if hasattr(s, '__unicode__'):
                 s = s.__unicode__()
             else:
                 try:
-                    s = six.text_type(s, encoding, errors)
+                    s = str(s, encoding, errors)
                 except UnicodeEncodeError:
                     if not isinstance(s, Exception):
                         raise
@@ -84,24 +80,22 @@ def force_unicode(s, encoding='utf-8', strings_only=False, errors='strict'):
                     # without raising a further exception. We do an
                     # approximation to what the Exception's standard str()
                     # output should be.
-                    s = ' '.join([force_unicode(arg, encoding, strings_only,
-                            errors) for arg in s])
-        elif not isinstance(s, six.text_type):
+                    s = ' '.join([force_unicode(arg, encoding, strings_only, errors) for arg in s])
+        elif not isinstance(s, str):
             # Note: We use .decode() here, instead of unicode(s, encoding,
             # errors), so that if s is a SafeString, it ends up being a
             # SafeUnicode at the end.
             s = s.decode(encoding, errors)
-    except UnicodeDecodeError as e:
+    except UnicodeDecodeError as ex:
         if not isinstance(s, Exception):
-            raise DjangoUnicodeDecodeError(s, *e.args)
+            raise DjangoUnicodeDecodeError(s, *ex.args)
         else:
             # If we get to here, the caller has passed in an Exception
             # subclass populated with non-ASCII bytestring data without a
             # working unicode method. Try to handle this without raising a
             # further exception by individually forcing the exception args
             # to unicode.
-            s = ' '.join([force_unicode(arg, encoding, strings_only,
-                    errors) for arg in s])
+            s = ' '.join([force_unicode(arg, encoding, strings_only, errors) for arg in s])
     return s
 
 
@@ -115,20 +109,9 @@ def smart_str(s, encoding='utf-8', strings_only=False, errors='strict'):
         return s
     # if isinstance(s, Promise):
     #     return unicode(s).encode(encoding, errors)
-    if isinstance(s, six.text_type):
+    if isinstance(s, str):
         return s.encode(encoding, errors)
-    elif not isinstance(s, six.binary_type):
-        try:
-            if six.PY2:
-                return str(s)
-            return str(s).encode(encoding, errors)
-        except UnicodeEncodeError:
-            if isinstance(s, Exception):
-                # An Exception subclass containing non-ASCII data that doesn't
-                # know how to print itself properly. We shouldn't raise a
-                # further exception.
-                return ' '.join([smart_str(arg, encoding, strings_only,
-                        errors) for arg in s])
-            return six.text_type(s).encode(encoding, errors)
+    elif not isinstance(s, bytes):
+        return str(s).encode(encoding, errors)
     else:
         return s

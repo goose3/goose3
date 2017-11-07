@@ -35,24 +35,30 @@ class Goose(object):
     """
 
     def __init__(self, config=None):
-        self.config = Configuration()
+
+        # Use the passed in configuration if it is of the right type, otherwise
+        # use the default as a base
+        if isinstance(config, Configuration):
+            self.config = config
+        else:
+            self.config = Configuration()
+
         if isinstance(config, dict):
             for k, v in list(config.items()):
                 if hasattr(self.config, k):
                     setattr(self.config, k, v)
+
         # we don't need to go further if image extractor or local_storage is not set
-        if not self.config.local_storage_path or \
-                not self.config.enable_image_fetching:
+        if not self.config.local_storage_path or not self.config.enable_image_fetching:
             return
         # test if config.local_storage_path is a directory
         if not os.path.isdir(self.config.local_storage_path):
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            raise Exception(self.config.local_storage_path +
-                            " directory does not seem to exist, "
-                            "you need to set this for image processing downloads"
-                            )
+            msg = ('{} directory does not seem to exist, you need to set this for image processing '
+                   'downloads').format(self.config.local_storage_path)
+            raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
         level, path = mkstemp(dir=self.config.local_storage_path)
@@ -61,10 +67,9 @@ class Goose(object):
             f.close()
             os.remove(path)
         except IOError:
-            raise Exception(self.config.local_storage_path +
-                            " directory is not writeble, "
-                            "you need to set this for image processing downloads"
-                            )
+            msg = ('{} directory is not writeble, you need to set this for image processing '
+                   'downloads').format(self.config.local_storage_path)
+            raise Exception(msg)
 
     def extract(self, url=None, raw_html=None):
         """\

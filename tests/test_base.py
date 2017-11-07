@@ -26,11 +26,6 @@ import unittest
 
 import requests_mock
 
-try:
-    import urllib2
-except ImportError:
-    import urllib.request as urllib2
-
 from goose3 import Goose
 from goose3.utils import FileHelper
 from goose3.configuration import Configuration
@@ -53,7 +48,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = FileHelper.load_resource_file(path)
         return content
 
     def loadData(self):
@@ -71,7 +66,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.json" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = FileHelper.load_resource_file(path)
         self.data = json.loads(content)
 
     def loadHtml(self):
@@ -83,7 +78,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        self.html = FileHelper.loadResourceFile(path)
+        self.html = FileHelper.load_resource_file(path)
 
     def assert_cleaned_text(self, field, expected_value, result_value):
         # # TODO : handle verbose level in tests
@@ -156,6 +151,7 @@ class TestExtractionBase(unittest.TestCase):
         target_language = self.data.get('target_language')
         if target_language:
             config.target_language = target_language
+            config.browser_user_agent = 'Mozilla/5.0'
             config.use_meta_language = False
 
         with requests_mock.Mocker(real_http=True) as m:

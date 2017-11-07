@@ -83,11 +83,7 @@ class TitleExtractor(BaseExtractor):
             return self.clean_title(title)
 
         # try to fetch the meta headline
-        meta_headline = self.parser.getElementsByTag(
-                            self.article.doc,
-                            tag="meta",
-                            attr="name",
-                            value="headline")
+        meta_headline = self.parser.getElementsByTag(self.article.doc, tag="meta", attr="name", value="headline")
         if meta_headline is not None and len(meta_headline) > 0:
             title = self.parser.getAttribute(meta_headline[0], 'content')
             return self.clean_title(title)

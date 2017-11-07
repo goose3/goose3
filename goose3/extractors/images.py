@@ -22,9 +22,8 @@ limitations under the License.
 """
 import re
 import os
-from urllib3.util import parse_url
 
-from six.moves.urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin
 
 from goose3.extractors import BaseExtractor
 from goose3.image import Image
@@ -75,12 +74,12 @@ class ImageExtractor(BaseExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
-    def get_best_image(self, doc, topNode):
+    def get_best_image(self, doc, top_node):
         image = self.check_known_elements()
         if image:
             return image
 
-        image = self.check_large_images(topNode, 0, 0)
+        image = self.check_large_images(top_node, 0, 0)
         if image:
             return image
 
@@ -120,7 +119,7 @@ class ImageExtractor(BaseExtractor):
             scored_images = self.fetch_images(good_images, parent_depth_level)
             if scored_images:
                 highscore_image = sorted(list(scored_images.items()),
-                                        key=lambda x: x[1], reverse=True)[0][0]
+                                         key=lambda x: x[1], reverse=True)[0][0]
                 main_image = Image()
                 main_image.src = highscore_image.src
                 main_image.width = highscore_image.width
@@ -132,8 +131,8 @@ class ImageExtractor(BaseExtractor):
 
         depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)
         if depth_obj:
-            return self.check_large_images(depth_obj.node,
-                            depth_obj.parent_depth, depth_obj.sibling_depth)
+            return self.check_large_images(depth_obj.node, depth_obj.parent_depth,
+                                           depth_obj.sibling_depth)
 
         return None
 
@@ -295,9 +294,8 @@ class ImageExtractor(BaseExtractor):
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
             if local_image:
-                bytes = local_image.bytes
-                if (bytes == 0 or bytes > self.images_min_bytes) \
-                        and bytes < MAX_BYTES_SIZE:
+                mybytes = local_image.bytes
+                if (mybytes == 0 or mybytes > self.images_min_bytes) and mybytes < MAX_BYTES_SIZE:
                     good_images.append(image)
                 else:
                     images.remove(image)
@@ -410,15 +408,15 @@ class ImageExtractor(BaseExtractor):
     def load_customesite_mapping(self):
         # TODO
         path = os.path.join('images', 'known-image-css.txt')
-        data_file = FileHelper.loadResourceFile(path)
+        data_file = FileHelper.load_resource_file(path)
         lines = data_file.splitlines()
         for line in lines:
             domain, css = line.split('^')
             self.custom_site_mapping.update({domain: css})
-    
+
     def add_schema_if_none(self, src):
-        src_test = parse_url(src)
+        src_test = urlparse(src)
         if not src_test.scheme:
-            target = parse_url(self.article.final_url)
+            target = urlparse(self.article.final_url)
             return str(target.scheme) + ':' + src
         return src

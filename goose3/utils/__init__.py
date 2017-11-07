@@ -24,92 +24,53 @@ import time
 import hashlib
 import re
 import os
-import goose3
 import codecs
 
-import six
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
-
-
-class BuildURL(object):
-    def __init__(self, url, finalurl=None):
-        self.url = url
-        self.finalurl = finalurl
-
-    def getHostname(self, o):
-        if o.hostname:
-            return o.hotname
-        elif self.finalurl:
-            oo = urlparse(self.finalurl)
-            if oo.hostname:
-                return oo.hostname
-        return None
-
-    def getScheme(self, o):
-        if o.scheme:
-            return o.scheme
-        elif self.finalurl:
-            oo = urlparse(self.finalurl)
-            if oo.scheme:
-                return oo.scheme
-        return 'http'
-
-    def getUrl(self):
-        """\
-
-        """
-        url_obj = urlparse(self.url)
-        scheme = self.getScheme(url_obj)
-        hostname = self.getHostname(url_obj)
+from .. version import install_location
 
 
 class FileHelper(object):
 
     @classmethod
-    def loadResourceFile(self, filename):
+    def load_resource_file(cls, filename):
         if not os.path.isabs('filename'):
-            dirpath = os.path.dirname(goose3.__file__)
+            dirpath = os.path.dirname(install_location)
             path = os.path.join(dirpath, 'resources', filename)
         else:
             path = filename
         try:
-            f = codecs.open(path, 'r', 'utf-8')
-            content = f.read()
-            f.close()
+            with codecs.open(path, 'r', 'utf-8') as fp:
+                content = fp.read()
             return content
         except IOError:
-            raise IOError("Couldn't open file %s" % path)
+            raise IOError("Couldn't open file {}".format(path))
 
 
 class ParsingCandidate(object):
 
-    def __init__(self, urlString, link_hash):
-        self.urlString = self.url = urlString
+    def __init__(self, url_string, link_hash):
+        self.url_string = self.url = url_string
         self.link_hash = link_hash
 
 
 class RawHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url, raw_html):
-        if isinstance(raw_html, six.text_type):
-
+    def get_parsing_candidate(cls, url, raw_html):
+        if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
-        link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
+        link_hash = '{}.{}'.format(hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)
 
 
 class URLHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url_to_crawl):
+    def get_parsing_candidate(cls, url_to_crawl):
         # replace shebang is urls
-        final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
-                    if '#!' in url_to_crawl else url_to_crawl
-        url = final_url.encode("utf-8") if isinstance(final_url, six.text_type) else final_url
-        link_hash = '%s.%s' % (hashlib.md5(url).hexdigest(), time.time())
+        if '#!' in url_to_crawl:
+            final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
+        else:
+            final_url = url_to_crawl
+        link_hash = '{}.{}'.format(hashlib.md5(final_url.encode("utf-8")).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 
 
@@ -130,7 +91,6 @@ class ReplaceSequence(object):
     def __init__(self):
         self.replacements = []
 
-    #@classmethod
     def create(self, firstPattern, replaceWith=None):
         result = StringReplacement(firstPattern, replaceWith or '')
         self.replacements.append(result)
@@ -143,8 +103,8 @@ class ReplaceSequence(object):
         if not string:
             return ''
 
-        mutatedString = string
+        mutated_string = string
 
-        for rp in self.replacements:
-            mutatedString = rp.replaceAll(mutatedString)
-        return mutatedString
+        for reps in self.replacements:
+            mutated_string = reps.replaceAll(mutated_string)
+        return mutated_string

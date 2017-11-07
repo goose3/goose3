@@ -34,13 +34,9 @@ KNOWN_PUBLISH_DATE_TAGS = [
 class PublishDateExtractor(BaseExtractor):
     def extract(self):
         for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
-            meta_tags = self.parser.getElementsByTag(
-                            self.article.doc,
-                            attr=known_meta_tag['attribute'],
-                            value=known_meta_tag['value'])
+            meta_tags = self.parser.getElementsByTag(self.article.doc,
+                                                     attr=known_meta_tag['attribute'],
+                                                     value=known_meta_tag['value'])
             if meta_tags:
-                return self.parser.getAttribute(
-                    meta_tags[0],
-                    known_meta_tag['content']
-                )
+                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
         return None
