@@ -36,7 +36,7 @@ LICENSE file for more details.
 Setup
 -----
 
-::
+.. code-block:: python
 
     mkvirtualenv --no-site-packages goose
     git clone https://github.com/grangier/python-goose.git
@@ -47,7 +47,7 @@ Setup
 Take it for a spin
 ------------------
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> url = 'http://edition.cnn.com/2012/02/22/world/europe/uk-occupy-london/index.html?hpt=ieu_c2'
@@ -72,7 +72,7 @@ configuration dict.
 For instance, if you want to change the userAgent used by Goose just
 pass:
 
-::
+.. code-block:: python
 
     >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
@@ -80,7 +80,7 @@ Switching parsers : Goose can now be used with lxml html parser or lxml
 soup parser. By default the html parser is used. If you want to use the
 soup parser pass it in the configuration dict :
 
-::
+.. code-block:: python
 
     >>> g = Goose({'browser_user_agent': 'Mozilla', 'parser_class':'soup'})
 
@@ -90,7 +90,7 @@ Goose is now language aware
 For example, scraping a Spanish content page with correct meta language
 tags:
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> url = 'http://sociedad.elpais.com/sociedad/2012/10/27/actualidad/1351332873_157836.html'
@@ -104,7 +104,7 @@ tags:
 Some pages don't have correct meta language tags, you can force it using
 configuration :
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
@@ -120,7 +120,7 @@ forcibly select Spanish.
 Video extraction
 ----------------
 
-::
+.. code-block:: python
 
     >>> import goose
     >>> url = 'http://www.liberation.fr/politiques/2013/08/12/journee-de-jeux-pour-ayrault-dans-les-jardins-de-matignon_924350'
@@ -148,7 +148,7 @@ segmentation is way more difficult to deal with than occidental
 languages. Chinese needs a dedicated StopWord analyser that need to be
 passed to the config object.
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> from goose.text import StopWordsChinese
@@ -168,7 +168,7 @@ Goose in Arabic
 In order to use Goose in Arabic you have to use the StopWordsArabic
 class.
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> from goose.text import StopWordsArabic
@@ -185,7 +185,7 @@ Goose in Korean
 In order to use Goose in Korean you have to use the StopWordsKorean
 class.
 
-::
+.. code-block:: python
 
     >>> from goose import Goose
     >>> from goose.text import StopWordsKorean
@@ -193,8 +193,8 @@ class.
     >>> g = Goose({'stopwords_class':StopWordsKorean})
     >>> article = g.extract(url=url)
     >>> print article.cleaned_text[:150]
-    경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com). 
-    14년째 세계 각국의 통신·안전·전파 규격 시험과 인증 한 우물만 파고 있는 이 회사 박채규 대표가 만나기로 한 주인공이다. 
+    경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com).
+    14년째 세계 각국의 통신·안전·전파 규격 시험과 인증 한 우물만 파고 있는 이 회사 박채규 대표가 만나기로 한 주인공이다.
     그는 전기전자·무선통신·자동차 전장품 분야에
 
 TODO
@@ -203,4 +203,4 @@ TODO
 -  Video html5 tag extraction
 
 
-.. |Build Status| image:: https://travis-ci.org/grangier/python-goose.png?branch=develop   :target: https://travis-ci.org/grangier/python-goose
+.. |Build Status| image:: https://travis-ci.org/goose3/goose3.svg?branch=master   :target: https://travis-ci.org/goose3/goose3/
