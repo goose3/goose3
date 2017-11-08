@@ -110,7 +110,6 @@ class Crawler(object):
 
         # parser candidate
         parse_candidate = self.get_parse_candidate(crawl_candidate)
-        print(parse_candidate)
 
         # raw html
         raw_html = self.get_html(crawl_candidate, parse_candidate)
