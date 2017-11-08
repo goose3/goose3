@@ -1,5 +1,8 @@
-Python-Goose - Article Extractor |Build Status|
+Goose3 - Article Extractor
 ===============================================
+
+.. image:: https://travis-ci.org/goose3/goose3.svg?branch=master
+    :target: https://travis-ci.org/goose3/goose3
 
 Intro
 -----
@@ -36,7 +39,7 @@ LICENSE file for more details.
 Setup
 -----
 
-.. code-block:: python
+.. code-block::
 
     mkvirtualenv --no-site-packages goose
     git clone https://github.com/grangier/python-goose.git
@@ -49,7 +52,7 @@ Take it for a spin
 
 .. code-block:: python
 
-    >>> from goose import Goose
+    >>> from goose3 import Goose
     >>> url = 'http://edition.cnn.com/2012/02/22/world/europe/uk-occupy-london/index.html?hpt=ieu_c2'
     >>> g = Goose()
     >>> article = g.extract(url=url)
@@ -58,7 +61,7 @@ Take it for a spin
     >>> article.meta_description
     "Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoid eviction Wednesday in a decision made by London's Court of Appeal."
     >>> article.cleaned_text[:150]
-    (CNN) -- Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoi
+    (CNN) - Occupy London protesters who have been camped outside the landmark St. Paul's Cathedral for the past four months lost their court bid to avoi
     >>> article.top_image.src
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
@@ -92,7 +95,7 @@ tags:
 
 .. code-block:: python
 
-    >>> from goose import Goose
+    >>> from goose3 import Goose
     >>> url = 'http://sociedad.elpais.com/sociedad/2012/10/27/actualidad/1351332873_157836.html'
     >>> g = Goose()
     >>> article = g.extract(url=url)
@@ -106,7 +109,7 @@ configuration :
 
 .. code-block:: python
 
-    >>> from goose import Goose
+    >>> from goose3 import Goose
     >>> url = 'http://www.elmundo.es/elmundo/2012/10/28/espana/1351388909.html'
     >>> g = Goose({'use_meta_language': False, 'target_language':'es'})
     >>> article = g.extract(url=url)
@@ -122,9 +125,9 @@ Video extraction
 
 .. code-block:: python
 
-    >>> import goose
+    >>> import goose3
     >>> url = 'http://www.liberation.fr/politiques/2013/08/12/journee-de-jeux-pour-ayrault-dans-les-jardins-de-matignon_924350'
-    >>> g = goose.Goose({'target_language':'fr'})
+    >>> g = goose3.Goose({'target_language':'fr'})
     >>> article = g.extract(url=url)
     >>> article.movies
     [<goose.videos.videos.Video object at 0x25f60d0>]
@@ -150,8 +153,8 @@ passed to the config object.
 
 .. code-block:: python
 
-    >>> from goose import Goose
-    >>> from goose.text import StopWordsChinese
+    >>> from goose3 import Goose
+    >>> from goose3.text import StopWordsChinese
     >>> url  = 'http://www.bbc.co.uk/zhongwen/simp/chinese_news/2012/12/121210_hongkong_politics.shtml'
     >>> g = Goose({'stopwords_class': StopWordsChinese})
     >>> article = g.extract(url=url)
@@ -170,8 +173,8 @@ class.
 
 .. code-block:: python
 
-    >>> from goose import Goose
-    >>> from goose.text import StopWordsArabic
+    >>> from goose3 import Goose
+    >>> from goose3.text import StopWordsArabic
     >>> url = 'http://arabic.cnn.com/2013/middle_east/8/3/syria.clashes/index.html'
     >>> g = Goose({'stopwords_class': StopWordsArabic})
     >>> article = g.extract(url=url)
@@ -187,8 +190,8 @@ class.
 
 .. code-block:: python
 
-    >>> from goose import Goose
-    >>> from goose.text import StopWordsKorean
+    >>> from goose3 import Goose
+    >>> from goose3.text import StopWordsKorean
     >>> url='http://news.donga.com/3/all/20131023/58406128/1'
     >>> g = Goose({'stopwords_class':StopWordsKorean})
     >>> article = g.extract(url=url)
@@ -201,6 +204,3 @@ TODO
 ----
 
 -  Video html5 tag extraction
-
-
-.. |Build Status| image:: https://travis-ci.org/goose3/goose3.svg?branch=master   :target: https://travis-ci.org/goose3/goose3/
