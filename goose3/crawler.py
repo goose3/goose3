@@ -139,6 +139,7 @@ class Crawler(object):
 
         # meta
         metas = self.metas_extractor.extract()
+        # print(metas)
         self.article.meta_lang = metas['lang']
         self.article.meta_favicon = metas['favicon']
         self.article.meta_description = metas['description']

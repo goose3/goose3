@@ -35,7 +35,7 @@ log = logging.getLogger(__name__)
 class ImageUtils(object):
 
     @classmethod
-    def get_image_dimensions(self, identify_program, path):
+    def get_image_dimensions(cls, identify_program, path):
         image_details = ImageDetails()
         try:
             # workaround to force the file to actually be closed by Pillow
@@ -51,28 +51,28 @@ class ImageUtils(object):
         return image_details
 
     @classmethod
-    def store_image(self, http_client, link_hash, src, config):
+    def store_image(cls, http_client, link_hash, src, config):
         """\
         Writes an image src http string to disk as a temporary file
         and returns the LocallyStoredImage object
         that has the info you should need on the image
         """
         # check for a cache hit already on disk
-        image = self.read_localfile(link_hash, src, config)
+        image = cls.read_localfile(link_hash, src, config)
         if image:
             return image
 
         # no cache found download the image
         data = http_client.fetch(src)
         if data:
-            image = self.write_localfile(data, link_hash, src, config)
+            image = cls.write_localfile(data, link_hash, src, config)
             if image:
                 return image
 
         return None
 
     @classmethod
-    def get_mime_type(self, image_details):
+    def get_mime_type(cls, image_details):
         mime_type = image_details.get_mime_type().lower()
         mimes = {
             'png': '.png',
@@ -83,18 +83,18 @@ class ImageUtils(object):
         return mimes.get(mime_type, 'NA')
 
     @classmethod
-    def read_localfile(self, link_hash, src, config):
-        local_image_name = self.get_localfile_name(link_hash, src, config)
+    def read_localfile(cls, link_hash, src, config):
+        local_image_name = cls.get_localfile_name(link_hash, src, config)
         if os.path.isfile(local_image_name):
             identify = config.imagemagick_identify_path
-            image_details = self.get_image_dimensions(identify, local_image_name)
-            file_extension = self.get_mime_type(image_details)
-            bytes = os.path.getsize(local_image_name)
+            image_details = cls.get_image_dimensions(identify, local_image_name)
+            file_extension = cls.get_mime_type(image_details)
+            filesize = os.path.getsize(local_image_name)
             return LocallyStoredImage(
                 src=src,
                 local_filename=local_image_name,
                 link_hash=link_hash,
-                bytes=bytes,
+                bytes=filesize,
                 file_extension=file_extension,
                 height=image_details.get_height(),
                 width=image_details.get_width()
@@ -102,22 +102,21 @@ class ImageUtils(object):
         return None
 
     @classmethod
-    def write_localfile(self, entity, link_hash, src, config):
-        local_path = self.get_localfile_name(link_hash, src, config)
-        f = open(local_path, 'wb')
-        f.write(entity)
-        f.close()
-        return self.read_localfile(link_hash, src, config)
+    def write_localfile(cls, entity, link_hash, src, config):
+        local_path = cls.get_localfile_name(link_hash, src, config)
+        with open(local_path, 'wb') as f:
+            f.write(entity)
+        return cls.read_localfile(link_hash, src, config)
 
     @classmethod
-    def get_localfile_name(self, link_hash, src, config):
+    def get_localfile_name(cls, link_hash, src, config):
         image_hash = hashlib.md5(smart_str(src)).hexdigest()
         return os.path.join(config.local_storage_path, '%s_%s' % (link_hash, image_hash))
 
     @classmethod
-    def clean_src_string(self, src):
+    def clean_src_string(cls, src):
         return src.replace(" ", "%20")
 
     @classmethod
-    def fetch(self, http_client, src):
+    def fetch(cls, http_client, src):
         return http_client.fetch(src)

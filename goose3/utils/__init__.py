@@ -24,15 +24,11 @@ import time
 import hashlib
 import re
 import os
-import goose3
 import codecs
+from urllib.parse import urlparse
 
-import six
-
-try:
-    from urlparse import urlparse
-except ImportError:
-    from urllib.parse import urlparse
+# TODO: this is a cyclic import
+import goose3
 
 
 class BuildURL(object):
@@ -77,9 +73,8 @@ class FileHelper(object):
         else:
             path = filename
         try:
-            f = codecs.open(path, 'r', 'utf-8')
-            content = f.read()
-            f.close()
+            with codecs.open(path, 'r', 'utf-8') as f:
+                content = f.read()
             return content
         except IOError:
             raise IOError("Couldn't open file %s" % path)
@@ -95,8 +90,7 @@ class ParsingCandidate(object):
 class RawHelper(object):
     @classmethod
     def get_parsing_candidate(self, url, raw_html):
-        if isinstance(raw_html, six.text_type):
-
+        if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
         return ParsingCandidate(url, link_hash)
@@ -108,7 +102,7 @@ class URLHelper(object):
         # replace shebang is urls
         final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
                     if '#!' in url_to_crawl else url_to_crawl
-        url = final_url.encode("utf-8") if isinstance(final_url, six.text_type) else final_url
+        url = final_url.encode("utf-8") if isinstance(final_url, str) else final_url
         link_hash = '%s.%s' % (hashlib.md5(url).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 

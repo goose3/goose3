@@ -22,9 +22,8 @@ limitations under the License.
 """
 import re
 import os
-from urllib3.util import parse_url
 
-from six.moves.urllib.parse import urlparse, urljoin
+from urllib.parse import urlparse, urljoin
 
 from goose3.extractors import BaseExtractor
 from goose3.image import Image
@@ -295,9 +294,8 @@ class ImageExtractor(BaseExtractor):
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
             if local_image:
-                bytes = local_image.bytes
-                if (bytes == 0 or bytes > self.images_min_bytes) \
-                        and bytes < MAX_BYTES_SIZE:
+                filesize = local_image.bytes
+                if (filesize == 0 or filesize > self.images_min_bytes) and filesize < MAX_BYTES_SIZE:
                     good_images.append(image)
                 else:
                     images.remove(image)
@@ -415,10 +413,10 @@ class ImageExtractor(BaseExtractor):
         for line in lines:
             domain, css = line.split('^')
             self.custom_site_mapping.update({domain: css})
-    
+
     def add_schema_if_none(self, src):
-        src_test = parse_url(src)
-        if not src_test.scheme:
-            target = parse_url(self.article.final_url)
+        src_test = urlparse(src)
+        if src_test.scheme == '':
+            target = urlparse(self.article.final_url)
             return str(target.scheme) + ':' + src
         return src

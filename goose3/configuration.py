@@ -23,8 +23,6 @@ limitations under the License.
 import os
 import tempfile
 
-import six
-
 from goose3.text import StopWords
 from goose3.parsers import Parser
 from goose3.parsers import ParserSoup
@@ -35,9 +33,6 @@ HTTP_DEFAULT_TIMEOUT = 30
 AVAILABLE_PARSERS = {
     'lxml': Parser
 }
-
-if six.PY2:
-    AVAILABLE_PARSERS['soup'] = ParserSoup
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
     {'attr': 'class', 'value': 'short-story'},
