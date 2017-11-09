@@ -24,10 +24,11 @@ import time
 import hashlib
 import re
 import os
-import goose3
 import codecs
-
 from urllib.parse import urlparse
+
+# TODO: this is a cyclic import
+import goose3
 
 
 class BuildURL(object):
@@ -72,9 +73,8 @@ class FileHelper(object):
         else:
             path = filename
         try:
-            f = codecs.open(path, 'r', 'utf-8')
-            content = f.read()
-            f.close()
+            with codecs.open(path, 'r', 'utf-8') as f:
+                content = f.read()
             return content
         except IOError:
             raise IOError("Couldn't open file %s" % path)

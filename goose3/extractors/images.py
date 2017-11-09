@@ -294,9 +294,8 @@ class ImageExtractor(BaseExtractor):
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
             if local_image:
-                bytes = local_image.bytes
-                if (bytes == 0 or bytes > self.images_min_bytes) \
-                        and bytes < MAX_BYTES_SIZE:
+                filesize = local_image.bytes
+                if (filesize == 0 or filesize > self.images_min_bytes) and filesize < MAX_BYTES_SIZE:
                     good_images.append(image)
                 else:
                     images.remove(image)

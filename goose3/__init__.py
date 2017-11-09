@@ -63,8 +63,8 @@ class Goose(object):
         # test to write a dummy file to the directory to check is directory is writable
         level, path = mkstemp(dir=self.config.local_storage_path)
         try:
-            f = os.fdopen(level, "w")
-            f.close()
+            with os.fdopen(level, "w"):
+                pass
             os.remove(path)
         except IOError:
             raise Exception(self.config.local_storage_path +

@@ -88,7 +88,7 @@ class ContentExtractor(BaseExtractor):
         for node in nodes_with_text:
             boost_score = float(0)
             # boost
-            if(self.is_boostable(node)):
+            if self.is_boostable(node):
                 if cnt >= 0:
                     boost_score = float((1.0 / starting_boost) * 50)
                     starting_boost += 1
