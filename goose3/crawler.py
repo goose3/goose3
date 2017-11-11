@@ -52,6 +52,7 @@ class CrawlCandidate(object):
 
 
 class Crawler(object):
+    ''' setup the crawling object - includes setting up processing '''
     def __init__(self, config):
         # config
         self.config = config
@@ -107,7 +108,8 @@ class Crawler(object):
         self.logPrefix = "crawler:"
 
     def crawl(self, crawl_candidate):
-
+        ''' figure out if we have already done everything or if we need to
+            process '''
         # parser candidate
         parse_candidate = self.get_parse_candidate(crawl_candidate)
 
@@ -120,7 +122,7 @@ class Crawler(object):
         return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
 
     def process(self, raw_html, final_url, link_hash):
-
+        ''' process the results of the html into the final output '''
         # create document
         doc = self.get_document(raw_html)
 
@@ -195,13 +197,11 @@ class Crawler(object):
             # clean_text
             self.article.cleaned_text = self.formatter.get_formatted_text()
 
-        # cleanup tmp file
-        self.relase_resources()
-
         # return the article
         return self.article
 
     def get_parse_candidate(self, crawl_candidate):
+        ''' determine which helper to use '''
         if crawl_candidate.raw_html:
             return RawHelper.get_parsing_candidate(crawl_candidate.url, crawl_candidate.raw_html)
         return URLHelper.get_parsing_candidate(crawl_candidate.url)
@@ -263,12 +263,3 @@ class Crawler(object):
 
     def get_extractor(self):
         return StandardContentExtractor(self.config, self.article)
-
-    def relase_resources(self):
-        path = os.path.join(self.config.local_storage_path, '%s_*' % self.article.link_hash)
-        for fname in glob.glob(path):
-            try:
-                os.remove(fname)
-            except OSError:
-                # TODO better log handeling
-                pass
