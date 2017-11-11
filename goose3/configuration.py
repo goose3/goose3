@@ -25,7 +25,6 @@ import tempfile
 
 from goose3.text import StopWords
 from goose3.parsers import Parser
-from goose3.parsers import ParserSoup
 from goose3.version import __version__
 
 HTTP_DEFAULT_TIMEOUT = 30
@@ -83,7 +82,7 @@ class Configuration(object):
         # self.browser_user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)"\
         #                         " AppleWebKit/534.52.7 (KHTML, like Gecko) "\
         #                         "Version/5.1.2 Safari/534.52.7"
-        self.browser_user_agent = 'Goose/%s' % __version__
+        self.browser_user_agent = 'Goose/{}'.format(__version__)
 
         # debug mode
         # enable this to have additional debugging information
@@ -103,6 +102,7 @@ class Configuration(object):
         # set the local storage path
         # make this configurable
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
+        self.temporary_files = set()
 
         # http timeout
         self.http_timeout = HTTP_DEFAULT_TIMEOUT

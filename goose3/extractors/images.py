@@ -335,7 +335,10 @@ class ImageExtractor(BaseExtractor):
         """\
         returns the bytes of the image file on disk
         """
-        return ImageUtils.store_image(self.fetcher, self.link_hash, src, self.config)
+        res = ImageUtils.store_image(self.fetcher, self.link_hash, src, self.config)
+        # every time we get a local image, make sure it is in our list for removal
+        self.config.temporary_files.add(res.local_filename)
+        return res
 
     def get_clean_domain(self):
         if self.article.domain:

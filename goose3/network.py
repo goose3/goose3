@@ -25,13 +25,19 @@ import requests
 
 
 class NetworkError(RuntimeError):
+    ''' standard goose network error '''
     def __init__(self, status_code, reason):
         self.reason = reason
         self.status_code = status_code
+        self.message = 'NetworkError: Status Code: {}; Reason: {}'.format(status_code, reason)
+        super(NetworkError, self).__init__(self.message)
+
+    def __str__(self):
+        return self.message
 
 
 class NetworkFetcher(object):
-
+    ''' Object to handle getting data from remote sites '''
     def __init__(self, config):
         self.config = config
         self._connection = requests.Session()
@@ -43,14 +49,17 @@ class NetworkFetcher(object):
         self.headers = None
 
     def close(self):
+        ''' safely close the requests session '''
         if self._connection is not None:
             self._connection.close()
             self._connection = None
 
     def get_url(self):
+        ''' return the latest url '''
         return self._url
 
     def fetch(self, url):
+        ''' fetch the url '''
         response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
         if response.ok:
             self._url = response.url
