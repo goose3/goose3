@@ -102,7 +102,7 @@ class Configuration(object):
         # set the local storage path
         # make this configurable
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
-        self._temporary_files = set()
+        self.temporary_files = set()
 
         # http timeout
         self.http_timeout = HTTP_DEFAULT_TIMEOUT

@@ -102,15 +102,14 @@ class Goose(object):
         ''' Remove all the temporary files; once called will turn of being able to
             store more temporary files
         '''
-        tmp_files_list = list(self.config._temporary_files)
+        tmp_files_list = list(self.config.temporary_files)
         for filepath in tmp_files_list:
             try:
                 os.remove(filepath)
             except:
                 # TODO: log this exception somewhere?
                 print('file {} threw an exception!'.format(filepath))
-                pass
-            self.config._temporary_files.remove(filepath)
+            self.config.temporary_files.remove(filepath)
 
     def crawl(self, crawl_candidate):
         parsers = list(self.config.available_parsers)

@@ -337,7 +337,7 @@ class ImageExtractor(BaseExtractor):
         """
         res = ImageUtils.store_image(self.fetcher, self.link_hash, src, self.config)
         # every time we get a local image, make sure it is in our list for removal
-        self.config._temporary_files.add(res.local_filename)
+        self.config.temporary_files.add(res.local_filename)
         return res
 
     def get_clean_domain(self):
