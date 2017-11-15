@@ -21,6 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import weakref
+import shutil
 from tempfile import mkstemp
 
 from goose3.configuration import Configuration
@@ -50,6 +52,9 @@ class Goose(object):
         # we don't need to go further if image extractor or local_storage is not set
         if not self.config.local_storage_path or not self.config.enable_image_fetching:
             return
+
+        self.finalizer = weakref.finalize(self, self.close)
+
         # test if config.local_storage_path is a directory
         if not os.path.isdir(self.config.local_storage_path):
             os.makedirs(self.config.local_storage_path)
@@ -71,6 +76,25 @@ class Goose(object):
                             " directory is not writeble, "
                             "you need to set this for image processing downloads"
                             )
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+
+    def close(self):
+        self.remove_files()
+
+    def remove_files(self):
+        if not self.config.local_storage_path or not self.config.enable_image_fetching:
+            return
+        if self.config.local_storage_path is None:
+            return
+        shutil.rmtree(self.config.local_storage_path)
+        self.config.local_storage_path = None
+
+    def shutdown_network(self):
+        pass
 
     def extract(self, url=None, raw_html=None):
         """\
@@ -79,9 +103,6 @@ class Goose(object):
         """
         cc = CrawlCandidate(self.config, url, raw_html)
         return self.crawl(cc)
-
-    def shutdown_network(self):
-        pass
 
     def crawl(self, crawl_candidate):
         parsers = list(self.config.available_parsers)

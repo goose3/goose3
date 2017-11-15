@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import uuid
 import tempfile
 
 from goose3.text import StopWords
@@ -102,6 +103,9 @@ class Configuration(object):
 
         # set the local storage path
         # make this configurable
+        self._local_storage_path = None
+
+        # set the default by calling the setter
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
 
         # http timeout
@@ -112,6 +116,17 @@ class Configuration(object):
 
         # Strict mode. Generate exceptions on errors instead of swallowing them
         self.strict = True
+
+    @property
+    def local_storage_path(self):
+        return self._local_storage_path
+
+    @local_storage_path.setter
+    def local_storage_path(self, val):
+        if val is None:
+            self._local_storage_path = None
+        else:
+            self._local_storage_path = os.path.join(os.path.join(val, uuid.uuid4().hex))
 
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]
