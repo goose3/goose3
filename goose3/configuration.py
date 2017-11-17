@@ -103,8 +103,6 @@ class Configuration(object):
 
         # set the local storage path
         # make this configurable
-        self._local_storage_path = None
-
         # set the default by calling the setter
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
 
