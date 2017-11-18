@@ -30,11 +30,27 @@ from goose3 import Goose
 class TestTempDir(unittest.TestCase):
 
     def test_tmp_defaut(self):
+        ''' test that it starts with, but is not equal to the default '''
         g = Goose()
         default_local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
-        self.assertEqual(g.config.local_storage_path, default_local_storage_path)
+        self.assertTrue(g.config.local_storage_path.startswith(default_local_storage_path))
+        self.assertNotEqual(g.config.local_storage_path, default_local_storage_path)
 
     def test_tmp_overwritten(self):
-        path = '/tmp/goose'
+        path = '/tmp/goose3'
         g = Goose({'local_storage_path': path})
-        self.assertEqual(g.config.local_storage_path, path)
+        self.assertTrue(g.config.local_storage_path.startswith(path))
+
+    def test_tmp_exists(self):
+        path = '/tmp/goose3'
+        g = Goose({'local_storage_path': path})
+        self.assertTrue(os.path.isdir(path))
+
+    def test_tmp_removed_on_close(self):
+        path = '/tmp/goose3'
+        g = Goose({'local_storage_path': path})
+        full_path = g.config.local_storage_path
+        self.assertTrue(os.path.isdir(full_path))
+        g.close()
+        self.assertFalse(os.path.isdir(full_path))
+        self.assertTrue(os.path.isdir(path))

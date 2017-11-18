@@ -195,9 +195,6 @@ class Crawler(object):
             # clean_text
             self.article.cleaned_text = self.formatter.get_formatted_text()
 
-        # cleanup tmp file
-        self.relase_resources()
-
         # return the article
         return self.article
 
@@ -263,12 +260,3 @@ class Crawler(object):
 
     def get_extractor(self):
         return StandardContentExtractor(self.config, self.article)
-
-    def relase_resources(self):
-        path = os.path.join(self.config.local_storage_path, '%s_*' % self.article.link_hash)
-        for fname in glob.glob(path):
-            try:
-                os.remove(fname)
-            except OSError:
-                # TODO better log handeling
-                pass
