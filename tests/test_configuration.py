@@ -37,17 +37,17 @@ class TestTempDir(unittest.TestCase):
         self.assertNotEqual(g.config.local_storage_path, default_local_storage_path)
 
     def test_tmp_overwritten(self):
-        path = '/tmp/goose'
+        path = '/tmp/goose3'
         g = Goose({'local_storage_path': path})
         self.assertTrue(g.config.local_storage_path.startswith(path))
 
     def test_tmp_exists(self):
-        path = '/tmp/goose'
+        path = '/tmp/goose3'
         g = Goose({'local_storage_path': path})
         self.assertTrue(os.path.isdir(path))
 
     def test_tmp_removed_on_close(self):
-        path = '/tmp/goose'
+        path = '/tmp/goose3'
         g = Goose({'local_storage_path': path})
         full_path = g.config.local_storage_path
         self.assertTrue(os.path.isdir(full_path))

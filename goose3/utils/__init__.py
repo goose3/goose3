@@ -28,7 +28,7 @@ import codecs
 from urllib.parse import urlparse
 
 # TODO: this is a cyclic import
-import goose3
+import goose3.version as base
 
 
 class BuildURL(object):
@@ -67,8 +67,8 @@ class FileHelper(object):
 
     @classmethod
     def loadResourceFile(self, filename):
-        if not os.path.isabs('filename'):
-            dirpath = os.path.dirname(goose3.__file__)
+        if not os.path.isabs(filename):
+            dirpath = os.path.dirname(base.__file__)
             path = os.path.join(dirpath, 'resources', filename)
         else:
             path = filename
