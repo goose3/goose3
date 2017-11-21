@@ -100,9 +100,14 @@ class URLHelper(object):
     @classmethod
     def get_parsing_candidate(self, url_to_crawl):
         # replace shebang is urls
-        final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=') \
-                    if '#!' in url_to_crawl else url_to_crawl
+        if '#!' in url_to_crawl:
+            final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
+        else:
+            final_url = url_to_crawl
+
+        # url is only for calculating the link_hash
         url = final_url.encode("utf-8") if isinstance(final_url, str) else final_url
+        
         link_hash = '%s.%s' % (hashlib.md5(url).hexdigest(), time.time())
         return ParsingCandidate(final_url, link_hash)
 

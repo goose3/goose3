@@ -59,13 +59,6 @@ class ImageExtractor(BaseExtractor):
         # What's the minimum bytes for an image we'd accept is
         self.images_min_bytes = 4000
 
-        # the webpage url that we're extracting content from
-        self.target_url = article.final_url
-
-        # stores a hash of our url for
-        # reference and image processing
-        self.link_hash = article.link_hash
-
         # this lists all the known bad button names that we have
         self.badimages_names_re = re.compile(
             ".html|.gif|.ico|button|twitter.jpg|facebook.jpg|ap_buy_photo"
@@ -335,7 +328,7 @@ class ImageExtractor(BaseExtractor):
         """\
         returns the bytes of the image file on disk
         """
-        return ImageUtils.store_image(self.fetcher, self.link_hash, src, self.config)
+        return ImageUtils.store_image(self.fetcher, self.article.link_hash, src, self.config)
 
     def get_clean_domain(self):
         if self.article.domain:
@@ -400,10 +393,10 @@ class ImageExtractor(BaseExtractor):
         """
         o = urlparse(src)
         # we have a full url
-        if o.hostname:
+        if o.netloc != '':
             return o.geturl()
         # we have a relative url
-        return urljoin(self.target_url, src)
+        return urljoin(self.article.final_url, src)
 
     def load_customesite_mapping(self):
         # TODO
