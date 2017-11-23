@@ -23,7 +23,7 @@ Goose will try to extract the following information:
 -  Meta Description
 -  Meta tags
 
-The Python version was rewritten by:
+The Python version was originally rewritten by:
 
 -  Xavier Grangier
 
@@ -39,12 +39,20 @@ LICENSE file for more details.
 Setup
 -----
 
+To install using pip:
+
 .. code-block::
 
-    mkvirtualenv --no-site-packages goose
-    git clone https://github.com/grangier/python-goose.git
-    cd python-goose
-    pip install -r requirements.txt
+    pip install goose3
+
+To install from source:
+
+.. code-block::
+
+    mkvirtualenv --no-site-packages goose3
+    git clone https://github.com/goose3/goose3.git
+    cd goose3
+    pip install -r ./requirements/python
     python setup.py install
 
 Take it for a spin
@@ -179,7 +187,7 @@ class.
     >>> g = Goose({'stopwords_class': StopWordsArabic})
     >>> article = g.extract(url=url)
     >>> print article.cleaned_text[:150]
-    دمشق، سوريا (CNN) -- أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
+    دمشق، سوريا (CNN) - أكدت جهات سورية معارضة أن فصائل مسلحة معارضة لنظام الرئيس بشار الأسد وعلى صلة بـ"الجيش الحر" تمكنت من السيطرة على مستودعات للأسل
 
 
 Goose in Korean
