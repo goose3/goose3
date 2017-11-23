@@ -3,6 +3,8 @@ Goose3 - Article Extractor
 
 .. image:: https://travis-ci.org/goose3/goose3.svg?branch=master
     :target: https://travis-ci.org/goose3/goose3
+.. image:: https://badge.fury.io/py/goose3.svg
+    :target: https://badge.fury.io/py/goose3
 
 Intro
 -----
