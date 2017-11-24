@@ -28,8 +28,6 @@ from goose3.parsers import Parser
 from goose3.parsers import ParserSoup
 from goose3.version import __version__
 
-HTTP_DEFAULT_TIMEOUT = 30
-
 AVAILABLE_PARSERS = {
     'lxml': Parser
 }
@@ -116,13 +114,29 @@ class Configuration(object):
         self.local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
 
         # http timeout
-        self.http_timeout = HTTP_DEFAULT_TIMEOUT
+        self.http_timeout = 30
 
         # known context patterns. Goose at first will search context at dom nodes, qualifying these patterns
-        self.known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
+        self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
 
         # Strict mode. Generate exceptions on errors instead of swallowing them
         self.strict = True
+
+    @property
+    def known_context_patterns(self):
+        return self._known_context_patterns
+
+    @known_context_patterns.setter
+    def known_context_patterns(self, val):
+        ''' val must be a dictionary or list of dictionaries
+            e.g., {'attr': 'class', 'value': 'my-article-class'}
+                or [{'attr': 'class', 'value': 'my-article-class'},
+                    {'attr': 'id', 'value': 'my-article-id'}]
+        '''
+        if isinstance(val, list):
+            self._known_context_patterns.extend(val)
+        else:
+            self._known_context_patterns.append(val)
 
     def get_parser(self):
         return AVAILABLE_PARSERS[self.parser_class]

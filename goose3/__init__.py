@@ -83,7 +83,7 @@ class Goose(object):
         ''' close the connection and any other cleanup required '''
         if self.fetcher != None:
             self.shutdown_network()
-            self.fetcher = None
+        self.finalizer.atexit = False  # turn off the garbage collection close
 
     def extract(self, url=None, raw_html=None):
         """\

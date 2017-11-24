@@ -36,8 +36,6 @@ class NetworkFetcher(object):
         self.config = config
         self._connection = requests.Session()
         self._connection.headers['User-agent'] = self.config.browser_user_agent
-        self._finalizer = weakref.finalize(self, self.close)
-
         self._url = None
 
     def close(self):
