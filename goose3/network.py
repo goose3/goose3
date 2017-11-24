@@ -39,8 +39,6 @@ class NetworkFetcher(object):
         self._finalizer = weakref.finalize(self, self.close)
 
         self._url = None
-        self.response = None
-        self.headers = None
 
     def close(self):
         if self._connection is not None:
@@ -51,7 +49,9 @@ class NetworkFetcher(object):
         return self._url
 
     def fetch(self, url):
-        response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        response = self._connection.get(url, timeout=self.config.http_timeout,
+                                        headers=self.config.http_headers,
+                                        proxies=self.config.http_proxies)
         if response.ok:
             self._url = response.url
             text = response.content
