@@ -66,7 +66,7 @@ class FileHelper(object):
 
     @classmethod
     def loadResourceFile(self, filename):
-        if not os.path.isabs('filename'):
+        if not os.path.isabs(filename):
             dirpath = os.path.dirname(base.__file__)
             path = os.path.join(dirpath, 'resources', filename)
         else:

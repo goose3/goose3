@@ -79,6 +79,12 @@ class Goose(object):
                             "you need to set this for image processing downloads"
                             )
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
     def close(self):
         ''' close the connection and any other cleanup required '''
         if self.fetcher != None:

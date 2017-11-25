@@ -83,7 +83,7 @@ class Configuration(object):
         #                         "Version/5.1.2 Safari/534.52.7"
         self.browser_user_agent = 'Goose/%s' % __version__
 
-        # used to provide custom headers
+        # used to provide custom headers (per requests requirements)
         self.http_headers = None
 
         # used to provide a dictionary of proxies as supported by the requests
@@ -92,7 +92,12 @@ class Configuration(object):
         #   'http': 'http://10.10.1.10:3128',
         #   'https': 'http://10.10.1.10:1080',
         # }
+        # (per requests requirements)
         self.http_proxies = None
+
+        # used when custom authentication is needed
+        # (per requests requirements)
+        self.http_auth = None
 
         # debug mode
         # enable this to have additional debugging information
