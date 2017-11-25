@@ -9,7 +9,8 @@ from goose3 import Goose
 with Goose() as g:
     g.extract(url='some-url-here')
 ```
-
+***NOTE:*** No need to change code as it will attempt to automatically close
+the connection on garbage collection
 * Configuration object changes
     * Better handling of the `known_context_patterns` configuration
     * Added http_headers configuration option to be passed to `requests`
