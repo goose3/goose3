@@ -23,6 +23,7 @@ limitations under the License.
 import hashlib
 import logging
 import os
+import base64
 
 from PIL import Image
 
@@ -62,7 +63,14 @@ class ImageUtils(object):
         if image:
             return image
 
-        # no cache found download the image
+        # no cache found; do something else
+
+        # parse base64 image
+        if src.startswith('data:image'):
+            image = cls.write_localfile_base64(link_hash, src, config)
+            return image
+
+        # download the image
         data = http_client.fetch(src)
         if data:
             image = cls.write_localfile(data, link_hash, src, config)
@@ -107,6 +115,12 @@ class ImageUtils(object):
         with open(local_path, 'wb') as f:
             f.write(entity)
         return cls.read_localfile(link_hash, src, config)
+
+    @classmethod
+    def write_localfile_base64(cls, link_hash, src, config):
+        data = src[src.find('base64,') + 7:]
+        entity = bytes(base64.b64decode(data))
+        return cls.write_localfile(entity, link_hash, src, config)
 
     @classmethod
     def get_localfile_name(cls, link_hash, src, config):

@@ -69,16 +69,21 @@ class ImageExtractionTests(TestExtractionBase):
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
 
-    def _test_known_image_css(self, article):
-        # check if we have an image in article.top_node
-        images = self.parser.getElementsByTag(article.top_node,  tag='img')
-        self.assertEqual(len(images), 0)
-
-        # we dont' have an image in article.top_node
-        # check if the correct image was retrieved
-        # using the known-image-css.txt
-        fields = ['cleaned_text', 'top_image']
+    def test_base64_image(self):
+        article = self.getArticle()
+        fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
+
+    # def _test_known_image_css(self, article):
+    #     # check if we have an image in article.top_node
+    #     images = self.parser.getElementsByTag(article.top_node,  tag='img')
+    #     self.assertEqual(len(images), 0)
+    #
+    #     # we dont' have an image in article.top_node
+    #     # check if the correct image was retrieved
+    #     # using the known-image-css.txt
+    #     fields = ['cleaned_text', 'top_image']
+    #     self.runArticleAssertions(article=article, fields=fields)
 
     # FAILED
     # def test_known_image_name_parent(self):
