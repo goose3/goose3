@@ -1,6 +1,9 @@
 # Goose3
 
 ### ***Current Master Branch***
+
+
+### Version 3.0.8
 * Fix using different `requests` session for each url fetched
     * Added `close` method to the Goose object
 * Allow the Goose object to be a context manager
@@ -16,7 +19,7 @@ the connection on garbage collection
     * Added http_headers configuration option to be passed to `requests`
     * Added http_proxies configuration option to be passed to `requests`
     * Added http_auth configuration option to be passed to `requests`
-
+* Fix base64 image parsing #7
 
 ### Version 3.0.7
 * Fix installation issue
