@@ -52,7 +52,7 @@ class CrawlCandidate(object):
 
 
 class Crawler(object):
-    def __init__(self, config):
+    def __init__(self, config, fetcher=None):
         # config
         self.config = config
         # parser
@@ -98,7 +98,10 @@ class Crawler(object):
         self.title_extractor = self.get_title_extractor()
 
         # html fetcher
-        self.fetcher = NetworkFetcher(self.config)
+        if isinstance(fetcher, NetworkFetcher):
+            self.fetcher = fetcher
+        else:
+            self.fetcher = NetworkFetcher(self.config)
 
         # image extractor
         self.image_extractor = self.get_image_extractor()

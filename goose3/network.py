@@ -20,7 +20,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import weakref
 import requests
 
 
@@ -28,6 +27,8 @@ class NetworkError(RuntimeError):
     def __init__(self, status_code, reason):
         self.reason = reason
         self.status_code = status_code
+        self.message = 'NetworkError: status code: {}; reason: {}'.format(reason, status_code)
+        super(NetworkError, self).__init__(self.message)
 
 
 class NetworkFetcher(object):
@@ -36,11 +37,7 @@ class NetworkFetcher(object):
         self.config = config
         self._connection = requests.Session()
         self._connection.headers['User-agent'] = self.config.browser_user_agent
-        self._finalizer = weakref.finalize(self, self.close)
-
         self._url = None
-        self.response = None
-        self.headers = None
 
     def close(self):
         if self._connection is not None:
@@ -51,7 +48,10 @@ class NetworkFetcher(object):
         return self._url
 
     def fetch(self, url):
-        response = self._connection.get(url, timeout=self.config.http_timeout, headers=self.headers)
+        response = self._connection.get(url, timeout=self.config.http_timeout,
+                                        headers=self.config.http_headers,
+                                        proxies=self.config.http_proxies,
+                                        auth=self.config.http_auth)
         if response.ok:
             self._url = response.url
             text = response.content

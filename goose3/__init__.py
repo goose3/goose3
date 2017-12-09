@@ -21,11 +21,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import os
+import weakref
 from tempfile import mkstemp
 
 from goose3.configuration import Configuration
-from goose3.crawler import CrawlCandidate
-from goose3.crawler import Crawler
+from goose3.crawler import (CrawlCandidate, Crawler)
+from goose3.network import NetworkFetcher
 # from goose.version import version_info, __version__
 
 
@@ -47,9 +48,15 @@ class Goose(object):
             for k, v in list(config.items()):
                 if hasattr(self.config, k):
                     setattr(self.config, k, v)
+
+        # setup a single network connection
+        self.fetcher = NetworkFetcher(self.config)
+        self.finalizer = weakref.finalize(self, self.close)
+
         # we don't need to go further if image extractor or local_storage is not set
         if not self.config.local_storage_path or not self.config.enable_image_fetching:
             return
+
         # test if config.local_storage_path is a directory
         if not os.path.isdir(self.config.local_storage_path):
             os.makedirs(self.config.local_storage_path)
@@ -72,6 +79,18 @@ class Goose(object):
                             "you need to set this for image processing downloads"
                             )
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
+        ''' close the connection and any other cleanup required '''
+        if self.fetcher != None:
+            self.shutdown_network()
+        self.finalizer.atexit = False  # turn off the garbage collection close
+
     def extract(self, url=None, raw_html=None):
         """\
         Main method to extract an article object from a URL,
@@ -81,18 +100,20 @@ class Goose(object):
         return self.crawl(cc)
 
     def shutdown_network(self):
-        pass
+        ''' ensure the connection is closed '''
+        self.fetcher.close()
+        self.fetcher = None
 
     def crawl(self, crawl_candidate):
         parsers = list(self.config.available_parsers)
         parsers.remove(self.config.parser_class)
         try:
-            crawler = Crawler(self.config)
+            crawler = Crawler(self.config, self.fetcher)
             article = crawler.crawl(crawl_candidate)
         except (UnicodeDecodeError, ValueError) as e:
             if parsers:
                 self.config.parser_class = parsers[0]
-                return self.crawl(crawl_candidate)
+                return self.crawl(crawl_candidate, self.fetcher)
             else:
                 raise e
         return article
