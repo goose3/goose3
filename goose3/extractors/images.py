@@ -112,7 +112,7 @@ class ImageExtractor(BaseExtractor):
             scored_images = self.fetch_images(good_images, parent_depth_level)
             if scored_images:
                 highscore_image = sorted(list(scored_images.items()),
-                                        key=lambda x: x[1], reverse=True)[0][0]
+                                         key=lambda x: x[1], reverse=True)[0][0]
                 main_image = Image()
                 main_image.src = highscore_image.src
                 main_image.width = highscore_image.width
@@ -124,8 +124,8 @@ class ImageExtractor(BaseExtractor):
 
         depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)
         if depth_obj:
-            return self.check_large_images(depth_obj.node,
-                            depth_obj.parent_depth, depth_obj.sibling_depth)
+            return self.check_large_images(depth_obj.node, depth_obj.parent_depth,
+                                           depth_obj.sibling_depth)
 
         return None
 

@@ -42,9 +42,7 @@ class ContentExtractor(BaseExtractor):
     def get_known_article_tags(self):
         nodes = []
         for item in self.config.known_context_patterns:
-            nodes.extend(self.parser.getElementsByTag(
-                         self.article.doc,
-                         **item))
+            nodes.extend(self.parser.getElementsByTag(self.article.doc, **item))
         if len(nodes):
             return nodes
         return None

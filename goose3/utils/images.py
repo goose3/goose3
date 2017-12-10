@@ -98,15 +98,13 @@ class ImageUtils(object):
             image_details = cls.get_image_dimensions(identify, local_image_name)
             file_extension = cls.get_mime_type(image_details)
             filesize = os.path.getsize(local_image_name)
-            return LocallyStoredImage(
-                src=src,
-                local_filename=local_image_name,
-                link_hash=link_hash,
-                bytes=filesize,
-                file_extension=file_extension,
-                height=image_details.get_height(),
-                width=image_details.get_width()
-            )
+            return LocallyStoredImage(src=src,
+                                      local_filename=local_image_name,
+                                      link_hash=link_hash,
+                                      bytes=filesize,
+                                      file_extension=file_extension,
+                                      height=image_details.get_height(),
+                                      width=image_details.get_width())
         return None
 
     @classmethod
