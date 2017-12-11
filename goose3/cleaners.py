@@ -221,13 +221,13 @@ class DocumentCleaner(object):
                 nodes_to_return.append(kid)
 
         # flush out anything still remaining
-        if(len(replacement_text) > 0):
+        if len(replacement_text) > 0:
             new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
             nodes_to_return.append(new_node)
             replacement_text = []
 
-        for n in nodes_to_remove:
-            self.parser.remove(n)
+        for node in nodes_to_remove:
+            self.parser.remove(node)
 
         return nodes_to_return
 
@@ -250,8 +250,8 @@ class DocumentCleaner(object):
                 for child in self.parser.childNodes(div):
                     div.remove(child)
 
-                for c, n in enumerate(replaceNodes):
-                    div.insert(c, n)
+                for i, node in enumerate(replaceNodes):
+                    div.insert(i, node)
 
                 else_divs += 1
 
