@@ -110,8 +110,8 @@ class ImageUtils(object):
     @classmethod
     def write_localfile(cls, entity, link_hash, src, config):
         local_path = cls.get_localfile_name(link_hash, src, config)
-        with open(local_path, 'wb') as f:
-            f.write(entity)
+        with open(local_path, 'wb') as fobj:
+            fobj.write(entity)
         return cls.read_localfile(link_hash, src, config)
 
     @classmethod

@@ -66,8 +66,8 @@ class MetasExtractor(BaseExtractor):
                     href = href.strip()
                     o = urlparse(href)
                     if not o.hostname:
-                        z = urlparse(self.article.final_url)
-                        domain = '%s://%s' % (z.scheme, z.hostname)
+                        tmp = urlparse(self.article.final_url)
+                        domain = '%s://%s' % (tmp.scheme, tmp.hostname)
                         href = urljoin(domain, href)
                     return href
         return self.article.final_url
