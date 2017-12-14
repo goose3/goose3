@@ -272,3 +272,8 @@ class ParserBase(unittest.TestCase):
 
 class TestParser(ParserBase):
     pass
+
+
+class TestSoupParser(ParserBase):
+    def setUp(self):
+        self.parser = ParserSoup

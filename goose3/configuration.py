@@ -24,11 +24,12 @@ import os
 import tempfile
 
 from goose3.text import StopWords
-from goose3.parsers import Parser
+from goose3.parsers import Parser, ParserSoup
 from goose3.version import __version__
 
 AVAILABLE_PARSERS = {
-    'lxml': Parser
+    'lxml': Parser,
+    'soup': ParserSoup,
 }
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
