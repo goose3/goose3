@@ -123,8 +123,6 @@ class StopWords(object):
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
-        # TODO replace 'x' with class
-        # to generate dynamic path for file to load
         if language not in self._cached_stop_words:
             path = os.path.join('text', 'stopwords-%s.txt' % language)
             try:
@@ -175,7 +173,8 @@ class StopWordsChinese(StopWords):
         # force zh languahe code
         super(StopWordsChinese, self).__init__(language='zh')
 
-    def candiate_words(self, stripped_input):
+    @staticmethod
+    def candiate_words(stripped_input):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
@@ -191,10 +190,12 @@ class StopWordsArabic(StopWords):
         # force ar languahe code
         super(StopWordsArabic, self).__init__(language='ar')
 
-    def remove_punctuation(self, content):
+    @staticmethod
+    def remove_punctuation(content):
         return content
 
-    def candiate_words(self, stripped_input):
+    @staticmethod
+    def candiate_words(stripped_input):
         import nltk
         stemmer = nltk.stem.isri.ISRIStemmer()
         words = []

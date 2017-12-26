@@ -43,7 +43,7 @@ class ContentExtractor(BaseExtractor):
         nodes = []
         for item in self.config.known_context_patterns:
             nodes.extend(self.parser.getElementsByTag(self.article.doc, **item))
-        if len(nodes):
+        if nodes:
             return nodes
         return None
 
@@ -188,7 +188,7 @@ class ContentExtractor(BaseExtractor):
         """\
         adds any siblings that may have a decent score to this node
         """
-        if current_sibling.tag == 'p' and len(self.parser.getText(current_sibling)) > 0:
+        if current_sibling.tag == 'p' and self.parser.getText(current_sibling):
             e0 = current_sibling
             if e0.tail:
                 e0 = deepcopy(e0)
@@ -198,20 +198,20 @@ class ContentExtractor(BaseExtractor):
             potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag='p')
             if potential_paragraphs is None:
                 return None
-            else:
-                ps = []
-                for first_paragraph in potential_paragraphs:
-                    text = self.parser.getText(first_paragraph)
-                    if len(text) > 0:
-                        word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
-                        paragraph_score = word_stats.get_stopword_count()
-                        sibling_baseline_score = float(.30)
-                        high_link_density = self.is_highlink_density(first_paragraph)
-                        score = float(baselinescore_siblings_para * sibling_baseline_score)
-                        if score < paragraph_score and not high_link_density:
-                            p = self.parser.createElement(tag='p', text=text, tail=None)
-                            ps.append(p)
-                return ps
+
+            ps = list()
+            for first_paragraph in potential_paragraphs:
+                text = self.parser.getText(first_paragraph)
+                if text:  # no len(text) > 0
+                    word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
+                    paragraph_score = word_stats.get_stopword_count()
+                    sibling_baseline_score = float(.30)
+                    high_link_density = self.is_highlink_density(first_paragraph)
+                    score = float(baselinescore_siblings_para * sibling_baseline_score)
+                    if score < paragraph_score and not high_link_density:
+                        p = self.parser.createElement(tag='p', text=text, tail=None)
+                        ps.append(p)
+            return ps
 
     def get_siblings_score(self, top_node):
         """\
@@ -274,7 +274,7 @@ class ContentExtractor(BaseExtractor):
         if so it's no good
         """
         links = self.parser.getElementsByTag(e, tag='a')
-        if links is None or len(links) == 0:
+        if not links:
             return False
 
         text = self.parser.getText(e)
@@ -328,7 +328,7 @@ class ContentExtractor(BaseExtractor):
                 self.parser.remove(p)
 
         subParagraphs2 = self.parser.getElementsByTag(e, tag='p')
-        if len(subParagraphs2) == 0 and e.tag != "td":
+        if not subParagraphs2 and e.tag != "td":
             return True
         return False
 
