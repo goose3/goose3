@@ -39,18 +39,18 @@ class DocumentCleaner(object):
 
         # nodes to remove regexp
         self.remove_nodes_re = (
-        "^side$|combx|retweet|mediaarticlerelated|menucontainer|"
-        "navbar|storytopbar-bucket|utility-bar|inline-share-tools"
-        "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
-        "|cnn_strycaptiontxt|cnn_html_slideshow|cnn_strylftcntnt"
-        "|^links$|meta$|shoutbox|sponsor"
-        "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
-        "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
-        "|welcome_form|contentTools2|the_answers"
-        "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
-        "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
-        "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
-        "|legende|ajoutVideo|timestamp|js_replies|disclaim"
+            "^side$|combx|retweet|mediaarticlerelated|menucontainer|"
+            "navbar|storytopbar-bucket|utility-bar|inline-share-tools"
+            "|comment|PopularQuestions|contact|foot|footer|Footer|footnote"
+            "|cnn_strycaptiontxt|cnn_html_slideshow|cnn_strylftcntnt"
+            "|^links$|meta$|shoutbox|sponsor"
+            "|tags|socialnetworking|socialNetworking|cnnStryHghLght"
+            "|cnn_stryspcvbx|^inset$|pagetools|post-attributes"
+            "|welcome_form|contentTools2|the_answers"
+            "|communitypromo|runaroundLeft|subscribe|vcard|articleheadings"
+            "|date|^print$|popup|author-dropdown|tools|socialtools|byline"
+            "|konafilter|KonaFilter|breadcrumbs|^fn$|wp-caption-text"
+            "|legende|ajoutVideo|timestamp|js_replies|disclaim"
         )
         self.regexp_namespace = "http://exslt.org/regular-expressions"
         self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
@@ -198,7 +198,7 @@ class DocumentCleaner(object):
                         replacement_text.append(outer)
                         nodes_to_remove.append(previous_sibling_node)
                         self.parser.setAttribute(previous_sibling_node,
-                                    attr='grv-usedalready', value='yes')
+                                                 attr='grv-usedalready', value='yes')
                         prev = self.parser.previousSibling(previous_sibling_node)
                         previous_sibling_node = prev if prev is not None else None
                     # append replace_text
@@ -212,7 +212,7 @@ class DocumentCleaner(object):
                         replacement_text.append(outer)
                         nodes_to_remove.append(next_sibling_node)
                         self.parser.setAttribute(next_sibling_node,
-                                    attr='grv-usedalready', value='yes')
+                                                 attr='grv-usedalready', value='yes')
                         next_sib = self.parser.nextSibling(next_sibling_node)
                         previous_sibling_node = next_sib if next_sib is not None else None
 
@@ -221,13 +221,13 @@ class DocumentCleaner(object):
                 nodes_to_return.append(kid)
 
         # flush out anything still remaining
-        if(len(replacement_text) > 0):
+        if len(replacement_text) > 0:
             new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
             nodes_to_return.append(new_node)
             replacement_text = []
 
-        for n in nodes_to_remove:
-            self.parser.remove(n)
+        for node in nodes_to_remove:
+            self.parser.remove(node)
 
         return nodes_to_return
 
@@ -250,8 +250,8 @@ class DocumentCleaner(object):
                 for child in self.parser.childNodes(div):
                     div.remove(child)
 
-                for c, n in enumerate(replaceNodes):
-                    div.insert(c, n)
+                for i, node in enumerate(replaceNodes):
+                    div.insert(i, node)
 
                 else_divs += 1
 

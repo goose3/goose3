@@ -98,22 +98,20 @@ class ImageUtils(object):
             image_details = cls.get_image_dimensions(identify, local_image_name)
             file_extension = cls.get_mime_type(image_details)
             filesize = os.path.getsize(local_image_name)
-            return LocallyStoredImage(
-                src=src,
-                local_filename=local_image_name,
-                link_hash=link_hash,
-                bytes=filesize,
-                file_extension=file_extension,
-                height=image_details.get_height(),
-                width=image_details.get_width()
-            )
+            return LocallyStoredImage(src=src,
+                                      local_filename=local_image_name,
+                                      link_hash=link_hash,
+                                      bytes=filesize,
+                                      file_extension=file_extension,
+                                      height=image_details.get_height(),
+                                      width=image_details.get_width())
         return None
 
     @classmethod
     def write_localfile(cls, entity, link_hash, src, config):
         local_path = cls.get_localfile_name(link_hash, src, config)
-        with open(local_path, 'wb') as f:
-            f.write(entity)
+        with open(local_path, 'wb') as fobj:
+            fobj.write(entity)
         return cls.read_localfile(link_hash, src, config)
 
     @classmethod

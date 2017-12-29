@@ -25,9 +25,8 @@ import re
 import string
 
 from goose3.utils import FileHelper
-from goose3.utils.encoding import smart_unicode
-from goose3.utils.encoding import smart_str
-from goose3.utils.encoding import DjangoUnicodeDecodeError
+from goose3.utils.encoding import (smart_unicode, smart_str, DjangoUnicodeDecodeError)
+
 
 SPACE_SYMBOLS = re.compile(r'[\s\xa0\t]')
 TABSSPACE = re.compile(r'[\s\t]+')
@@ -124,9 +123,7 @@ class StopWords(object):
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
-        # TODO replace 'x' with class
-        # to generate dynamic path for file to load
-        if not language in self._cached_stop_words:
+        if language not in self._cached_stop_words:
             path = os.path.join('text', 'stopwords-%s.txt' % language)
             try:
                 content = FileHelper.loadResourceFile(path)
@@ -134,9 +131,10 @@ class StopWords(object):
             except IOError:
                 word_list = []
             self._cached_stop_words[language] = set(word_list)
-        self.STOP_WORDS = self._cached_stop_words[language]
+        self._stop_words = self._cached_stop_words[language]
 
-    def remove_punctuation(self, content):
+    @staticmethod
+    def remove_punctuation(content):
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
         if not isinstance(content, str):
@@ -144,26 +142,27 @@ class StopWords(object):
         tbl = dict.fromkeys(ord(x) for x in string.punctuation)
         return content.translate(tbl)
 
-    def candiate_words(self, stripped_input):
+    @staticmethod
+    def candiate_words(stripped_input):
         return re.split(SPACE_SYMBOLS, stripped_input)
 
     def get_stopword_count(self, content):
         if not content:
             return WordStats()
-        ws = WordStats()
+        stats = WordStats()
         stripped_input = self.remove_punctuation(content)
         candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
-        c = 0
-        for w in candiate_words:
-            c += 1
-            if w.lower() in self.STOP_WORDS:
-                overlapping_stopwords.append(w.lower())
+        i = 0
+        for word in candiate_words:
+            i += 1
+            if word.lower() in self._stop_words:
+                overlapping_stopwords.append(word.lower())
 
-        ws.set_word_count(c)
-        ws.set_stopword_count(len(overlapping_stopwords))
-        ws.set_stop_words(overlapping_stopwords)
-        return ws
+        stats.set_word_count(i)
+        stats.set_stopword_count(len(overlapping_stopwords))
+        stats.set_stop_words(overlapping_stopwords)
+        return stats
 
 
 class StopWordsChinese(StopWords):
@@ -174,7 +173,8 @@ class StopWordsChinese(StopWords):
         # force zh languahe code
         super(StopWordsChinese, self).__init__(language='zh')
 
-    def candiate_words(self, stripped_input):
+    @staticmethod
+    def candiate_words(stripped_input):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
@@ -190,15 +190,17 @@ class StopWordsArabic(StopWords):
         # force ar languahe code
         super(StopWordsArabic, self).__init__(language='ar')
 
-    def remove_punctuation(self, content):
+    @staticmethod
+    def remove_punctuation(content):
         return content
 
-    def candiate_words(self, stripped_input):
+    @staticmethod
+    def candiate_words(stripped_input):
         import nltk
-        s = nltk.stem.isri.ISRIStemmer()
+        stemmer = nltk.stem.isri.ISRIStemmer()
         words = []
         for word in nltk.tokenize.wordpunct_tokenize(stripped_input):
-            words.append(s.stem(word))
+            words.append(stemmer.stem(word))
         return words
 
 
@@ -212,17 +214,17 @@ class StopWordsKorean(StopWords):
     def get_stopword_count(self, content):
         if not content:
             return WordStats()
-        ws = WordStats()
+        stats = WordStats()
         stripped_input = self.remove_punctuation(content)
         candiate_words = self.candiate_words(stripped_input)
         overlapping_stopwords = []
-        c = 0
-        for w in candiate_words:
-            c += 1
-            for stop_word in self.STOP_WORDS:
+        i = 0
+        for _ in candiate_words:
+            i += 1
+            for stop_word in self._stop_words:
                 overlapping_stopwords.append(stop_word)
 
-        ws.set_word_count(c)
-        ws.set_stopword_count(len(overlapping_stopwords))
-        ws.set_stop_words(overlapping_stopwords)
-        return ws
+        stats.set_word_count(i)
+        stats.set_stopword_count(len(overlapping_stopwords))
+        stats.set_stop_words(overlapping_stopwords)
+        return stats
