@@ -28,10 +28,9 @@ import base64
 from PIL import Image
 
 from goose3.utils.encoding import smart_str
-from goose3.image import ImageDetails
-from goose3.image import LocallyStoredImage
+from goose3.image import (ImageDetails, LocallyStoredImage)
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 class ImageUtils(object):
 
@@ -48,7 +47,7 @@ class ImageUtils(object):
             image_details.set_height(height)
         except IOError:
             image_details.set_mime_type('NA')
-            log.exception("File not found")
+            LOG.exception("File not found")
         return image_details
 
     @classmethod

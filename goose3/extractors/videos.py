@@ -56,7 +56,8 @@ class VideoExtractor(BaseExtractor):
     def get_src(self, node):
         return self.parser.getAttribute(node, 'src')
 
-    def get_provider(self, src):
+    @staticmethod
+    def get_provider(src):
         if src:
             for provider in VIDEO_PROVIDERS:
                 if provider in src:
@@ -79,7 +80,8 @@ class VideoExtractor(BaseExtractor):
     def get_iframe_tag(self, node):
         return self.get_video(node)
 
-    def get_video_tag(self, node):
+    @staticmethod
+    def get_video_tag(node):
         """extract html video tags"""
         return Video()
 
