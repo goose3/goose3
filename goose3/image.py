@@ -82,12 +82,11 @@ class ImageDetails(object):
 
 
 class LocallyStoredImage(object):
-    def __init__(self, src='', local_filename='', link_hash='', bytes=int(0), file_extension='', height=0, width=0):
-        # TODO: Rename bytes argument as it is a redefinition of a built-in!
+    def __init__(self, src='', local_filename='', link_hash='', size=int(0), file_extension='', height=0, width=0):
         self.src = src
         self.local_filename = local_filename
         self.link_hash = link_hash
-        self.bytes = bytes
+        self.bytes = size
         self.file_extension = file_extension
         self.height = height
         self.width = width

@@ -1,7 +1,14 @@
 # Goose3
 
 ### ***Current Master Branch***
-
+* Add `soup` as a parser option to use `lxml.html.soupparser` #27
+* Fix an issue with passing the requests session object to the crawler
+* Pylint changes
+    * Added pylintrc file
+    * Updated variable and positional argument names to be more pythonic
+    * Fixed line continuation issues
+    * Updated variable names when ambiguous
+    * Cleaned up class and static methods
 
 ### Version 3.0.8
 * Fix using different `requests` session for each url fetched

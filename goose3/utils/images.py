@@ -100,7 +100,7 @@ class ImageUtils(object):
             return LocallyStoredImage(src=src,
                                       local_filename=local_image_name,
                                       link_hash=link_hash,
-                                      bytes=filesize,
+                                      size=filesize,
                                       file_extension=file_extension,
                                       height=image_details.get_height(),
                                       width=image_details.get_width())

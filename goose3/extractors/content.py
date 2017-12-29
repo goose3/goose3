@@ -237,7 +237,7 @@ class ContentExtractor(BaseExtractor):
                 paragraphs_score += word_stats.get_stopword_count()
 
         if paragraphs_number > 0:
-            base = paragraphs_score / paragraphs_number
+            base = paragraphs_score // paragraphs_number
 
         return base
 

@@ -31,7 +31,7 @@ import goose3.version as base
 
 
 class BuildURL(object):
-    # TODO: Not sure this class is ever used... I recommend removing it!
+    # TODO: This class is ever used... I recommend removing it!
     def __init__(self, url, finalurl=None):
         self.url = url
         self.finalurl = finalurl
