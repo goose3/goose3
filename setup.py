@@ -53,6 +53,8 @@ CLASSIFIERS = [
     'Topic :: Software Development :: Libraries :: Python Modules']
 
 description = "Html Content / Article Extractor, web scrapping for Python3"
+dependencies = read_file('./requirements/python').splitlines()
+test_dependencies = read_file('./requirements/python-dev').splitlines()
 
 # read long description
 try:
@@ -60,21 +62,23 @@ try:
 except Exception:
     long_description = description
 
-setup(name='goose3',
-      version=version.__version__,
-      description=description,
-      long_description=long_description,
-      keywords='scrapping, extractor, web scrapping',
-      classifiers=CLASSIFIERS,
-      maintainer='Mahmoud Lababidi',
-      maintainer_email='lababidi+py@gmail.com',
-      url='https://github.com/goose3/goose3',
-      license='Apache',
-      packages=find_packages(exclude=['tests']),
-      package_data={'goose3': ['resources/images/*.txt', 'resources/text/*.txt']},
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=read_file('./requirements/python').splitlines(),
-      test_requires=read_file('./requirements/python-dev').splitlines(),
-      test_suite="tests"
-      )
+setup(
+    name='goose3',
+    version=version.__version__,
+    description=description,
+    long_description=long_description,
+    keywords='scrapping, extractor, web scrapping',
+    classifiers=CLASSIFIERS,
+    maintainer='Mahmoud Lababidi',
+    maintainer_email='lababidi+py@gmail.com',
+    url='https://github.com/goose3/goose3',
+    license='Apache',
+    packages=find_packages(exclude=['tests']),
+    package_data={'goose3': ['resources/images/*.txt', 'resources/text/*.txt',
+                             'requirements/python']},
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=dependencies,
+    test_requires=test_dependencies,
+    test_suite="tests"
+)
