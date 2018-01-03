@@ -180,8 +180,8 @@ class DocumentCleaner(object):
             # node is a p
             # and already have some replacement text
             if self.parser.getTag(kid) == 'p' and len(replacement_text) > 0:
-                newNode = self.get_flushed_buffer(''.join(replacement_text), doc)
-                nodes_to_return.append(newNode)
+                new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
+                nodes_to_return.append(new_node)
                 replacement_text = []
                 nodes_to_return.append(kid)
             # node is a text node
@@ -246,11 +246,11 @@ class DocumentCleaner(object):
                 self.replace_with_para(doc, div)
                 bad_divs += 1
             elif div is not None:
-                replaceNodes = self.get_replacement_nodes(doc, div)
+                replace_nodes = self.get_replacement_nodes(doc, div)
                 for child in self.parser.childNodes(div):
                     div.remove(child)
 
-                for i, node in enumerate(replaceNodes):
+                for i, node in enumerate(replace_nodes):
                     div.insert(i, node)
 
                 else_divs += 1

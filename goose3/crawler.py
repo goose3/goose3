@@ -106,8 +106,8 @@ class Crawler(object):
         # image extractor
         self.image_extractor = self.get_image_extractor()
 
-        # TODO : log prefix
-        self.logPrefix = "crawler:"
+        # TODO: use the log prefix
+        self.log_prefix = "crawler: "
 
     def crawl(self, crawl_candidate):
 
@@ -170,7 +170,7 @@ class Crawler(object):
         if not isinstance(self.article.doc, list):
             self.article.doc = [self.cleaner.clean(self.article.doc)]
         else:
-            self.article.doc = list(map(lambda doc1: self.cleaner.clean(deepcopy(doc1)), self.article.doc))
+            self.article.doc = [self.cleaner.clean(deepcopy(x)) for x in self.article.doc]
 
         # big stuff
         self.article.top_node = self.extractor.calculate_best_node()
@@ -204,7 +204,8 @@ class Crawler(object):
         # return the article
         return self.article
 
-    def get_parse_candidate(self, crawl_candidate):
+    @staticmethod
+    def get_parse_candidate(crawl_candidate):
         if crawl_candidate.raw_html:
             return RawHelper.get_parsing_candidate(crawl_candidate.url, crawl_candidate.raw_html)
         return URLHelper.get_parsing_candidate(crawl_candidate.url)
@@ -273,5 +274,5 @@ class Crawler(object):
             try:
                 os.remove(fname)
             except OSError:
-                # TODO better log handeling
+                # TODO: better log handeling
                 pass

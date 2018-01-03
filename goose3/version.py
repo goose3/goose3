@@ -21,5 +21,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-version_info = (3, 0, 8)
-__version__ = ".".join(map(str, version_info))
+version_info = (3, 0, 8)  # pylint: disable=C0103
+__version__ = ".".join([str(x) for x in version_info])

@@ -40,7 +40,7 @@ class MetasExtractor(BaseExtractor):
         return None
 
     def get_favicon(self):
-        """\
+        """
         Extract the favicon from a website
         http://en.wikipedia.org/wiki/Favicon
         <link rel="shortcut icon" type="image/png" href="favicon.png" />
@@ -54,7 +54,7 @@ class MetasExtractor(BaseExtractor):
         return ''
 
     def get_canonical_link(self):
-        """\
+        """
         if the article has meta canonical link set in the url
         """
         if self.article.final_url:
@@ -73,7 +73,7 @@ class MetasExtractor(BaseExtractor):
         return self.article.final_url
 
     def get_meta_lang(self):
-        """\
+        """
         Extract content language from meta
         """
         # we have a lang attribute in html
@@ -97,11 +97,11 @@ class MetasExtractor(BaseExtractor):
 
         return None
 
-    def get_meta_content(self, metaName):
-        """\
+    def get_meta_content(self, meta_name):
+        """
         Extract a given meta content form document
         """
-        meta = self.parser.css_select(self.article.doc, metaName)
+        meta = self.parser.css_select(self.article.doc, meta_name)
         content = None
 
         if meta is not None and len(meta) > 0:
@@ -113,13 +113,13 @@ class MetasExtractor(BaseExtractor):
         return ''
 
     def get_meta_description(self):
-        """\
+        """
         if the article has meta description set in the source, use that
         """
         return self.get_meta_content("meta[name=description]")
 
     def get_meta_keywords(self):
-        """\
+        """
         if the article has meta keywords set in the source, use that
         """
         return self.get_meta_content("meta[name=keywords]")

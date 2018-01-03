@@ -31,6 +31,7 @@ import goose3.version as base
 
 
 class BuildURL(object):
+    # TODO: This class is ever used... I recommend removing it!
     def __init__(self, url, finalurl=None):
         self.url = url
         self.finalurl = finalurl
@@ -39,24 +40,21 @@ class BuildURL(object):
         if o.hostname:
             return o.hotname
         elif self.finalurl:
-            oo = urlparse(self.finalurl)
-            if oo.hostname:
-                return oo.hostname
+            tmp = urlparse(self.finalurl)
+            if tmp.hostname:
+                return tmp.hostname
         return None
 
     def getScheme(self, o):
         if o.scheme:
             return o.scheme
         elif self.finalurl:
-            oo = urlparse(self.finalurl)
-            if oo.scheme:
-                return oo.scheme
+            tmp = urlparse(self.finalurl)
+            if tmp.scheme:
+                return tmp.scheme
         return 'http'
 
     def getUrl(self):
-        """\
-
-        """
         url_obj = urlparse(self.url)
         scheme = self.getScheme(url_obj)
         hostname = self.getHostname(url_obj)
@@ -65,15 +63,16 @@ class BuildURL(object):
 class FileHelper(object):
 
     @classmethod
-    def loadResourceFile(self, filename):
+    def loadResourceFile(cls, filename):
         if not os.path.isabs(filename):
             dirpath = os.path.dirname(base.__file__)
             path = os.path.join(dirpath, 'resources', filename)
         else:
             path = filename
+
         try:
-            with codecs.open(path, 'r', 'utf-8') as f:
-                content = f.read()
+            with codecs.open(path, 'r', 'utf-8') as fobj:
+                content = fobj.read()
             return content
         except IOError:
             raise IOError("Couldn't open file %s" % path)
@@ -81,14 +80,14 @@ class FileHelper(object):
 
 class ParsingCandidate(object):
 
-    def __init__(self, urlString, link_hash):
-        self.urlString = self.url = urlString
+    def __init__(self, url_string, link_hash):
+        self.url = url_string
         self.link_hash = link_hash
 
 
 class RawHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url, raw_html):
+    def get_parsing_candidate(cls, url, raw_html):
         if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
@@ -97,7 +96,7 @@ class RawHelper(object):
 
 class URLHelper(object):
     @classmethod
-    def get_parsing_candidate(self, url_to_crawl):
+    def get_parsing_candidate(cls, url_to_crawl):
         # replace shebang is urls
         if '#!' in url_to_crawl:
             final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
@@ -113,14 +112,14 @@ class URLHelper(object):
 
 class StringReplacement(object):
 
-    def __init__(self, pattern, replaceWith):
+    def __init__(self, pattern, replace_with):
         self.pattern = pattern
-        self.replaceWith = replaceWith
+        self.replace_with = replace_with
 
     def replaceAll(self, string):
         if not string:
             return ''
-        return string.replace(self.pattern, self.replaceWith)
+        return string.replace(self.pattern, self.replace_with)
 
 
 class ReplaceSequence(object):
@@ -129,20 +128,20 @@ class ReplaceSequence(object):
         self.replacements = []
 
     #@classmethod
-    def create(self, firstPattern, replaceWith=None):
-        result = StringReplacement(firstPattern, replaceWith or '')
+    def create(self, first_pattern, replace_with=None):
+        result = StringReplacement(first_pattern, replace_with or '')
         self.replacements.append(result)
         return self
 
-    def append(self, pattern, replaceWith=None):
-        return self.create(pattern, replaceWith)
+    def append(self, pattern, replace_with=None):
+        return self.create(pattern, replace_with)
 
     def replaceAll(self, string):
         if not string:
             return ''
 
-        mutatedString = string
+        mutated_string = string
 
-        for rp in self.replacements:
-            mutatedString = rp.replaceAll(mutatedString)
-        return mutatedString
+        for itm in self.replacements:
+            mutated_string = itm.replaceAll(mutated_string)
+        return mutated_string

@@ -1,7 +1,14 @@
 # Goose3
 
 ### ***Current Master Branch***
-
+* Add `soup` as a parser option to use `lxml.html.soupparser` [#27](https://github.com/goose3/goose3/issues/27)
+* Fix an issue with passing the requests session object to the crawler
+* Pylint changes
+    * Added pylintrc file
+    * Updated variable and positional argument names to be more pythonic
+    * Fixed line continuation issues
+    * Updated variable names when ambiguous
+    * Cleaned up class and static methods
 
 ### Version 3.0.8
 * Fix using different `requests` session for each url fetched
@@ -19,17 +26,17 @@ the connection on garbage collection
     * Added http_headers configuration option to be passed to `requests`
     * Added http_proxies configuration option to be passed to `requests`
     * Added http_auth configuration option to be passed to `requests`
-* Fix base64 image parsing #7
+* Fix base64 image parsing [#7](https://github.com/goose3/goose3/issues/7)
 
 ### Version 3.0.7
 * Fix installation issue
     * Removed unused/broken regex
     * Include all necessary files
     * Fix failed tests (**most**)
-* Resolved relative URL issue #21
-* Resolved temporary files not being properly removed #18
-* Removed unused dependencies and code to support python 2 #16
-* Fix error when using the configuration object to configure goose #14
+* Resolved relative URL issue [#21](https://github.com/goose3/goose3/issues/21)
+* Resolved temporary files not being properly removed [#18](https://github.com/goose3/goose3/issues/18)
+* Removed unused dependencies and code to support python 2 [#16](https://github.com/goose3/goose3/issues/16)
+* Fix error when using the configuration object to configure goose [#14](https://github.com/goose3/goose3/issues/14)
 
 ### Version 3.0.1
 * First working version of Goose3!

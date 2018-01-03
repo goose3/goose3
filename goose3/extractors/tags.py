@@ -43,8 +43,8 @@ class TagsExtractor(BaseExtractor):
             if not elements:
                 return tags
 
-        for el in elements:
-            tag = self.parser.getText(el)
+        for elm in elements:
+            tag = self.parser.getText(elm)
             if tag:
                 tags.append(tag)
 

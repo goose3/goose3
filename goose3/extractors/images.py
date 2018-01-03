@@ -67,12 +67,12 @@ class ImageExtractor(BaseExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
-    def get_best_image(self, doc, topNode):
+    def get_best_image(self, doc, top_node):
         image = self.check_known_elements()
         if image:
             return image
 
-        image = self.check_large_images(topNode, 0, 0)
+        image = self.check_large_images(top_node, 0, 0)
         if image:
             return image
 
@@ -130,8 +130,8 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def get_depth_level(self, node, parent_depth, sibling_depth):
-        MAX_PARENT_DEPTH = 2
-        if parent_depth > MAX_PARENT_DEPTH:
+        max_parent_depth = 2
+        if parent_depth > max_parent_depth:
             return None
         else:
             sibling_node = self.parser.previousSibling(node)
@@ -160,7 +160,7 @@ class ImageExtractor(BaseExtractor):
         initial_area = float(0.0)
         total_score = float(0.0)
         cnt = float(1.0)
-        MIN_WIDTH = 50
+        min_width = 50
         for image in images[:30]:
             src = self.parser.getAttribute(image, attr='src')
             src = self.build_image_path(src)
@@ -174,14 +174,14 @@ class ImageExtractor(BaseExtractor):
             if file_extension != '.gif' or file_extension != 'NA':
                 if (depth_level >= 1 and local_image.width > 300) or depth_level < 1:
                     if not self.is_banner_dimensions(width, height):
-                        if width > MIN_WIDTH:
+                        if width > min_width:
                             sequence_score = float(1.0 / cnt)
                             area = float(width * height)
                             total_score = float(0.0)
 
                             if initial_area == 0:
                                 initial_area = area * float(1.48)
-                                total_score = 1
+                                total_score = 1.0
                             else:
                                 area_difference = float(area / initial_area)
                                 total_score = sequence_score * area_difference
@@ -209,7 +209,8 @@ class ImageExtractor(BaseExtractor):
         # return the image
         return image
 
-    def is_banner_dimensions(self, width, height):
+    @staticmethod
+    def is_banner_dimensions(width, height):
         """\
         returns true if we think this is kind of a bannery dimension
         like 600 / 100 = 6 may be a fishy dimension for a good image
@@ -246,12 +247,12 @@ class ImageExtractor(BaseExtractor):
                 good_images.append(image)
         return good_images if len(good_images) > 0 else None
 
-    def is_valid_filename(self, imageNode):
+    def is_valid_filename(self, image_node):
         """\
         will check the image src against a list
         of bad image files we know of like buttons, etc...
         """
-        src = self.parser.getAttribute(imageNode, attr='src')
+        src = self.parser.getAttribute(image_node, attr='src')
 
         if not src:
             return False
@@ -277,7 +278,7 @@ class ImageExtractor(BaseExtractor):
         that have the best bytez to even make them a candidate
         """
         cnt = 0
-        MAX_BYTES_SIZE = 15728640
+        max_bytes_size = 15728640
         good_images = []
         for image in images:
             if cnt > 30:
@@ -288,14 +289,15 @@ class ImageExtractor(BaseExtractor):
             local_image = self.get_local_image(src)
             if local_image:
                 filesize = local_image.bytes
-                if (filesize == 0 or filesize > self.images_min_bytes) and filesize < MAX_BYTES_SIZE:
+                if (filesize == 0 or filesize > self.images_min_bytes) and filesize < max_bytes_size:
                     good_images.append(image)
                 else:
                     images.remove(image)
             cnt += 1
         return good_images if len(good_images) > 0 else None
 
-    def get_node(self, node):
+    @staticmethod
+    def get_node(node):
         return node if node else None
 
     def check_link_tag(self):

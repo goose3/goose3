@@ -27,13 +27,9 @@ from tempfile import mkstemp
 from goose3.configuration import Configuration
 from goose3.crawler import (CrawlCandidate, Crawler)
 from goose3.network import NetworkFetcher
-# from goose.version import version_info, __version__
 
 
 class Goose(object):
-    """\
-
-    """
 
     def __init__(self, config=None):
         # Use the passed in configuration if it is of the right type, otherwise
@@ -90,12 +86,12 @@ class Goose(object):
         self.finalizer.atexit = False  # turn off the garbage collection close
 
     def extract(self, url=None, raw_html=None):
-        """\
+        """
         Main method to extract an article object from a URL,
         pass in a url and get back a Article
         """
-        cc = CrawlCandidate(self.config, url, raw_html)
-        return self.crawl(cc)
+        crawl_candidate = CrawlCandidate(self.config, url, raw_html)
+        return self.crawl(crawl_candidate)
 
     def shutdown_network(self):
         ''' ensure the connection is closed '''
