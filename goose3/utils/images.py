@@ -36,6 +36,7 @@ class ImageUtils(object):
 
     @classmethod
     def get_image_dimensions(cls, identify_program, path):
+        # TODO: identify_program is not used
         image_details = ImageDetails()
         try:
             # workaround to force the file to actually be closed by Pillow
