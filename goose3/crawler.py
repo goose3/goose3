@@ -128,75 +128,75 @@ class Crawler(object):
         doc = self.get_document(raw_html)
 
         # article
-        self.article.final_url = final_url
-        self.article.link_hash = link_hash
-        self.article.raw_html = raw_html
-        self.article.doc = doc
-        self.article.raw_doc = deepcopy(doc)
+        self.article._final_url = final_url
+        self.article._link_hash = link_hash
+        self.article._raw_html = raw_html
+        self.article._doc = doc
+        self.article._raw_doc = deepcopy(doc)
 
         # open graph
-        self.article.opengraph = self.opengraph_extractor.extract()
+        self.article._opengraph = self.opengraph_extractor.extract()
 
         # publishdate
-        self.article.publish_date = self.publishdate_extractor.extract()
+        self.article._publish_date = self.publishdate_extractor.extract()
 
         # meta
         metas = self.metas_extractor.extract()
         # print(metas)
-        self.article.meta_lang = metas['lang']
-        self.article.meta_favicon = metas['favicon']
-        self.article.meta_description = metas['description']
-        self.article.meta_keywords = metas['keywords']
-        self.article.canonical_link = metas['canonical']
-        self.article.domain = metas['domain']
+        self.article._meta_lang = metas['lang']
+        self.article._meta_favicon = metas['favicon']
+        self.article._meta_description = metas['description']
+        self.article._meta_keywords = metas['keywords']
+        self.article._canonical_link = metas['canonical']
+        self.article._domain = metas['domain']
 
         # tags
-        self.article.tags = self.tags_extractor.extract()
+        self.article._tags = self.tags_extractor.extract()
 
         # authors
-        self.article.authors = self.authors_extractor.extract()
+        self.article._authors = self.authors_extractor.extract()
 
         # title
-        self.article.title = self.title_extractor.extract()
+        self.article._title = self.title_extractor.extract()
 
         # check for known node as content body
         # if we find one force the article.doc to be the found node
         # this will prevent the cleaner to remove unwanted text content
         article_body = self.extractor.get_known_article_tags()
         if article_body is not None:
-            self.article.doc = article_body
+            self.article._doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
         if not isinstance(self.article.doc, list):
-            self.article.doc = [self.cleaner.clean(self.article.doc)]
+            self.article._doc = [self.cleaner.clean(self.article.doc)]
         else:
-            self.article.doc = [self.cleaner.clean(deepcopy(x)) for x in self.article.doc]
+            self.article._doc = [self.cleaner.clean(deepcopy(x)) for x in self.article.doc]
 
         # big stuff
-        self.article.top_node = self.extractor.calculate_best_node()
+        self.article._top_node = self.extractor.calculate_best_node()
 
         # if we have a top node
         # let's process it
-        if self.article.top_node is not None:
+        if self.article._top_node is not None:
 
             # article links
-            self.article.links = self.links_extractor.extract()
+            self.article._links = self.links_extractor.extract()
 
             # tweets
-            self.article.tweets = self.tweets_extractor.extract()
+            self.article._tweets = self.tweets_extractor.extract()
 
             # video handling
-            self.video_extractor.get_videos()
+            self.article._movies = self.video_extractor.get_videos()
 
             # image handling
             if self.config.enable_image_fetching:
                 self.get_image()
 
             # post cleanup
-            self.article.top_node = self.extractor.post_cleanup()
+            self.article._top_node = self.extractor.post_cleanup()
 
             # clean_text
-            self.article.cleaned_text = self.formatter.get_formatted_text()
+            self.article._cleaned_text = self.formatter.get_formatted_text()
 
         # cleanup tmp file
         self.release_resources()
@@ -213,7 +213,7 @@ class Crawler(object):
     def get_image(self):
         doc = self.article.raw_doc
         top_node = self.article.top_node
-        self.article.top_image = self.image_extractor.get_best_image(doc, top_node)
+        self.article._top_image = self.image_extractor.get_best_image(doc, top_node)
 
     def get_html(self, crawl_candidate, parsing_candidate):
         # we got a raw_tml

@@ -137,4 +137,4 @@ class VideoExtractor(BaseExtractor):
                     self.movies.append(movie)
 
         # append movies list to article
-        self.article.movies = list(self.movies)
+        return list(self.movies)

@@ -26,89 +26,185 @@ class Article(object):
 
     def __init__(self):
         # title of the article
-        self.title = ""
+        self._title = ""
 
         # stores the lovely, pure text from the article,
         # stripped of html, formatting, etc...
         # just raw text with paragraphs separated by newlines.
         # This is probably what you want to use.
-        self.cleaned_text = ""
+        self._cleaned_text = ""
 
         # meta description field in HTML source
-        self.meta_description = ""
+        self._meta_description = ""
 
         # meta lang field in HTML source
-        self.meta_lang = ""
+        self._meta_lang = ""
 
         # meta favicon field in HTML source
-        self.meta_favicon = ""
+        self._meta_favicon = ""
 
         # meta keywords field in the HTML source
-        self.meta_keywords = ""
+        self._meta_keywords = ""
 
         # The canonical link of this article if found in the meta data
-        self.canonical_link = ""
+        self._canonical_link = ""
 
         # holds the domain of this article we're parsing
-        self.domain = ""
+        self._domain = ""
 
         # holds the top Element we think
         # is a candidate for the main body of the article
-        self.top_node = None
+        self._top_node = None
 
         # holds the top Image object that
         # we think represents this article
-        self.top_image = None
+        self._top_image = None
 
         # holds a set of tags that may have
         # been in the artcle, these are not meta keywords
-        self.tags = []
+        self._tags = []
 
         # holds a dict of all opengrah data found
-        self.opengraph = {}
+        self._opengraph = {}
 
         # holds twitter embeds
-        self.tweets = []
+        self._tweets = []
 
         # holds a list of any movies
         # we found on the page like youtube, vimeo
-        self.movies = []
+        self._movies = []
 
         # holds links found in the main article
-        self.links = []
+        self._links = []
 
         # hold author names
-        self.authors = []
+        self._authors = []
 
         # stores the final URL that we're going to try
         # and fetch content against, this would be expanded if any
-        self.final_url = ""
+        self._final_url = ""
 
         # stores the MD5 hash of the url
         # to use for various identification tasks
-        self.link_hash = ""
+        self._link_hash = ""
 
         # stores the RAW HTML
         # straight from the network connection
-        self.raw_html = ""
+        self._raw_html = ""
 
         # the lxml Document object
-        self.doc = None
+        self._doc = None
 
         # this is the original JSoup document that contains
         # a pure object from the original HTML without any cleaning
         # options done on it
-        self.raw_doc = None
+        self._raw_doc = None
 
         # Sometimes useful to try and know when
         # the publish date of an article was
-        self.publish_date = None
+        self._publish_date = None
 
         # A property bucket for consumers of goose to store custom data extractions.
-        self.additional_data = {}
+        self._additional_data = {}
+
+    @property
+    def title(self):
+        return self._title
+
+    @property
+    def cleaned_text(self):
+        return self._cleaned_text
+
+    @property
+    def meta_description(self):
+        return self._meta_description
+
+    @property
+    def meta_lang(self):
+        return self._meta_lang
+
+    @property
+    def meta_favicon(self):
+        return self._meta_favicon
+
+    @property
+    def meta_keywords(self):
+        return self._meta_keywords
+
+    @property
+    def canonical_link(self):
+        return self._canonical_link
+
+    @property
+    def domain(self):
+        return self._domain
+
+    @property
+    def top_node(self):
+        return self._top_node
+
+    @property
+    def top_image(self):
+        return self._top_image
+
+    @property
+    def tags(self):
+        return self._tags
+
+    @property
+    def opengraph(self):
+        return self._opengraph
+
+    @property
+    def tweets(self):
+        return self._tweets
+
+    @property
+    def movies(self):
+        return self._movies
+
+    @property
+    def links(self):
+        return self._links
+
+    @property
+    def authors(self):
+        return self._authors
+
+    @property
+    def final_url(self):
+        return self._final_url
+
+    @property
+    def link_hash(self):
+        return self._link_hash
+
+    @property
+    def raw_html(self):
+        return self._raw_html
+
+    @property
+    def doc(self):
+        return self._doc
+
+    @property
+    def raw_doc(self):
+        return self._raw_doc
+
+    @property
+    def publish_date(self):
+        return self._publish_date
+
+    @property
+    def additional_data(self):
+        return self._additional_data
 
     @property
     def infos(self):
+        ''' dict: The summation of all data available about the extracted article
+
+            Note:
+                Not settable '''
         data = {
             "meta": {
                 "description": self.meta_description,
