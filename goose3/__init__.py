@@ -94,7 +94,7 @@ class Goose(object):
 
             Note:
                 Auto closed when using goose as a context manager or when garbage collected '''
-        if self.fetcher != None:
+        if self.fetcher is not None:
             self.shutdown_network()
         self.finalizer.atexit = False  # turn off the garbage collection close
 
