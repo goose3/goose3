@@ -66,7 +66,7 @@ class Configuration(object):
         self._debug = False
         self._stopwords_class = StopWords
 
-        #imagemagick executable paths
+        # imagemagick executable paths
         self._imagemagick_convert_path = "/opt/local/bin/convert"  # Not used
         self._imagemagick_identify_path = "/opt/local/bin/identify"  # not used
 

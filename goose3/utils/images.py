@@ -32,6 +32,7 @@ from goose3.image import (ImageDetails, LocallyStoredImage)
 
 LOG = logging.getLogger(__name__)
 
+
 class ImageUtils(object):
 
     @classmethod
