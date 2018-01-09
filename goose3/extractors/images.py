@@ -118,8 +118,8 @@ class ImageExtractor(BaseExtractor):
                 main_image.width = highscore_image.width
                 main_image.height = highscore_image.height
                 main_image.extraction_type = "bigimage"
-                main_image.confidence_score = 100 / len(scored_images) \
-                                    if len(scored_images) > 0 else 0
+                score_len = len(scored_images)
+                main_image.confidence_score = 100 / score_len if score_len > 0 else 0
                 return main_image
 
         depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)

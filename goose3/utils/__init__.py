@@ -127,7 +127,7 @@ class ReplaceSequence(object):
     def __init__(self):
         self.replacements = []
 
-    #@classmethod
+    # @classmethod
     def create(self, first_pattern, replace_with=None):
         result = StringReplacement(first_pattern, replace_with or '')
         self.replacements.append(result)

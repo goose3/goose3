@@ -63,10 +63,7 @@ class DocumentCleaner(object):
         self.facebook_re = "[^-]facebook"
         self.facebook_braodcasting_re = "facebook-broadcasting"
         self.twitter_re = "[^-]twitter"
-        self.tablines_replacements = ReplaceSequence()\
-                                            .create("\n", "\n\n")\
-                                            .append("\t")\
-                                            .append("^\\s+$")
+        self.tablines_replacements = ReplaceSequence().create("\n", "\n\n").append("\t").append("^\\s+$")
 
     def clean(self, doc_to_clean):
         doc_to_clean = self.clean_body_classes(doc_to_clean)

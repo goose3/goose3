@@ -25,90 +25,225 @@ limitations under the License.
 class Article(object):
 
     def __init__(self):
-        # title of the article
-        self.title = ""
+        self._title = ""
+        self._cleaned_text = ""
+        self._meta_description = ""
+        self._meta_lang = ""
+        self._meta_favicon = ""
+        self._meta_keywords = ""
+        self._canonical_link = ""
+        self._domain = ""
+        self._top_node = None
+        self._top_image = None
+        self._tags = []
+        self._opengraph = {}
+        self._tweets = []
+        self._movies = []
+        self._links = []
+        self._authors = []
+        self._final_url = ""
+        self._link_hash = ""
+        self._raw_html = ""
+        self._doc = None
+        self._raw_doc = None
+        self._publish_date = None
+        self._additional_data = {}
 
-        # stores the lovely, pure text from the article,
-        # stripped of html, formatting, etc...
-        # just raw text with paragraphs separated by newlines.
-        # This is probably what you want to use.
-        self.cleaned_text = ""
+    @property
+    def title(self):
+        ''' str: Title extracted from the HTML source
 
-        # meta description field in HTML source
-        self.meta_description = ""
+            Note:
+                Read only '''
+        return self._title
 
-        # meta lang field in HTML source
-        self.meta_lang = ""
+    @property
+    def cleaned_text(self):
+        ''' str: Cleaned text of the article without HTML tags; most commonly desired property
 
-        # meta favicon field in HTML source
-        self.meta_favicon = ""
+            Note:
+                Read only '''
+        return self._cleaned_text
 
-        # meta keywords field in the HTML source
-        self.meta_keywords = ""
+    @property
+    def meta_description(self):
+        ''' str: Contents of the meta-description field from the HTML source
 
-        # The canonical link of this article if found in the meta data
-        self.canonical_link = ""
+            Note:
+                Read only '''
+        return self._meta_description
 
-        # holds the domain of this article we're parsing
-        self.domain = ""
+    @property
+    def meta_lang(self):
+        ''' str: Contents of the meta-lang field from the HTML source
 
-        # holds the top Element we think
-        # is a candidate for the main body of the article
-        self.top_node = None
+            Note:
+                Read only '''
+        return self._meta_lang
 
-        # holds the top Image object that
-        # we think represents this article
-        self.top_image = None
+    @property
+    def meta_favicon(self):
+        ''' str: Contents of the meta-favicon field from the HTML source
 
-        # holds a set of tags that may have
-        # been in the artcle, these are not meta keywords
-        self.tags = []
+            Note:
+                Read only '''
+        return self._meta_favicon
 
-        # holds a dict of all opengrah data found
-        self.opengraph = {}
+    @property
+    def meta_keywords(self):
+        ''' str: Contents of the meta-keywords field from the HTML source
 
-        # holds twitter embeds
-        self.tweets = []
+            Note:
+                Read only '''
+        return self._meta_keywords
 
-        # holds a list of any movies
-        # we found on the page like youtube, vimeo
-        self.movies = []
+    @property
+    def canonical_link(self):
+        ''' str: The canonical link of the article if found in the meta data
 
-        # holds links found in the main article
-        self.links = []
+            Note:
+                Read only '''
+        return self._canonical_link
 
-        # hold author names
-        self.authors = []
+    @property
+    def domain(self):
+        ''' str: Domain of the article parsed
 
-        # stores the final URL that we're going to try
-        # and fetch content against, this would be expanded if any
-        self.final_url = ""
+            Note:
+                Read only '''
+        return self._domain
 
-        # stores the MD5 hash of the url
-        # to use for various identification tasks
-        self.link_hash = ""
+    @property
+    def top_node(self):
+        ''' etree: The top Element that is a candidate for the main body of the article
 
-        # stores the RAW HTML
-        # straight from the network connection
-        self.raw_html = ""
+            Note:
+                Read only '''
+        return self._top_node
 
-        # the lxml Document object
-        self.doc = None
+    @property
+    def top_image(self):
+        ''' Image: The top image object that likely represents the article
 
-        # this is the original JSoup document that contains
-        # a pure object from the original HTML without any cleaning
-        # options done on it
-        self.raw_doc = None
+            Note:
+                Read only
+            Todo:
+                Document the goose3 image class members '''
+        return self._top_image
 
-        # Sometimes useful to try and know when
-        # the publish date of an article was
-        self.publish_date = None
+    @property
+    def tags(self):
+        ''' list: List of article tags (non-metadata tags)
 
-        # A property bucket for consumers of goose to store custom data extractions.
-        self.additional_data = {}
+            Note:
+                Read only '''
+        return self._tags
+
+    @property
+    def opengraph(self):
+        ''' dict: All opengraph tag data
+
+            Note:
+                Read only '''
+        return self._opengraph
+
+    @property
+    def tweets(self):
+        ''' list: A listing of embeded tweets in the article
+
+            Note:
+                Read only '''
+        return self._tweets
+
+    @property
+    def movies(self):
+        ''' list(Video): A listing of all videos within the article such as
+            YouTube or Vimeo
+
+            Note:
+                Read only
+            Todo:
+                Document the goose3 Video class members '''
+        return self._movies
+
+    @property
+    def links(self):
+        ''' list: A listing of URL links within the article
+
+            Note:
+                Read only '''
+        return self._links
+
+    @property
+    def authors(self):
+        ''' list: A listing of authors as parsed from the meta tags
+
+            Note:
+                Read only '''
+        return self._authors
+
+    @property
+    def final_url(self):
+        ''' str: The URL that was used to pull and parsed; `None` if raw_html was used
+
+            Note:
+                Read only '''
+        return self._final_url
+
+    @property
+    def link_hash(self):
+        ''' str: The MD5 of the final url to be used for various identification tasks
+
+            Note:
+                Read only '''
+        return self._link_hash
+
+    @property
+    def raw_html(self):
+        ''' str: The HTML represented as a string
+
+            Note:
+                Read only '''
+        return self._raw_html
+
+    @property
+    def doc(self):
+        ''' etree: lxml document that is being processed
+
+            Note:
+                Read only '''
+        return self._doc
+
+    @property
+    def raw_doc(self):
+        ''' etree: Original, uncleaned, and untouched lxml document to be processed
+
+            Note:
+                Read only '''
+        return self._raw_doc
+
+    @property
+    def publish_date(self):
+        ''' str: The date the article was published based on meta tag extraction
+
+            Note:
+                Read only '''
+        return self._publish_date
+
+    @property
+    def additional_data(self):
+        ''' dict: A property bucket for consumers of goose3 to store custom data extractions
+
+            Note:
+                Read only '''
+        return self._additional_data
 
     @property
     def infos(self):
+        ''' dict: The summation of all data available about the extracted article
+
+            Note:
+                Not settable '''
         data = {
             "meta": {
                 "description": self.meta_description,

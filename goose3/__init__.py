@@ -25,12 +25,20 @@ import weakref
 from tempfile import mkstemp
 
 from goose3.configuration import Configuration
+from goose3.article import Article  # to make it available for documentation!
 from goose3.crawler import (CrawlCandidate, Crawler)
 from goose3.network import NetworkFetcher
 
 
 class Goose(object):
+    ''' Extract most likely article content and aditional metadata from a URL
+        or previously fetched HTML document
 
+        Args:
+            config (Configuration, dict): A configuration file or dictionary \
+            representation of the configuration file
+        Returns:
+            Goose: An instance of the goose extraction object '''
     def __init__(self, config=None):
         # Use the passed in configuration if it is of the right type, otherwise
         # use the default as a base
@@ -74,31 +82,43 @@ class Goose(object):
             raise Exception(msg)
 
     def __enter__(self):
+        ''' Setup the context manager '''
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        ''' Define what to do when the context manager exits '''
         self.close()
 
     def close(self):
-        ''' close the connection and any other cleanup required '''
-        if self.fetcher != None:
+        ''' Close the network connection and perform any other required cleanup
+
+            Note:
+                Auto closed when using goose as a context manager or when garbage collected '''
+        if self.fetcher is not None:
             self.shutdown_network()
         self.finalizer.atexit = False  # turn off the garbage collection close
 
     def extract(self, url=None, raw_html=None):
-        """
-        Main method to extract an article object from a URL,
-        pass in a url and get back a Article
-        """
+        ''' Extract the most likely article content from the html page
+
+            Args:
+                url (str): URL to pull and parse
+                raw_html (str): String representation of the HTML page
+            Returns:
+                Article: Representation of the article contents \
+                including other parsed and extracted metadata '''
         crawl_candidate = CrawlCandidate(self.config, url, raw_html)
-        return self.crawl(crawl_candidate)
+        return self.__crawl(crawl_candidate)
 
     def shutdown_network(self):
-        ''' ensure the connection is closed '''
+        ''' Close the network connection
+
+            Note:
+                Auto closed when using goose as a context manager or when garbage collected '''
         self.fetcher.close()
         self.fetcher = None
 
-    def crawl(self, crawl_candidate):
+    def __crawl(self, crawl_candidate):
         parsers = list(self.config.available_parsers)
         parsers.remove(self.config.parser_class)
         try:
@@ -107,7 +127,7 @@ class Goose(object):
         except (UnicodeDecodeError, ValueError) as ex:
             if parsers:
                 self.config.parser_class = parsers[0]
-                return self.crawl(crawl_candidate)
+                return self.__crawl(crawl_candidate)
             else:
                 raise ex
         return article
