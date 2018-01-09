@@ -168,6 +168,7 @@ class Configuration(object):
     @property
     def available_parsers(self):
         ''' list(str): A list of all possible parser values for the parser_class
+
             Note:
                 Not settable '''
         return self._available_parsers
