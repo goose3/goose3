@@ -1,6 +1,8 @@
 # Goose3
 
 ### ***Current Master Branch***
+
+### Version 3.0.9
 * Add `soup` as a parser option to use `lxml.html.soupparser` [#27](https://github.com/goose3/goose3/issues/27)
 * Fix an issue with passing the requests session object to the crawler
 * Pylint changes
