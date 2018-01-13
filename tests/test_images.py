@@ -74,41 +74,40 @@ class ImageExtractionTests(TestExtractionBase):
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
 
-    # def _test_known_image_css(self, article):
-    #     # check if we have an image in article.top_node
-    #     images = self.parser.getElementsByTag(article.top_node,  tag='img')
-    #     self.assertEqual(len(images), 0)
-    #
-    #     # we dont' have an image in article.top_node
-    #     # check if the correct image was retrieved
-    #     # using the known-image-css.txt
-    #     fields = ['cleaned_text', 'top_image']
-    #     self.runArticleAssertions(article=article, fields=fields)
+    def _test_known_image_css(self, article):
+        # check if we have an image in article.top_node
+        images = self.parser.getElementsByTag(article.top_node,  tag='img')
+        self.assertEqual(len(images), 0)
+
+        # we dont' have an image in article.top_node
+        # check if the correct image was retrieved
+        # using the known-image-css.txt
+        fields = ['cleaned_text', 'top_image']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_known_image_name_parent(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
     # FAILED
-    # def test_known_image_name_parent(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_parent_class(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
     # FAILED
-    # def test_known_image_css_parent_class(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_parent_id(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
     # FAILED
-    # def test_known_image_css_parent_id(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_class(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
     # FAILED
-    # def test_known_image_css_class(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
-
-    # FAILED
-    # def test_known_image_css_id(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_id(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
     # FAILED (only on Travis-CI)
     # def test_known_image_empty_src(self):
@@ -117,9 +116,9 @@ class ImageExtractionTests(TestExtractionBase):
     #     self._test_known_image_css(article)
 
     # FAILED
-    # def test_opengraph_tag(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_opengraph_tag(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
 
 class ImageUtilsTests(unittest.TestCase):
