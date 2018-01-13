@@ -71,8 +71,9 @@ class Configuration(object):
         self._imagemagick_identify_path = "/opt/local/bin/identify"  # not used
 
         # image extraction
-        self._enable_image_fetching = True  # Do we need to allow setting one's own ImageExtractor class?
+        self._enable_image_fetching = False
         self._images_min_bytes = 4500
+        # Do we need to allow setting one's own ImageExtractor class?
 
     @property
     def known_context_patterns(self):

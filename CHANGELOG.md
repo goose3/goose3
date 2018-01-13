@@ -1,6 +1,8 @@
 # Goose3
 
 ### ***Current Master Branch***
+* Changed configuration to ***not*** pull images by default [see issue #31](https://github.com/goose3/goose3/issues/31)
+* Document video and image classes
 
 ### Version 3.0.9
 * Add `soup` as a parser option to use `lxml.html.soupparser` [#27](https://github.com/goose3/goose3/issues/27)
