@@ -166,6 +166,7 @@ class TestExtractionBase(unittest.TestCase):
 
             # load images for those tests
             m.get('http://go.com/images/465395/', content=blank_img)
+            m.get('http://bla.com/images/465395/', content=blank_img)
             m.get('http://md0.libe.com/photo/465395/?modified_at=1351411813&ratio_x=03&ratio_y=02&width=476', content=img_content)
 
             # run goose
