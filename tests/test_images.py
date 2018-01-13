@@ -51,7 +51,7 @@ class ImageExtractionTests(TestExtractionBase):
         # expected image
         expected_image = Image()
         for k, v in list(expected_value.items()):
-            setattr(expected_image, k, v)
+            setattr(expected_image, '_{}'.format(k), v)
         msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 

@@ -69,12 +69,12 @@ class VideoExtractor(BaseExtractor):
         Create a video object from a video embed
         """
         video = Video()
-        video.embed_code = self.get_embed_code(node)
-        video.embed_type = self.get_embed_type(node)
-        video.width = self.get_width(node)
-        video.height = self.get_height(node)
-        video.src = self.get_src(node)
-        video.provider = self.get_provider(video.src)
+        video._embed_code = self.get_embed_code(node)
+        video._embed_type = self.get_embed_type(node)
+        video._width = self.get_width(node)
+        video._height = self.get_height(node)
+        video._src = self.get_src(node)
+        video._provider = self.get_provider(video.src)
         return video
 
     def get_iframe_tag(self, node):
@@ -118,8 +118,8 @@ class VideoExtractor(BaseExtractor):
             return None
 
         video = self.get_video(node)
-        video.provider = provider
-        video.src = src
+        video._provider = provider
+        video._src = src
         return video
 
     def get_videos(self):

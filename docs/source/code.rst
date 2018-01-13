@@ -31,3 +31,17 @@ contains the results of the parsing process.
 
 .. autoclass:: goose3.Article
     :members:
+
+
+Image
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. autoclass:: goose3.Image
+    :members:
+
+
+Video
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. autoclass:: goose3.Video
+    :members:

@@ -125,15 +125,15 @@ class Article(object):
     def top_image(self):
         ''' Image: The top image object that likely represents the article
 
+            Returns:
+                Image: See more information on the goose3.Image class 
             Note:
-                Read only
-            Todo:
-                Document the goose3 image class members '''
+                Read only '''
         return self._top_image
 
     @property
     def tags(self):
-        ''' list: List of article tags (non-metadata tags)
+        ''' list(str): List of article tags (non-metadata tags)
 
             Note:
                 Read only '''
@@ -149,7 +149,7 @@ class Article(object):
 
     @property
     def tweets(self):
-        ''' list: A listing of embeded tweets in the article
+        ''' list(str): A listing of embeded tweets in the article
 
             Note:
                 Read only '''
@@ -160,15 +160,15 @@ class Article(object):
         ''' list(Video): A listing of all videos within the article such as
             YouTube or Vimeo
 
+            Returns:
+                Video: See more information on the goose3.Video class
             Note:
-                Read only
-            Todo:
-                Document the goose3 Video class members '''
+                Read only '''
         return self._movies
 
     @property
     def links(self):
-        ''' list: A listing of URL links within the article
+        ''' list(str): A listing of URL links within the article
 
             Note:
                 Read only '''
@@ -176,7 +176,7 @@ class Article(object):
 
     @property
     def authors(self):
-        ''' list: A listing of authors as parsed from the meta tags
+        ''' list(str): A listing of authors as parsed from the meta tags
 
             Note:
                 Read only '''
