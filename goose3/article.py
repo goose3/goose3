@@ -126,7 +126,7 @@ class Article(object):
         ''' Image: The top image object that likely represents the article
 
             Returns:
-                Image: See more information on the goose3.Image class 
+                Image: See more information on the goose3.Image class
             Note:
                 Read only '''
         return self._top_image
@@ -161,7 +161,7 @@ class Article(object):
             YouTube or Vimeo
 
             Returns:
-                Video: See more information on the goose3.Video class
+                list(Video):  See more information on the goose3.Video class
             Note:
                 Read only '''
         return self._movies

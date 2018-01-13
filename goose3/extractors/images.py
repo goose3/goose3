@@ -193,18 +193,18 @@ class ImageExtractor(BaseExtractor):
     def get_image(self, element, src, score=100, extraction_type="N/A"):
         # build the Image object
         image = Image()
-        image.src = self.build_image_path(src)
-        image.extraction_type = extraction_type
-        image.confidence_score = score
+        image._src = self.build_image_path(src)
+        image._extraction_type = extraction_type
+        image._confidence_score = score
 
         # check if we have a local image
         # in order to add more information
         # on the Image object
         local_image = self.get_local_image(image.src)
         if local_image:
-            image.bytes = local_image.bytes
-            image.height = local_image.height
-            image.width = local_image.width
+            image._bytes = local_image.bytes
+            image._height = local_image.height
+            image._width = local_image.width
 
         # return the image
         return image
