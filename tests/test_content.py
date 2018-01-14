@@ -121,13 +121,10 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
-    # #########################################
-    # # FAIL CHECK
-    # # UNICODE
-    # def test_guardian1(self):
-    #     article = self.getArticle()
-    #     fields = ['cleaned_text']
-    #     self.runArticleAssertions(article=article, fields=fields)
+    def test_guardian1(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
 
     def test_time(self):
         article = self.getArticle()
