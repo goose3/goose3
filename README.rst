@@ -7,7 +7,7 @@ Goose3 - Article Extractor
     :target: https://badge.fury.io/py/goose3
 
 Intro
------
+--------------------------------------------------------------------------------
 
 Goose was originally an article extractor written in Java that has most
 recently (Aug2011) been converted to a `scala project <https://github.com/GravityLabs/goose>`_.
@@ -30,7 +30,7 @@ The Python version was originally rewritten by:
 -  Xavier Grangier
 
 Licensing
----------
+--------------------------------------------------------------------------------
 
 If you find Goose useful or have issues please drop me a line. I'd love
 to hear how you're using it or what features should be improved.
@@ -38,8 +38,14 @@ to hear how you're using it or what features should be improved.
 Goose is licensed by Gravity.com under the Apache 2.0 license; see the
 LICENSE file for more details.
 
+On-line Documentation
+--------------------------------------------------------------------------------
+On-line documentation is available on
+`Read the Docs <https://goose3.readthedocs.io>`_ which contains more in-depth
+documentation.
+
 Setup
------
+--------------------------------------------------------------------------------
 
 To install using pip:
 
@@ -58,7 +64,7 @@ To install from source:
     python setup.py install
 
 Take it for a spin
-------------------
+--------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -76,7 +82,7 @@ Take it for a spin
     http://i2.cdn.turner.com/cnn/dam/assets/111017024308-occupy-london-st-paul-s-cathedral-story-top.jpg
 
 Configuration
--------------
+--------------------------------------------------------------------------------
 
 There are two ways to pass configuration to goose. The first one is to
 pass goose a Configuration() object. The second one is to pass a
@@ -89,7 +95,7 @@ pass:
 
     >>> g = Goose({'browser_user_agent': 'Mozilla'})
 
-Switching parsers : Goose can now be used with lxml html parser or lxml
+Switching parsers: Goose can now be used with lxml html parser or lxml
 soup parser. By default the html parser is used. If you want to use the
 soup parser pass it in the configuration dict :
 
@@ -97,8 +103,24 @@ soup parser pass it in the configuration dict :
 
     >>> g = Goose({'browser_user_agent': 'Mozilla', 'parser_class':'soup'})
 
+One can also set Goose to be more lenient on network exceptions. To turn off
+throwing all network exceptions, set the strict configuration setting to false:
+
+.. code-block:: python
+
+    >>> g = Goose({'strict': False})
+
+
+To turn on image fetching, one can simply enable it using the enable_image_fetching
+configuration property:
+
+.. code-block:: python
+
+    >>> g = Goose({'enable_image_fetching': True})
+
+
 Goose is now language aware
----------------------------
+--------------------------------------------------------------------------------
 
 For example, scraping a Spanish content page with correct meta language
 tags:
@@ -131,7 +153,7 @@ forcibly select Spanish.
 
 
 Video extraction
-----------------
+--------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -154,7 +176,7 @@ Video extraction
 
 
 Goose in Chinese
-----------------
+--------------------------------------------------------------------------------
 
 Some users want to use Goose for Chinese content. Chinese word
 segmentation is way more difficult to deal with than occidental
@@ -176,7 +198,7 @@ passed to the config object.
     一些亲北京阵营议员欢迎梁振英道歉，且认为应能获得香港民众接受，但这些议员也质问梁振英有
 
 Goose in Arabic
----------------
+--------------------------------------------------------------------------------
 
 In order to use Goose in Arabic you have to use the StopWordsArabic
 class.
@@ -193,7 +215,7 @@ class.
 
 
 Goose in Korean
----------------
+--------------------------------------------------------------------------------
 
 In order to use Goose in Korean you have to use the StopWordsKorean
 class.
@@ -211,6 +233,6 @@ class.
     그는 전기전자·무선통신·자동차 전장품 분야에
 
 TODO
-----
+--------------------------------------------------------------------------------
 
 -  Video html5 tag extraction

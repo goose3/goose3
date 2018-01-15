@@ -93,9 +93,9 @@ class Configuration(object):
                     {'attr': 'id', 'value': 'my-article-id'}]
         '''
         if isinstance(val, list):
-            self._known_context_patterns.extend(val)
+            self._known_context_patterns = val + self.known_context_patterns
         else:
-            self._known_context_patterns.append(val)
+            self._known_context_patterns.insert(0, val)
 
     @property
     def strict(self):
