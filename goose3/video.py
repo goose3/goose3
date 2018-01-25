@@ -31,19 +31,67 @@ class Video(object):
 
         # type of embed
         # embed, object, iframe
-        self.embed_type = None
+        self._embed_type = None
 
         # video provider name
-        self.provider = None
+        self._provider = None
 
         # width
-        self.width = None
+        self._width = None
 
         # height
-        self.height = None
+        self._height = None
 
         # embed code
-        self.embed_code = None
+        self._embed_code = None
 
         # src
-        self.src = None
+        self._src = None
+
+    @property
+    def embed_type(self):
+        ''' str: The type of embeding such as embed, object, or iframe
+
+            Note:
+                Read only '''
+        return self._embed_type
+
+    @property
+    def provider(self):
+        ''' str: The video provider
+
+            Note:
+                Read only '''
+        return self._provider
+
+    @property
+    def width(self):
+        ''' int: The video width in pixels
+
+            Note:
+                Read only '''
+        return self._width
+
+    @property
+    def height(self):
+        ''' int: The video height in pixels
+
+            Note:
+                Read only '''
+        return self._height
+
+    @property
+    def embed_code(self):
+        ''' str: The embed code of the video
+
+            Note:
+                Read only '''
+        return self._embed_code
+
+    @property
+    def src(self):
+        ''' str: The URL source of the video
+
+            Note:
+                Read only '''
+        return self._src

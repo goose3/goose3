@@ -25,27 +25,83 @@ limitations under the License.
 class Image(object):
     def __init__(self):
         # holds the Element node of the image we think is top dog
-        self.top_image_node = None
+        self._top_image_node = None
 
         # holds the src of the image
-        self.src = ""
+        self._src = ''
 
         # how confident are we in this image extraction?
         # the most images generally the less confident
-        self.confidence_score = float(0.0)
+        self._confidence_score = float(0.0)
 
         # Height of the image in pixels
-        self.height = 0
+        self._height = 0
 
         # width of the image in pixels
-        self.width = 0
+        self._width = 0
 
         # what kind of image extraction was used for this?
         # bestGuess, linkTag, openGraph tags?
-        self.extraction_type = "NA"
+        self._extraction_type = "NA"
 
         # stores how many bytes this image is.
-        self.bytes = int(0)
+        self._bytes = int(0)
+
+    @property
+    def top_image_node(self):
+        ''' etree: The most likely top image element node
+
+            Note:
+                Read only '''
+        return self._top_image_node
+
+    @property
+    def src(self):
+        ''' str: Source URL for the image
+
+            Note:
+                Read only '''
+        return self._src
+
+    @property
+    def confidence_score(self):
+        ''' float: The confidence score that this is the main image
+
+            Note:
+                Read only '''
+        return self._confidence_score
+
+    @property
+    def height(self):
+        ''' int: The image height in pixels
+
+            Note:
+                Read only '''
+        return self._height
+
+    @property
+    def width(self):
+        ''' int: The image width in pixels
+
+            Note:
+                Read only '''
+        return self._width
+
+    @property
+    def extraction_type(self):
+        ''' str: The extraction type used
+
+            Note:
+                Read only '''
+        return self._extraction_type
+
+    @property
+    def bytes(self):
+        ''' int: The size of the image in bytes
+
+            Note:
+                Read only '''
+        return self._bytes
 
     def get_src(self):
         return self.src

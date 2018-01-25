@@ -153,8 +153,22 @@ class TestExtractionBase(unittest.TestCase):
             config.target_language = target_language
             config.use_meta_language = False
 
-        with requests_mock.Mocker(real_http=True) as m:
+        # read in the basic image...
+        with open('{}/data/images/50850547cc7310bc53e30e802c6318f1'.format(CURRENT_PATH), 'rb') as fobj:
+            img_content = fobj.read()
+
+        # read in another, blank image
+        with open('{}/data/images/blank.jpeg'.format(CURRENT_PATH), 'rb') as fobj:
+            blank_img = fobj.read()
+
+        with requests_mock.Mocker(real_http=False) as m:
             m.get(self.data['url'], text=self.html)
+
+            # load images for those tests
+            m.get('http://go.com/images/465395/', content=blank_img)
+            m.get('http://bla.com/images/465395/', content=blank_img)
+            m.get('http://md0.libe.com/photo/465395/?modified_at=1351411813&ratio_x=03&ratio_y=02&width=476', content=img_content)
+
             # run goose
             g = Goose(config=config)
             return g.extract(url=self.data['url'])

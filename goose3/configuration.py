@@ -71,8 +71,9 @@ class Configuration(object):
         self._imagemagick_identify_path = "/opt/local/bin/identify"  # not used
 
         # image extraction
-        self._enable_image_fetching = True  # Do we need to allow setting one's own ImageExtractor class?
+        self._enable_image_fetching = False
         self._images_min_bytes = 4500
+        # Do we need to allow setting one's own ImageExtractor class?
 
     @property
     def known_context_patterns(self):
@@ -92,9 +93,9 @@ class Configuration(object):
                     {'attr': 'id', 'value': 'my-article-id'}]
         '''
         if isinstance(val, list):
-            self._known_context_patterns.extend(val)
+            self._known_context_patterns = val + self.known_context_patterns
         else:
-            self._known_context_patterns.append(val)
+            self._known_context_patterns.insert(0, val)
 
     @property
     def strict(self):

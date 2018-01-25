@@ -114,12 +114,12 @@ class ImageExtractor(BaseExtractor):
                 highscore_image = sorted(list(scored_images.items()),
                                          key=lambda x: x[1], reverse=True)[0][0]
                 main_image = Image()
-                main_image.src = highscore_image.src
-                main_image.width = highscore_image.width
-                main_image.height = highscore_image.height
-                main_image.extraction_type = "bigimage"
+                main_image._src = highscore_image.src
+                main_image._width = highscore_image.width
+                main_image._height = highscore_image.height
+                main_image._extraction_type = "bigimage"
                 score_len = len(scored_images)
-                main_image.confidence_score = 100 / score_len if score_len > 0 else 0
+                main_image._confidence_score = 100 / score_len if score_len > 0 else 0
                 return main_image
 
         depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)
@@ -193,18 +193,18 @@ class ImageExtractor(BaseExtractor):
     def get_image(self, element, src, score=100, extraction_type="N/A"):
         # build the Image object
         image = Image()
-        image.src = self.build_image_path(src)
-        image.extraction_type = extraction_type
-        image.confidence_score = score
+        image._src = self.build_image_path(src)
+        image._extraction_type = extraction_type
+        image._confidence_score = score
 
         # check if we have a local image
         # in order to add more information
         # on the Image object
         local_image = self.get_local_image(image.src)
         if local_image:
-            image.bytes = local_image.bytes
-            image.height = local_image.height
-            image.width = local_image.width
+            image._bytes = local_image.bytes
+            image._height = local_image.height
+            image._width = local_image.width
 
         # return the image
         return image

@@ -51,7 +51,7 @@ class ImageExtractionTests(TestExtractionBase):
         # expected image
         expected_image = Image()
         for k, v in list(expected_value.items()):
-            setattr(expected_image, k, v)
+            setattr(expected_image, '_{}'.format(k), v)
         msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
@@ -74,52 +74,45 @@ class ImageExtractionTests(TestExtractionBase):
         fields = ['top_image']
         self.runArticleAssertions(article=article, fields=fields)
 
-    # def _test_known_image_css(self, article):
-    #     # check if we have an image in article.top_node
-    #     images = self.parser.getElementsByTag(article.top_node,  tag='img')
-    #     self.assertEqual(len(images), 0)
-    #
-    #     # we dont' have an image in article.top_node
-    #     # check if the correct image was retrieved
-    #     # using the known-image-css.txt
-    #     fields = ['cleaned_text', 'top_image']
-    #     self.runArticleAssertions(article=article, fields=fields)
+    def _test_known_image_css(self, article):
+        # check if we have an image in article.top_node
+        images = self.parser.getElementsByTag(article.top_node,  tag='img')
+        self.assertEqual(len(images), 0)
 
-    # FAILED
-    # def test_known_image_name_parent(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+        # we dont' have an image in article.top_node
+        # check if the correct image was retrieved
+        # using the known-image-css.txt
+        fields = ['cleaned_text', 'top_image']
+        self.runArticleAssertions(article=article, fields=fields)
 
-    # FAILED
-    # def test_known_image_css_parent_class(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_name_parent(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
-    # FAILED
-    # def test_known_image_css_parent_id(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_parent_class(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
-    # FAILED
-    # def test_known_image_css_class(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_parent_id(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
-    # FAILED
-    # def test_known_image_css_id(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_class(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
-    # FAILED (only on Travis-CI)
-    # def test_known_image_empty_src(self):
-    #     'Tests that img tags for known image sources with empty src attributes are skipped.'
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_css_id(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
-    # FAILED
-    # def test_opengraph_tag(self):
-    #     article = self.getArticle()
-    #     self._test_known_image_css(article)
+    def test_known_image_empty_src(self):
+        'Tests that img tags for known image sources with empty src attributes are skipped.'
+        article = self.getArticle()
+        self._test_known_image_css(article)
+
+    def test_opengraph_tag(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
 
 
 class ImageUtilsTests(unittest.TestCase):
