@@ -143,7 +143,7 @@ class StopWords(object):
         return content.translate(tbl)
 
     @staticmethod
-    def candiate_words(stripped_input):
+    def candidate_words(stripped_input):
         return re.split(SPACE_SYMBOLS, stripped_input)
 
     def get_stopword_count(self, content):
@@ -151,10 +151,10 @@ class StopWords(object):
             return WordStats()
         stats = WordStats()
         stripped_input = self.remove_punctuation(content)
-        candiate_words = self.candiate_words(stripped_input)
+        candidate_words = self.candidate_words(stripped_input)
         overlapping_stopwords = []
         i = 0
-        for word in candiate_words:
+        for word in candidate_words:
             i += 1
             if word.lower() in self._stop_words:
                 overlapping_stopwords.append(word.lower())
@@ -174,7 +174,7 @@ class StopWordsChinese(StopWords):
         super(StopWordsChinese, self).__init__(language='zh')
 
     @staticmethod
-    def candiate_words(stripped_input):
+    def candidate_words(stripped_input):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
@@ -195,7 +195,7 @@ class StopWordsArabic(StopWords):
         return content
 
     @staticmethod
-    def candiate_words(stripped_input):
+    def candidate_words(stripped_input):
         import nltk
         stemmer = nltk.stem.isri.ISRIStemmer()
         words = []
@@ -216,10 +216,10 @@ class StopWordsKorean(StopWords):
             return WordStats()
         stats = WordStats()
         stripped_input = self.remove_punctuation(content)
-        candiate_words = self.candiate_words(stripped_input)
+        candidate_words = self.candidate_words(stripped_input)
         overlapping_stopwords = []
         i = 0
-        for _ in candiate_words:
+        for _ in candidate_words:
             i += 1
             for stop_word in self._stop_words:
                 overlapping_stopwords.append(stop_word)
