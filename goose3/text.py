@@ -41,29 +41,21 @@ def get_encodings_from_content(content):
     """
     if isinstance(content, bytes):
         find_charset = re.compile(
-            br'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
-        ).findall
-
-        find_pragma = re.compile(
-            br'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+            br'<meta.*?charset=["\']*([a-z0-9\-_]+?) *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(
-            br'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+            br'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
         ).findall
     else:
         find_charset = re.compile(
-            r'<meta.*?charset=["\']*(.+?)["\'>]', flags=re.I
-        ).findall
-
-        find_pragma = re.compile(
-            r'<meta.*?content=["\']*;?charset=(.+?)["\'>]', flags=re.I
+            r'<meta.*?charset=["\']*([a-z0-9\-_]+?) *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(
-            r'^<\?xml.*?encoding=["\']*(.+?)["\'>]'
+            r'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
         ).findall
-    return find_charset(content) + find_pragma(content) + find_xml(content)
+    return find_charset(content) + find_xml(content)
 
 
 def innerTrim(value):
