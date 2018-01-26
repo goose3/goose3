@@ -47,6 +47,8 @@ def get_encodings_from_content(content):
         find_xml = re.compile(
             br'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
         ).findall
+        return [encoding.decode('utf-8') for encoding in
+                find_charset(content) + find_xml(content)]
     else:
         find_charset = re.compile(
             r'<meta.*?charset=["\']*([a-z0-9\-_]+?) *?["\'>]', flags=re.I
@@ -55,7 +57,7 @@ def get_encodings_from_content(content):
         find_xml = re.compile(
             r'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
         ).findall
-    return find_charset(content) + find_xml(content)
+        return find_charset(content) + find_xml(content)
 
 
 def innerTrim(value):

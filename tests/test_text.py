@@ -27,7 +27,7 @@ from goose3.text import get_encodings_from_content
 
 class TestText(unittest.TestCase):
 
-    def test_get_encodings_from_content(self):
+    def test_get_encodings_from_content_with_trail_spaces(self):
         self.assertEqual(
             get_encodings_from_content(
                 '<meta charset=utf-8 " />'),
@@ -46,9 +46,10 @@ class TestText(unittest.TestCase):
         self.assertEqual(
             get_encodings_from_content(
                 b'<meta http-equiv="content-type" content="text/html; charset=utf-8 " />'),
-            [b'utf-8']
+            ['utf-8']
         )
-        # without trail spaces
+
+    def test_get_encodings_from_content_with_out_trail_spaces(self):
         self.assertEqual(
             get_encodings_from_content(
                 '<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
@@ -57,5 +58,5 @@ class TestText(unittest.TestCase):
         self.assertEqual(
             get_encodings_from_content(
                 b'<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
-            [b'utf-8']
+            ['utf-8']
         )
