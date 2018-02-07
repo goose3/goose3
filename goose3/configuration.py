@@ -22,15 +22,18 @@ limitations under the License.
 """
 import os
 import tempfile
+from collections import OrderedDict
 
 from goose3.text import StopWords
 from goose3.parsers import Parser, ParserSoup
 from goose3.version import __version__
 
-AVAILABLE_PARSERS = {
-    'lxml': Parser,
-    'soup': ParserSoup,
-}
+AVAILABLE_PARSERS = OrderedDict(
+    [
+        ('lxml', Parser),
+        ('soup', ParserSoup),
+    ]
+)
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
     {'attr': 'class', 'value': 'short-story'},
