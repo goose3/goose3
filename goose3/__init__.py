@@ -129,7 +129,7 @@ class Goose(object):
             except (UnicodeDecodeError, ValueError) as ex:
                 if parsers_lst:
                     parser = parsers_lst.pop(0)  # remove it also!
-                    return crawler_wrapper(parser, pasers_lst, crawl_candidate)
+                    return crawler_wrapper(parser, parsers_lst, crawl_candidate)
                 else:
                     raise ex
             return article
