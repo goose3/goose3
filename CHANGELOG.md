@@ -1,10 +1,11 @@
 # Goose3
 
-### ***Current Master Branch***
+### Version 3.1.0
 * Changed configuration to ***not*** pull images by default [see issue #31](https://github.com/goose3/goose3/issues/31)
+* Update `get_encodings_from_content` to return a string and remove trailing spaces [#35](https://github.com/goose3/goose3/pull/35)
+* Remove infinite recursion on parser selection [#39](https://github.com/goose3/goose3/pull/39)
 * Document video and image classes
 * Re-add remaining image tests
-* Update `get_encodings_from_content` to return a string and remove trailing spaces
 
 ### Version 3.0.9
 * Add `soup` as a parser option to use `lxml.html.soupparser` [#27](https://github.com/goose3/goose3/issues/27)

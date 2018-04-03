@@ -243,7 +243,7 @@ class Article(object):
         ''' dict: The summation of all data available about the extracted article
 
             Note:
-                Not settable '''
+                Read only '''
         data = {
             "meta": {
                 "description": self.meta_description,
