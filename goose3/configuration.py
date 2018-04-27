@@ -323,7 +323,7 @@ class Configuration(object):
         ''' bool: Turn on or off image extraction
 
             Note:
-                Defaults to `True` '''
+                Defaults to `False` '''
         return self._enable_image_fetching
 
     @enable_image_fetching.setter

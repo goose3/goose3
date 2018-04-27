@@ -50,6 +50,13 @@ class ImageUtils(object):
         except IOError:
             image_details.set_mime_type('NA')
             LOG.exception("File not found")
+        except OSError:
+            image_details.set_mime_type('NA')
+            LOG.exception("Cannot identify image file")
+        except Exception as ex:
+            # TODO: Should we look into other possible exceptions?
+            image_details.set_mime_type('NA')
+            LOG.exception("Exception: {}".format(ex))
         return image_details
 
     @classmethod
