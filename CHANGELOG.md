@@ -1,5 +1,8 @@
 # Goose3
 
+### Master Branch
+* Catch more PIL exceptions [see issue #42](https://github.com/goose3/goose3/issues/42)
+
 ### Version 3.1.0
 * Changed configuration to ***not*** pull images by default [see issue #31](https://github.com/goose3/goose3/issues/31)
 * Update `get_encodings_from_content` to return a string and remove trailing spaces [#35](https://github.com/goose3/goose3/pull/35)
