@@ -35,5 +35,5 @@ class OpenGraphExtractor(BaseExtractor):
             if attr is not None and attr.startswith("og:"):
                 value = self.parser.getAttribute(meta, 'content')
                 if value:
-                    opengraph_dict.update({attr.split(":")[1]: value})
+                    opengraph_dict.update({attr.split(":", 1)[1]: value})
         return opengraph_dict
