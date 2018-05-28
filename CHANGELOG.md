@@ -2,6 +2,7 @@
 
 ### Master Branch
 * Catch more PIL exceptions [see issue #42](https://github.com/goose3/goose3/issues/42)
+* Update opengraph parsing to maintain all information [see issue #45](https://github.com/goose3/goose3/issues/45)
 
 ### Version 3.1.0
 * Changed configuration to ***not*** pull images by default [see issue #31](https://github.com/goose3/goose3/issues/31)
