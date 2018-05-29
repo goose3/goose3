@@ -1,6 +1,6 @@
 # Goose3
 
-### Master Branch
+### Version 3.1.1
 * Catch more PIL exceptions [see issue #42](https://github.com/goose3/goose3/issues/42)
 * Update opengraph parsing to maintain all information [see issue #45](https://github.com/goose3/goose3/issues/45)
 
