@@ -66,6 +66,7 @@ class OutputFormatter(object):
         self.add_newline_to_br()
         self.replace_with_text()
         self.remove_fewwords_paragraphs()
+        self.make_list_elms_pretty()
         return self.convert_to_text()
 
     def convert_to_text(self):
@@ -76,7 +77,10 @@ class OutputFormatter(object):
                 txt = html.unescape(txt)
                 txt_lis = innerTrim(txt).split(r'\n')
                 txts.extend(txt_lis)
-        return '\n\n'.join(txts)
+        text = '\n\n'.join(txts)
+        # ensure no double newlines at the beginning of lists
+        txt = text.replace('\n•', '•').split('•')
+        return '\n•'.join(txt)
 
     def add_newline_to_br(self):
         for elm in self.parser.getElementsByTag(self.top_node, tag='br'):
@@ -88,6 +92,12 @@ class OutputFormatter(object):
         should be considered text into text
         """
         self.parser.stripTags(self.get_top_node(), 'a')
+
+    def make_list_elms_pretty(self):
+        """ make any list element read like a list
+        """
+        for elm in self.parser.getElementsByTag(self.top_node, tag='li'):
+            elm.text = r'• {}'.format(elm.text)
 
     def remove_negativescores_nodes(self):
         """\

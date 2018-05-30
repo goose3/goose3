@@ -350,7 +350,7 @@ class ContentExtractor(BaseExtractor):
         node = self.add_siblings(target_node)
         for elm in self.parser.getChildren(node):
             e_tag = self.parser.getTag(elm)
-            if e_tag != 'p':
+            if e_tag not in ('p', 'ul', 'ol', ):
                 if self.is_highlink_density(elm) \
                     or self.is_table_and_no_para_exist(elm) \
                     or not self.is_nodescore_threshold_met(node, elm):
