@@ -80,7 +80,9 @@ class OutputFormatter(object):
         text = '\n\n'.join(txts)
         # ensure no double newlines at the beginning of lists
         txt = text.replace('\n•', '•').split('•')
-        return '\n•'.join(txt)
+        if self.config.pretty_lists:
+            return '\n•'.join(txt)
+        return '\n'.join(txt)
 
     def add_newline_to_br(self):
         for elm in self.parser.getElementsByTag(self.top_node, tag='br'):
