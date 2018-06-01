@@ -79,9 +79,9 @@ class OutputFormatter(object):
                 txts.extend(txt_lis)
         text = '\n\n'.join(txts)
         # ensure no double newlines at the beginning of lists
-        txt = text.replace('\n•', '•').split('•')
+        txt = text.replace('\n•', '•').split('• ')
         if self.config.pretty_lists:
-            return '\n•'.join(txt)
+            return '\n• '.join(txt)
         return '\n'.join(txt)
 
     def add_newline_to_br(self):
