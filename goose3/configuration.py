@@ -75,7 +75,9 @@ class Configuration(object):
         self._images_min_bytes = 4500
         # Do we need to allow setting one's own ImageExtractor class?
 
+        self._parse_lists = True
         self._pretty_lists = True
+        self._parse_headers = True
 
     @property
     def known_context_patterns(self):
@@ -360,6 +362,29 @@ class Configuration(object):
     def pretty_lists(self, val):
         ''' set if lists should be pretty printed '''
         self._pretty_lists = bool(val)
+
+    @property
+    def parse_lists(self):
+        return self._parse_lists
+
+    @parse_lists.setter
+    def parse_lists(self, val):
+        ''' set if headers should be parsed '''
+        self._parse_lists = bool(val)
+
+    @property
+    def parse_headers(self):
+        ''' bool: Specify if headers should be pulled or not in the cleaned_text
+            output
+
+            Note:
+                Defaults to `True`'''
+        return self._parse_headers
+
+    @parse_headers.setter
+    def parse_headers(self, val):
+        ''' set if headers should be parsed '''
+        self._parse_headers = bool(val)
 
     def get_parser(self):
         ''' Retrieve the current parser class to use for extraction

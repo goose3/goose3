@@ -79,10 +79,16 @@ class OutputFormatter(object):
                 txts.extend(txt_lis)
         text = '\n\n'.join(txts)
         # ensure no double newlines at the beginning of lists
-        txt = text.replace('\n•', '•').split('• ')
-        if self.config.pretty_lists:
-            return '\n• '.join(txt)
-        return '\n'.join(txt)
+        if self.config.parse_lists:
+            # Split out the lists and clean them up! Ensuring no trailing spaces
+            txt = text.replace('\n•', '•').split('• ')
+            txt = [x.strip() for x in txt]
+
+            if self.config.pretty_lists:
+                text = '\n• '.join(txt)
+            else:
+                text = '\n'.join(txt)
+        return text
 
     def add_newline_to_br(self):
         for elm in self.parser.getElementsByTag(self.top_node, tag='br'):

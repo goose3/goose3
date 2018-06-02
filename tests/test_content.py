@@ -56,6 +56,11 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_businessWeek4(self):
+        article = self.getArticle({'parse_headers': False})
+        fields = ['title', 'cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
     def test_cbslocal(self):
         article = self.getArticle()
         fields = ['cleaned_text']
@@ -122,7 +127,7 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_guardian1(self):
-        article = self.getArticle()
+        article = self.getArticle({'parse_headers': False, 'parse_lists': False})
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
@@ -198,6 +203,11 @@ class TestExtractions(TestExtractionBase):
 
     def test_gizmodo2(self):
         article = self.getArticle(config_={'enable_image_fetching': False, 'pretty_lists': False})
+        fields = ['cleaned_text', 'meta_description', 'meta_keywords']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_gizmodo3(self):
+        article = self.getArticle({'parse_lists': False})
         fields = ['cleaned_text', 'meta_description', 'meta_keywords']
         self.runArticleAssertions(article=article, fields=fields)
 
