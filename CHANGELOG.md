@@ -1,5 +1,8 @@
 # Goose3
 
+### Version 3.1.2
+* Capture lists from text [see issue #48]((https://github.com/goose3/goose3/issues/48) Thanks [@polosatyi](https://github.com/polosatyi)!
+
 ### Version 3.1.1
 * Catch more PIL exceptions [see issue #42](https://github.com/goose3/goose3/issues/42)
 * Update opengraph parsing to maintain all information [see issue #45](https://github.com/goose3/goose3/issues/45)

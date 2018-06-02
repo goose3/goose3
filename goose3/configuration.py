@@ -75,6 +75,8 @@ class Configuration(object):
         self._images_min_bytes = 4500
         # Do we need to allow setting one's own ImageExtractor class?
 
+        self._pretty_lists = True
+
     @property
     def known_context_patterns(self):
         ''' list: The context patterns to search to find the likely article content
@@ -344,6 +346,20 @@ class Configuration(object):
     def images_min_bytes(self, val):
         ''' set the images_min_bytes property '''
         self._images_min_bytes = int(val)
+
+    @property
+    def pretty_lists(self):
+        ''' bool: Specify if lists should be pretty printed in the cleaned_text
+            output
+
+            Note:
+                Defaults to `True` '''
+        return self._pretty_lists
+
+    @pretty_lists.setter
+    def pretty_lists(self, val):
+        ''' set if lists should be pretty printed '''
+        self._pretty_lists = bool(val)
 
     def get_parser(self):
         ''' Retrieve the current parser class to use for extraction

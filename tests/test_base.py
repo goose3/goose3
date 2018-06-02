@@ -133,7 +133,7 @@ class TestExtractionBase(unittest.TestCase):
         config.enable_image_fetching = False
         return config
 
-    def getArticle(self):
+    def getArticle(self, config_=None):
         """\
 
         """
@@ -144,6 +144,11 @@ class TestExtractionBase(unittest.TestCase):
         # basic configuration
         # no image fetching
         config = self.getConfig()
+        if config is not None:
+            if isinstance(config_, dict):
+                for k, v in list(config_.items()):
+                    if hasattr(config, k):
+                        setattr(config, k, v)
         self.parser = config.get_parser()
 
         # target language

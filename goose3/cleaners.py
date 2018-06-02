@@ -56,7 +56,7 @@ class DocumentCleaner(object):
         self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
         self.nauthy_classes_re = "//*[re:test(@class, '%s', 'i')]" % self.remove_nodes_re
         self.nauthy_names_re = "//*[re:test(@name, '%s', 'i')]" % self.remove_nodes_re
-        self.div_to_p_re = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
+        # self.div_to_p_re = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.caption_re = "^caption$"
         self.google_re = " google "
         self.entries_re = "^[^entry-]more.*$"
