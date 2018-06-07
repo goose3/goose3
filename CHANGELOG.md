@@ -1,5 +1,12 @@
 # Goose3
 
+### Master
+* Parse headers and include in `cleaned_text`
+* Additional Configuration options:
+    * Parse Headers: `parse_headers`
+    * Parse Lists: `parse_lists`
+    * Pretty Lists: `pretty_lists`
+
 ### Version 3.1.2
 * Capture lists from text [see issue #48]((https://github.com/goose3/goose3/issues/48) Thanks [@polosatyi](https://github.com/polosatyi)!
 
