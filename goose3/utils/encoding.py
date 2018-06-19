@@ -112,7 +112,10 @@ def smart_str(string, encoding='utf-8', strings_only=False, errors='strict'):
     # if isinstance(s, Promise):
     #     return unicode(s).encode(encoding, errors)
     if isinstance(string, str):
-        return string.encode(encoding, errors)
+        try:
+            return string.encode(encoding, errors)
+        except UnicodeEncodeError:
+            return string.encode('utf-8', errors)
     elif not isinstance(string, bytes):
         try:
             return str(string).encode(encoding, errors)
