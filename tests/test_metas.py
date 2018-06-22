@@ -28,4 +28,16 @@ from .test_base import TestExtractionBase
 
 class TestMetas(TestExtractionBase):
 
-    pass
+    def test_meta_encoding(self):
+        # test that the encoding is pulled from the metadata, and also
+        # show that we are pulling the cleaned text even though the encoding
+        # doesn't match!
+        article = self.getArticle()
+        self.assertEqual(article.meta_encoding, self.data['meta_encoding'])
+        
+        # NOTE: The encoding doesn't match what we actually need!
+        try:
+            article.cleaned_text.encode(article.meta_encoding[0])
+            self.assertFalse(True)
+        except:
+            self.assertTrue(True)

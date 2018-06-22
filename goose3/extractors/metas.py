@@ -26,6 +26,7 @@ import re
 from urllib.parse import urlparse, urljoin
 
 from goose3.extractors import BaseExtractor
+from goose3.text import get_encodings_from_content
 
 
 RE_LANG = r'^[A-Za-z]{2}$'
@@ -124,6 +125,10 @@ class MetasExtractor(BaseExtractor):
         """
         return self.get_meta_content("meta[name=keywords]")
 
+    def get_meta_encoding(self):
+        """ Parse the meta encoding """
+        return get_encodings_from_content(self.article.raw_html)
+
     def extract(self):
         return {
             "description": self.get_meta_description(),
@@ -131,5 +136,6 @@ class MetasExtractor(BaseExtractor):
             "lang": self.get_meta_lang(),
             "favicon": self.get_favicon(),
             "canonical": self.get_canonical_link(),
-            "domain": self.get_domain()
+            "domain": self.get_domain(),
+            "encoding": self.get_meta_encoding()
         }

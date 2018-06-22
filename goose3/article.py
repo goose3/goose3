@@ -31,6 +31,7 @@ class Article(object):
         self._meta_lang = ""
         self._meta_favicon = ""
         self._meta_keywords = ""
+        self._meta_encoding = []
         self._canonical_link = ""
         self._domain = ""
         self._top_node = None
@@ -96,6 +97,14 @@ class Article(object):
             Note:
                 Read only '''
         return self._meta_keywords
+
+    @property
+    def meta_encoding(self):
+        ''' list: Contents of the meta-encoding field from the HTML source
+
+            Note:
+                Read only '''
+        return self._meta_encoding
 
     @property
     def canonical_link(self):
@@ -251,6 +260,7 @@ class Article(object):
                 "keywords": self.meta_keywords,
                 "favicon": self.meta_favicon,
                 "canonical": self.canonical_link,
+                "encoding": self.meta_encoding
             },
             "image": None,
             "domain": self.domain,
