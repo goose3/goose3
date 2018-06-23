@@ -127,7 +127,8 @@ class MetasExtractor(BaseExtractor):
 
     def get_meta_encoding(self):
         """ Parse the meta encoding """
-        return get_encodings_from_content(self.article.raw_html)
+        encoding = get_encodings_from_content(self.article.raw_html)
+        return encoding and encoding[0] or None
 
     def extract(self):
         return {

@@ -1,4 +1,4 @@
 {
     "url": "http://example.com/metas/",
-    "meta_encoding": ["iso-8859-1"]
+    "meta_encoding": "iso-8859-1"
 }

@@ -100,7 +100,7 @@ class Article(object):
 
     @property
     def meta_encoding(self):
-        ''' list: Contents of the meta-encoding field from the HTML source
+        ''' str: Contents of the encoding/charset field from the HTML source
 
             Note:
                 Read only '''
