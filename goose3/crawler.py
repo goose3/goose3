@@ -147,6 +147,7 @@ class Crawler(object):
         self.article._meta_favicon = metas['favicon']
         self.article._meta_description = metas['description']
         self.article._meta_keywords = metas['keywords']
+        self.article._meta_encoding = metas['encoding']
         self.article._canonical_link = metas['canonical']
         self.article._domain = metas['domain']
 
