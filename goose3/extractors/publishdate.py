@@ -28,6 +28,7 @@ KNOWN_PUBLISH_DATE_TAGS = [
     {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
     {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
     {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
+    {'attribute': 'name', 'value': 'published_time_telegram', 'content': 'content'},
 ]
 
 
