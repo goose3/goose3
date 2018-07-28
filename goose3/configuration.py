@@ -41,6 +41,15 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 ]
 
 
+KNOWN_PUBLISH_DATE_TAGS = [
+    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
+    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
+    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
+    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
+    {'attribute': 'name', 'value': 'published_time_telegram', 'content': 'content'},
+]
+
+
 class Configuration(object):
 
     def __init__(self):
@@ -58,6 +67,7 @@ class Configuration(object):
         # extraction information
         self._local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
         self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
+        self._known_publish_date_tags = KNOWN_PUBLISH_DATE_TAGS
         self._target_language = 'en'
         self._use_meta_language = True
 
@@ -100,6 +110,28 @@ class Configuration(object):
             self._known_context_patterns = val + self.known_context_patterns
         else:
             self._known_context_patterns.insert(0, val)
+
+    @property
+    def known_publish_date_tags(self):
+        ''' list: The tags to search to find the likely published date
+
+            Note:
+                Each entry must be a dictionary with the following keys: `attribute`, `value`, \
+                and `content`.
+        '''
+        return self._known_publish_date_tags
+
+    @known_publish_date_tags.setter
+    def known_publish_date_tags(self, val):
+        ''' val must be a dictionary or list of dictionaries
+            e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
+                or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
+                    {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
+        '''
+        if isinstance(val, list):
+            self._known_publish_date_tags = val + self.known_publish_date_tags
+        else:
+            self._known_publish_date_tags.insert(0, val)
 
     @property
     def strict(self):
