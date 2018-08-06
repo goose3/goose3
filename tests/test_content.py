@@ -24,6 +24,7 @@ from __future__ import absolute_import
 
 from .test_base import TestExtractionBase
 
+from goose3 import ArticleContextPattern
 from goose3.text import StopWordsChinese
 from goose3.text import StopWordsArabic
 from goose3.text import StopWordsKorean
@@ -235,6 +236,33 @@ class TestExtractions(TestExtractionBase):
         # https://github.com/grangier/python-goose/issues/115
         article = self.getArticle()
         fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_pattern_config(self):
+        fields = ['cleaned_text']
+        # Test with configuring the content pattern with a dict and no domain filter
+        config0 = {'known_context_patterns': {'attr': 'class', 'value': 'super-rare-article-tag'}}
+        article = self.getArticle(config_=config0)
+        self.runArticleAssertions(article=article, fields=fields)
+
+        # Test with configuring the pubdate with a PublishDatePattern and no domain filter
+        config1 = {'known_context_patterns': ArticleContextPattern(attr='class',
+                                                                   value='super-rare-article-tag')}
+        article = self.getArticle(config_=config1)
+        self.runArticleAssertions(article=article, fields=fields)
+
+        # Test with configuring the incorrect domain filter
+        config2 = {'known_context_patterns': ArticleContextPattern(attr='class',
+                                                                   value='super-rare-article-tag',
+                                                                   domain='incorrect.com')}
+        article = self.getArticle(config_=config2)
+        assert article.cleaned_text == "This should not be included."
+
+        # Test with configuring the correct domain filter
+        config3 = {'known_context_patterns': ArticleContextPattern(attr='class',
+                                                                   value='super-rare-article-tag',
+                                                                   domain='example.com')}
+        article = self.getArticle(config_=config3)
         self.runArticleAssertions(article=article, fields=fields)
 
 

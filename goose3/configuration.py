@@ -32,21 +32,50 @@ AVAILABLE_PARSERS = {
     'soup': ParserSoup,
 }
 
+
+class ArticleContextPattern(object):
+
+    def __init__(self, attr=None, value=None, tag=None, domain=None):
+        if (not attr and not value) and not tag:
+            raise Exception("`attr` and `value` must be set or `tag` must be set")
+        self.attr = attr
+        self.value = value
+        self.tag = tag
+        self.domain = domain
+
+    def __repr__(self):
+        return "ArticleContextPattern(attr={} value={} tag={} domain={})".format(
+                    self.attr, self.value, self.tag, self.domain)
+
+
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
-    {'attr': 'class', 'value': 'short-story'},
-    {'attr': 'itemprop', 'value': 'articleBody'},
-    {'attr': 'class', 'value': 'post-content'},
-    {'attr': 'class', 'value': 'g-content'},
-    {'tag': 'article'},
+    ArticleContextPattern(attr='class', value='short-story'),
+    ArticleContextPattern(attr='itemprop', value='articleBody'),
+    ArticleContextPattern(attr='class', value='post-content'),
+    ArticleContextPattern(attr='class', value='g-content'),
+    ArticleContextPattern(tag='article')
 ]
 
 
+class PublishDatePattern(object):
+
+    def __init__(self, attr, value, content, domain=None):
+        self.attr = attr
+        self.value = value
+        self.content = content
+        self.domain = domain
+
+    def __repr__(self):
+        return "PublishDatePattern(attr={} value={} content={} domain={})".format(
+                    self.attr, self.value, self.content, self.domain)
+
+
 KNOWN_PUBLISH_DATE_TAGS = [
-    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
-    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
-    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
-    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
-    {'attribute': 'name', 'value': 'published_time_telegram', 'content': 'content'},
+    PublishDatePattern(attr='property', value='rnews:datePublished', content='content'),
+    PublishDatePattern(attr='property', value='article:published_time', content='content'),
+    PublishDatePattern(attr='name', value='OriginalPublicationDate', content='content'),
+    PublishDatePattern(attr='itemprop', value='datePublished', content='datetime'),
+    PublishDatePattern(attr='name', value='published_time_telegram', content='content')
 ]
 
 
@@ -66,8 +95,8 @@ class Configuration(object):
 
         # extraction information
         self._local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
-        self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS
-        self._known_publish_date_tags = KNOWN_PUBLISH_DATE_TAGS
+        self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS[:]
+        self._known_publish_date_tags = KNOWN_PUBLISH_DATE_TAGS[:]
         self._target_language = 'en'
         self._use_meta_language = True
 
@@ -106,10 +135,30 @@ class Configuration(object):
                 or [{'attr': 'class', 'value': 'my-article-class'},
                     {'attr': 'id', 'value': 'my-article-id'}]
         '''
+        def create_pat_from_dict(val):
+            '''Helper function used to create an ArticleContextPattern from a dictionary
+            '''
+            if "tag" in val:
+                pat = ArticleContextPattern(tag=val["tag"])
+            elif "attr" in val:
+                pat = ArticleContextPattern(attr=val["attr"], value=val["value"])
+
+            if "domain" in val:
+                pat.domain = val["domain"]
+
+            return pat
+
         if isinstance(val, list):
-            self._known_context_patterns = val + self.known_context_patterns
-        else:
+            self._known_context_patterns = [
+                x if isinstance(x, ArticleContextPattern) else create_pat_from_dict(x)
+                for x in val
+            ] + self.known_context_patterns
+        elif isinstance(val, ArticleContextPattern):
             self._known_context_patterns.insert(0, val)
+        elif isinstance(val, dict):
+            self._known_context_patterns.insert(0, create_pat_from_dict(val))
+        else:
+            raise Exception("Unknown type: {}. Use a ArticleContextPattern.".format(type(val)))
 
     @property
     def known_publish_date_tags(self):
@@ -128,10 +177,29 @@ class Configuration(object):
                 or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
                     {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
         '''
+        def create_pat_from_dict(val):
+            '''Helper function used to create an PublishDatePattern from a dictionary
+            '''
+            if "attribute" in val:
+                pat = PublishDatePattern(attr=val["attribute"], value=val["value"],
+                                         content=val["content"])
+
+            if "domain" in val:
+                pat.domain = val["domain"]
+
+            return pat
+
         if isinstance(val, list):
-            self._known_publish_date_tags = val + self.known_publish_date_tags
-        else:
+            self._known_publish_date_tags = [
+                x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
+                for x in val
+            ] + self.known_publish_date_tags
+        elif isinstance(val, PublishDatePattern):
             self._known_publish_date_tags.insert(0, val)
+        elif isinstance(val, dict):
+            self._known_publish_date_tags.insert(0, create_pat_from_dict(val))
+        else:
+            raise Exception("Unknown type: {}. Use a PublishDatePattern.".format(type(val)))
 
     @property
     def strict(self):
