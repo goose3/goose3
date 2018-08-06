@@ -188,9 +188,9 @@ class DocumentCleaner(object):
                 replace_text = self.tablines_replacements.replaceAll(kid_text)
                 if(len(replace_text)) > 1:
                     previous_sibling_node = self.parser.previousSibling(kid_text_node)
-                    while previous_sibling_node is not None \
-                        and self.parser.getTag(previous_sibling_node) == "a" \
-                        and self.parser.getAttribute(previous_sibling_node, 'grv-usedalready') != 'yes':
+                    while (previous_sibling_node is not None
+                            and self.parser.getTag(previous_sibling_node) == "a"
+                            and self.parser.getAttribute(previous_sibling_node, 'grv-usedalready') != 'yes'):
                         outer = " " + self.parser.outerHtml(previous_sibling_node) + " "
                         replacement_text.append(outer)
                         nodes_to_remove.append(previous_sibling_node)
@@ -202,9 +202,9 @@ class DocumentCleaner(object):
                     replacement_text.append(replace_text)
                     #
                     next_sibling_node = self.parser.nextSibling(kid_text_node)
-                    while next_sibling_node is not None \
-                        and self.parser.getTag(next_sibling_node) == "a" \
-                        and self.parser.getAttribute(next_sibling_node, 'grv-usedalready') != 'yes':
+                    while (next_sibling_node is not None
+                            and self.parser.getTag(next_sibling_node) == "a"
+                            and self.parser.getAttribute(next_sibling_node, 'grv-usedalready') != 'yes'):
                         outer = " " + self.parser.outerHtml(next_sibling_node) + " "
                         replacement_text.append(outer)
                         nodes_to_remove.append(next_sibling_node)
