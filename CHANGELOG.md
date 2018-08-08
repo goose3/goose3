@@ -1,15 +1,18 @@
 # Goose3
 
+### Current Version (Master)
+* Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
+
 ### Version 3.1.3
 * Parse headers and include in `cleaned_text`
 * Additional Configuration options:
     * Parse Headers: `parse_headers`
     * Parse Lists: `parse_lists`
     * Pretty Lists: `pretty_lists`
-* Catch mismatch encoding meta tag and document encoding[see pull request #53](https://github.com/goose3/goose3/pull/53) Thanks [@jeffquach](https://github.com/jeffquach)!
+* Catch mismatch encoding meta tag and document encoding [see pull request #53](https://github.com/goose3/goose3/pull/53) Thanks [@jeffquach](https://github.com/jeffquach)!
 
 ### Version 3.1.2
-* Capture lists from text [see issue #48]((https://github.com/goose3/goose3/issues/48) Thanks [@polosatyi](https://github.com/polosatyi)!
+* Capture lists from text [see issue #48](https://github.com/goose3/goose3/issues/48) Thanks [@polosatyi](https://github.com/polosatyi)!
 
 ### Version 3.1.1
 * Catch more PIL exceptions [see issue #42](https://github.com/goose3/goose3/issues/42)
