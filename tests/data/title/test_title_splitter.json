@@ -1,0 +1,6 @@
+{
+    "url": "http://exemple.com/test_title_splitter.html",
+    "expected": {
+        "title": ""
+    }
+}
