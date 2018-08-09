@@ -75,14 +75,14 @@ class Crawler(object):
         # metas extractor
         self.metas_extractor = self.get_metas_extractor()
 
-        # publishdate extractor
-        self.publishdate_extractor = self.get_publishdate_extractor()
-
         # opengraph extractor
         self.opengraph_extractor = self.get_opengraph_extractor()
 
-        # opengraph extractor
+        # reportage news article extractor
         self.reportagenewsarticle_extractor = self.get_reportagenewsarticle_extractor()
+
+        # publishdate extractor
+        self.publishdate_extractor = self.get_publishdate_extractor()
 
         # tags extractor
         self.tags_extractor = self.get_tags_extractor()

@@ -32,5 +32,6 @@ class TestOpenGraph(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=['opengraph', 'domain', 'final_url'])
 
-    def test_pass(self):
-        pass
+    def test_opengraph_type(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['opengraph'])

@@ -26,6 +26,10 @@ from goose3.extractors import BaseExtractor
 
 class PublishDateExtractor(BaseExtractor):
     def extract(self):
+        # check the opengraph and ReportageNewsArticle dictionary for the
+        # publication date first.
+        if "article:published_time" in self.article.opengraph:
+            return self.article.opengraph["article:published_time"]
         if self.article.schema and "datePublished" in self.article.schema:
             return self.article.schema["datePublished"]
         for known_meta_tag in self.config.known_publish_date_tags:
