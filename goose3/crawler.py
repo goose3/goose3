@@ -137,9 +137,6 @@ class Crawler(object):
         # open graph
         self.article._opengraph = self.opengraph_extractor.extract()
 
-        # publishdate
-        self.article._publish_date = self.publishdate_extractor.extract()
-
         # meta
         metas = self.metas_extractor.extract()
         # print(metas)
@@ -150,6 +147,9 @@ class Crawler(object):
         self.article._meta_encoding = metas['encoding']
         self.article._canonical_link = metas['canonical']
         self.article._domain = metas['domain']
+
+        # publishdate
+        self.article._publish_date = self.publishdate_extractor.extract()
 
         # tags
         self.article._tags = self.tags_extractor.extract()

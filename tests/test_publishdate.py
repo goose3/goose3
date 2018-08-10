@@ -23,6 +23,8 @@ limitations under the License.
 
 from __future__ import absolute_import
 
+from goose3 import Configuration, PublishDatePattern
+
 from .test_base import TestExtractionBase
 
 
@@ -42,4 +44,34 @@ class TestPublishDate(TestExtractionBase):
 
     def test_publish_date_schema(self):
         article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_config(self):
+        # Test with configuring the pubdate with a dict and no domain filter
+        config0 = {'known_publish_date_tags': {'attribute': 'name', 'value': 'super-rare-date-tag',
+                                               'content': 'value'}}
+        article = self.getArticle(config_=config0)
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+        # Test with configuring the pubdate with a PublishDatePattern and no domain filter
+        config1 = {'known_publish_date_tags': PublishDatePattern(attr='name',
+                                                                 value='super-rare-date-tag',
+                                                                 content='value')}
+        article = self.getArticle(config_=config1)
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+        # Test with configuring the incorrect domain filter
+        config2 = {'known_publish_date_tags': PublishDatePattern(attr='name',
+                                                                 value='super-rare-date-tag',
+                                                                 content='value',
+                                                                 domain='incorrect.com')}
+        article = self.getArticle(config_=config2)
+        assert not article.publish_date
+
+        # Test with configuring the correct domain filter
+        config3 = {'known_publish_date_tags': PublishDatePattern(attr='name',
+                                                                 value='super-rare-date-tag',
+                                                                 content='value',
+                                                                 domain='example.com')}
+        article = self.getArticle(config_=config3)
         self.runArticleAssertions(article=article, fields=['publish_date'])

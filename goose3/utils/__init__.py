@@ -22,42 +22,10 @@ limitations under the License.
 """
 import time
 import hashlib
-import re
 import os
 import codecs
-from urllib.parse import urlparse
 
 import goose3.version as base
-
-
-class BuildURL(object):
-    # TODO: This class is ever used... I recommend removing it!
-    def __init__(self, url, finalurl=None):
-        self.url = url
-        self.finalurl = finalurl
-
-    def getHostname(self, o):
-        if o.hostname:
-            return o.hotname
-        elif self.finalurl:
-            tmp = urlparse(self.finalurl)
-            if tmp.hostname:
-                return tmp.hostname
-        return None
-
-    def getScheme(self, o):
-        if o.scheme:
-            return o.scheme
-        elif self.finalurl:
-            tmp = urlparse(self.finalurl)
-            if tmp.scheme:
-                return tmp.scheme
-        return 'http'
-
-    def getUrl(self):
-        url_obj = urlparse(self.url)
-        scheme = self.getScheme(url_obj)
-        hostname = self.getHostname(url_obj)
 
 
 class FileHelper(object):

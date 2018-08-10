@@ -24,10 +24,10 @@ import os
 import weakref
 from tempfile import mkstemp
 
-from goose3.configuration import Configuration
-from goose3.article import Article  # to make it available for documentation!
-from goose3.image import Image  # to make it available for documentation!
-from goose3.video import Video  # to make it available for documentation!
+from goose3.configuration import ArticleContextPattern, Configuration, PublishDatePattern  # noqa: F401
+from goose3.article import Article  # noqa: F401 - to make it available for documentation!
+from goose3.image import Image  # noqa: F401 - to make it available for documentation!
+from goose3.video import Video  # noqa: F401 - to make it available for documentation!
 from goose3.crawler import (CrawlCandidate, Crawler)
 from goose3.network import NetworkFetcher
 

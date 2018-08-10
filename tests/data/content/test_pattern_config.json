@@ -1,0 +1,6 @@
+{
+    "url": "http://example.com/test_pattern_config.html",
+    "expected": {
+        "cleaned_text": "This is the real content"
+    }
+}

@@ -23,21 +23,18 @@ limitations under the License.
 
 from goose3.extractors import BaseExtractor
 
-KNOWN_PUBLISH_DATE_TAGS = [
-    {'attribute': 'property', 'value': 'rnews:datePublished', 'content': 'content'},
-    {'attribute': 'property', 'value': 'article:published_time', 'content': 'content'},
-    {'attribute': 'name', 'value': 'OriginalPublicationDate', 'content': 'content'},
-    {'attribute': 'itemprop', 'value': 'datePublished', 'content': 'datetime'},
-    {'attribute': 'name', 'value': 'published_time_telegram', 'content': 'content'},
-]
-
 
 class PublishDateExtractor(BaseExtractor):
     def extract(self):
-        for known_meta_tag in KNOWN_PUBLISH_DATE_TAGS:
+        for known_meta_tag in self.config.known_publish_date_tags:
+            # if this is a domain specific config and the current
+            # article domain does not match the configured domain,
+            # do not use the configured publish date pattern
+            if known_meta_tag.domain and known_meta_tag.domain != self.article.domain:
+                continue
             meta_tags = self.parser.getElementsByTag(self.article.doc,
-                                                     attr=known_meta_tag['attribute'],
-                                                     value=known_meta_tag['value'])
+                                                     attr=known_meta_tag.attr,
+                                                     value=known_meta_tag.value)
             if meta_tags:
-                return self.parser.getAttribute(meta_tags[0], known_meta_tag['content'])
+                return self.parser.getAttribute(meta_tags[0], known_meta_tag.content)
         return None

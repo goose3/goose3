@@ -11,3 +11,4 @@ install:
 
 script:
     - python setup.py test
+    - flake8 ./goose3
