@@ -165,16 +165,25 @@ class Crawler(object):
         # this will prevent the cleaner to remove unwanted text content
         article_body = self.extractor.get_known_article_tags()
         if article_body is not None:
-            self.article._doc = article_body
+            doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
-        if not isinstance(self.article.doc, list):
-            self.article._doc = [self.cleaner.clean(self.article.doc)]
+        if not isinstance(doc, list):
+            doc = [self.cleaner.clean(doc)]
         else:
-            self.article._doc = [self.cleaner.clean(deepcopy(x)) for x in self.article.doc]
+            doc = [self.cleaner.clean(deepcopy(x)) for x in doc]
 
         # big stuff
-        self.article._top_node = self.extractor.calculate_best_node()
+        self.article._top_node = self.extractor.calculate_best_node(doc)
+
+        # if we do not find an article within the discovered possible article nodes,
+        # try again with the root node.
+        if self.article._top_node is None:
+            # try again with the root node.
+            self.article._top_node = self.extractor.calculate_best_node(self.article._doc)
+        else:
+            # set the doc member to the discovered article node.
+            self.article._doc = doc
 
         # if we have a top node
         # let's process it

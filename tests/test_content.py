@@ -265,6 +265,10 @@ class TestExtractions(TestExtractionBase):
         article = self.getArticle(config_=config3)
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_retry_top_node(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=["cleaned_text"])
+
 
 class TestArticleTopNode(TestExtractionBase):
 

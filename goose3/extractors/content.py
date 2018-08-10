@@ -74,9 +74,7 @@ class ContentExtractor(BaseExtractor):
 
         return False
 
-    def calculate_best_node(self):
-
-        doc = self.article.doc
+    def calculate_best_node(self, doc):
         top_node = None
         nodes_to_check = self.nodes_to_check(doc)
 
