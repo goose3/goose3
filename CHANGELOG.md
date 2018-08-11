@@ -2,6 +2,9 @@
 
 ### Current Version (Master)
 * Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
+* Retry the calculate_top_node function with the root node if the first pass failed to find an article which may occur if one or more known article patterns are found, but none contain content [see PR #66](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
+
+
 
 ### Version 3.1.3
 * Parse headers and include in `cleaned_text`
