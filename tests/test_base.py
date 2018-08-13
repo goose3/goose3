@@ -166,14 +166,19 @@ class TestExtractionBase(unittest.TestCase):
         with open('{}/data/images/blank.jpeg'.format(CURRENT_PATH), 'rb') as fobj:
             blank_img = fobj.read()
 
+        # run goose
+        g = Goose(config=config)
+
         with requests_mock.Mocker(real_http=False) as m:
-            m.get(self.data['url'], text=self.html)
 
             # load images for those tests
             m.get('http://go.com/images/465395/', content=blank_img)
             m.get('http://bla.com/images/465395/', content=blank_img)
             m.get('http://md0.libe.com/photo/465395/?modified_at=1351411813&ratio_x=03&ratio_y=02&width=476', content=img_content)
+            # if the url is not given in the result json, use the raw_html parameter.
+            if "url" in self.data:
+                m.get(self.data['url'], text=self.html)
+                return g.extract(url=self.data['url'])
+            else:
+                return g.extract(raw_html=self.html)
 
-            # run goose
-            g = Goose(config=config)
-            return g.extract(url=self.data['url'])

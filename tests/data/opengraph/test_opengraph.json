@@ -1,6 +1,7 @@
 {
-    "url": "http://exemple.com/test_opengraphcontent",
     "expected": {
+        "domain": "www.somenews.com",
+        "final_url": "http://www.somenews.com/2012/09/19/nyregion/some-news-article.html?pagewanted=all",
         "opengraph": {
             "url": "http://www.somenews.com/2012/09/19/nyregion/some-news-article.html?pagewanted=all",
             "image": "http://graphics8.somenews.com/images/2012/09/19/region/some-news-image.jpg",

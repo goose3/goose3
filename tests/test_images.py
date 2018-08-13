@@ -114,6 +114,10 @@ class ImageExtractionTests(TestExtractionBase):
         article = self.getArticle()
         self._test_known_image_css(article)
 
+    def test_reportagenewsarticle(self):
+        article = self.getArticle()
+        self._test_known_image_css(article)
+
 
 class ImageUtilsTests(unittest.TestCase):
 

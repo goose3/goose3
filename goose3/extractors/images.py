@@ -88,7 +88,7 @@ class ImageExtractor(BaseExtractor):
             return image
 
         # check opengraph tag
-        image = self.check_opengraph_tag()
+        image = self.check_known_schemas()
         if image:
             return image
 
@@ -190,7 +190,7 @@ class ImageExtractor(BaseExtractor):
                             cnt += 1
         return image_results
 
-    def get_image(self, element, src, score=100, extraction_type="N/A"):
+    def get_image(self, src, score=100, extraction_type="N/A"):
         # build the Image object
         image = Image()
         image._src = self.build_image_path(src)
@@ -310,20 +310,24 @@ class ImageExtractor(BaseExtractor):
         for item in meta:
             src = self.parser.getAttribute(item, attr='href')
             if src:
-                return self.get_image(item, src, extraction_type='linktag')
+                return self.get_image(src, extraction_type='linktag')
         return None
 
-    def check_opengraph_tag(self):
+    def check_known_schemas(self):
         """\
-        checks to see if we were able to
-        find open graph tags on this page
+        checks to see if we were able to find the image via known schemas:
+
+        Supported Schemas
+         - Open Graph
+         - ReportageNewsArticle
         """
-        node = self.article.raw_doc
-        meta = self.parser.getElementsByTag(node, tag='meta', attr='property', value='og:image')
-        for item in meta:
-            src = self.parser.getAttribute(item, attr='content')
-            if src:
-                return self.get_image(item, src, extraction_type='opengraph')
+        if 'image' in self.article.opengraph:
+            return self.get_image(self.article.opengraph["image"],
+                                  extraction_type='opengraph')
+        elif (self.article.schema and 'image' in self.article.schema and
+                "url" in self.article.schema["image"]):
+            return self.get_image(self.article.schema["image"]["url"],
+                                  extraction_type='reportagenewsarticle')
         return None
 
     def get_local_image(self, src):
@@ -372,7 +376,7 @@ class ImageExtractor(BaseExtractor):
             if image is not None:
                 src = self.parser.getAttribute(image, attr='src')
                 if src:
-                    return self.get_image(image, src, score=90, extraction_type='known')
+                    return self.get_image(src, score=90, extraction_type='known')
 
         # check for elements with known classes
         for css in KNOWN_IMG_DOM_NAMES:
@@ -381,7 +385,7 @@ class ImageExtractor(BaseExtractor):
             if image is not None:
                 src = self.parser.getAttribute(image, attr='src')
                 if src:
-                    return self.get_image(image, src, score=90, extraction_type='known')
+                    return self.get_image(src, score=90, extraction_type='known')
 
         return None
 

@@ -45,6 +45,7 @@ class Article(object):
         self._final_url = ""
         self._link_hash = ""
         self._raw_html = ""
+        self._schema = None
         self._doc = None
         self._raw_doc = None
         self._publish_date = None
@@ -194,6 +195,7 @@ class Article(object):
     @property
     def final_url(self):
         ''' str: The URL that was used to pull and parsed; `None` if raw_html was used
+            and no url element was found.
 
             Note:
                 Read only '''
@@ -230,6 +232,14 @@ class Article(object):
             Note:
                 Read only '''
         return self._raw_doc
+
+    @property
+    def schema(self):
+        ''' dict: All schema tag data
+
+            Note:
+                Read only '''
+        return self._schema
 
     @property
     def publish_date(self):
