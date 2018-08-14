@@ -26,6 +26,8 @@ from goose3.extractors import BaseExtractor
 
 class PublishDateExtractor(BaseExtractor):
     def extract(self):
+        if self.article.schema and "datePublished" in self.article.schema:
+            return self.article.schema["datePublished"]
         for known_meta_tag in self.config.known_publish_date_tags:
             # if this is a domain specific config and the current
             # article domain does not match the configured domain,

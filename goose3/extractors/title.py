@@ -40,6 +40,11 @@ class TitleExtractor(BaseExtractor):
             site_name = self.article.opengraph['site_name']
             # remove the site name from title
             title = title.replace(site_name, '').strip()
+        elif (self.article.schema and "publisher" in self.article.schema and
+                "name" in self.article.schema["publisher"]):
+            site_name = self.article.schema["publisher"]["name"]
+            # remove the site name from title
+            title = title.replace(site_name, '').strip()
 
         # try to remove the domain from url
         if self.article.domain:
@@ -79,8 +84,9 @@ class TitleExtractor(BaseExtractor):
 
         # rely on opengraph in case we have the data
         if "title" in list(self.article.opengraph.keys()):
-            title = self.article.opengraph['title']
-            return self.clean_title(title)
+            return self.clean_title(self.article.opengraph['title'])
+        elif self.article.schema and "headline" in self.article.schema:
+            return self.clean_title(self.article.schema['headline'])
 
         # try to fetch the meta headline
         meta_headline = self.parser.getElementsByTag(self.article.doc,

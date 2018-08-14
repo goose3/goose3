@@ -26,11 +26,9 @@ from __future__ import absolute_import
 from .test_base import TestExtractionBase
 
 
-class TestOpenGraph(TestExtractionBase):
+class TestReportageNewsArticle(TestExtractionBase):
 
-    def test_opengraph(self):
+    def test_reportagenewsarticle(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['opengraph', 'domain', 'final_url'])
-
-    def test_pass(self):
-        pass
+        fields = ["schema", "publish_date", "domain", "final_url", "title"]
+        self.runArticleAssertions(article=article, fields=fields)

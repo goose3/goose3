@@ -1,0 +1,15 @@
+{
+    "url": "http://example.com/test_reportagenewsarticle.com",
+    "expected": {
+        "cleaned_text": "",
+        "top_image": {
+            "extraction_type": "reportagenewsarticle",
+            "src": "http://go.com/images/465395/",
+            "confidence_score": 100,
+            "bytes": 631,
+            "height": 1,
+            "width": 1,
+            "top_image_node": null
+        }
+    }
+}
