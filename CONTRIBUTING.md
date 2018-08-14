@@ -93,9 +93,6 @@ documentation in the goose3 library. To create a pull request, you will
 first need to fork the repository, make all necessary changes and then create
 a pull request. There are a few guidelines for creating pull requests:
 
-* All pull requests must be based off of the latest development branch and not
-master (unless there is not a development branch!)
-
 * If the PR only changes documentation, please add `[ci skip]` to the commit
 message. To learn more, you can [read about skipping integration testing](https://docs.travis-ci.com/user/customizing-the-build#Skipping-a-build)
 
