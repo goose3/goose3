@@ -1,0 +1,15 @@
+{
+    "url": "http://exemple.com/article",
+    "expected": {
+        "opengraph": {
+            "url": "http://example.com/article",
+            "type": "article",
+            "description": "This is not a very good description",
+            "title": "This article contains a title",
+            "type": "article",
+            "article:section": "Awesome",
+            "article:published_time": "Sun Nov 23 16:00:00 EDT 2014"
+        },
+        "publish_date": "Sun Nov 23 16:00:00 EDT 2014"
+    }
+}
