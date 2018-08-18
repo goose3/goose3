@@ -1,12 +1,10 @@
 # Goose3
 
-### Current Version (Master)
+### Version 3.1.4
 * Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Retry the calculate_top_node function with the root node if the first pass failed to find an article which may occur if one or more known article patterns are found, but none contain content [see PR #66](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Add parsing of schema.org's ReportageNewsArticle tags [see PR #67](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Add additional parsing of opengraph tags [see PR #64](https://github.com/goose3/goose3/issues/48) Thanks [@dlrobertson](https://github.com/dlrobertson)!
-
-
 
 
 ### Version 3.1.3
