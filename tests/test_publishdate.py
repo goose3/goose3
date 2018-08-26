@@ -46,6 +46,16 @@ class TestPublishDate(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=['publish_date'])
 
+    def test_publish_date_parsely_page(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
+    def test_publish_date_tag(self):
+        config = {'known_publish_date_tags': {'attribute': 'class', 'value': 'pubdate',
+                                              'tag': 'div'}}
+        article = self.getArticle(config)
+        self.runArticleAssertions(article=article, fields=['publish_date'])
+
     def test_publish_date_config(self):
         # Test with configuring the pubdate with a dict and no domain filter
         config0 = {'known_publish_date_tags': {'attribute': 'name', 'value': 'super-rare-date-tag',

@@ -59,15 +59,24 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 
 class PublishDatePattern(object):
 
-    def __init__(self, attr, value, content, domain=None):
+    def __init__(self, attr=None, value=None, content=None, subcontent=None,
+                 tag=None, domain=None):
+        if (not attr and not value) and not tag:
+            raise Exception("`attr` and `value` must be set or `tag` must be set")
         self.attr = attr
         self.value = value
         self.content = content
+        self.subcontent = subcontent
+        self.tag = tag
         self.domain = domain
 
     def __repr__(self):
-        return "PublishDatePattern(attr={} value={} content={} domain={})".format(
-                    self.attr, self.value, self.content, self.domain)
+        if self.tag:
+            return "PublishDatePattern(tag={}, attr={}, value={} domain={})".format(
+                        self.tag, self.attr, self.value, self.domain)
+        else:
+            return "PublishDatePattern(attr={}, value={} content={} subcontent={} domain={})".format(
+                        self.attr, self.value, self.content, self.subcontent, self.domain)
 
 
 KNOWN_PUBLISH_DATE_TAGS = [
@@ -75,7 +84,9 @@ KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='property', value='article:published_time', content='content'),
     PublishDatePattern(attr='name', value='OriginalPublicationDate', content='content'),
     PublishDatePattern(attr='itemprop', value='datePublished', content='datetime'),
-    PublishDatePattern(attr='name', value='published_time_telegram', content='content')
+    PublishDatePattern(attr='name', value='published_time_telegram', content='content'),
+    PublishDatePattern(attr='name', value='parsely-page', content='content', subcontent='pub_date'),
+    PublishDatePattern(tag='time')
 ]
 
 
@@ -140,6 +151,9 @@ class Configuration(object):
             '''
             if "tag" in val:
                 pat = ArticleContextPattern(tag=val["tag"])
+                if "attr" in val:
+                    pat.attr = val["attr"]
+                    pat.value = val["value"]
             elif "attr" in val:
                 pat = ArticleContextPattern(attr=val["attr"], value=val["value"])
 
@@ -180,9 +194,16 @@ class Configuration(object):
         def create_pat_from_dict(val):
             '''Helper function used to create an PublishDatePattern from a dictionary
             '''
-            if "attribute" in val:
+            if "tag" in val:
+                pat = PublishDatePattern(tag=val["tag"])
+                if "attribute" in val:
+                    pat.attr = val["attribute"]
+                    pat.value = val["value"]
+            elif "attribute" in val:
                 pat = PublishDatePattern(attr=val["attribute"], value=val["value"],
                                          content=val["content"])
+                if "subcontent" in val:
+                    pat.subcontent = val["subcontent"]
 
             if "domain" in val:
                 pat.domain = val["domain"]

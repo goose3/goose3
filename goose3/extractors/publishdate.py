@@ -21,6 +21,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import json
+
 from goose3.extractors import BaseExtractor
 
 
@@ -40,7 +42,19 @@ class PublishDateExtractor(BaseExtractor):
                 continue
             meta_tags = self.parser.getElementsByTag(self.article.doc,
                                                      attr=known_meta_tag.attr,
-                                                     value=known_meta_tag.value)
+                                                     value=known_meta_tag.value,
+                                                     tag=known_meta_tag.tag)
             if meta_tags:
-                return self.parser.getAttribute(meta_tags[0], known_meta_tag.content)
+                if known_meta_tag.tag is None:
+                    content = self.parser.getAttribute(meta_tags[0], known_meta_tag.content)
+                    if known_meta_tag.subcontent:
+                        try:
+                            subcontent = json.loads(content)
+
+                            return subcontent[known_meta_tag.subcontent]
+                        except (ValueError, KeyError):
+                            return None
+                    return content
+                else:
+                    return meta_tags[0].text_content().strip()
         return None
