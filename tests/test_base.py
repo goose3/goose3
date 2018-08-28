@@ -112,7 +112,7 @@ class TestExtractionBase(unittest.TestCase):
             result_value = getattr(article, field, None)
 
             # handle checking datetimes...
-            if field == 'publish_datetime':
+            if field in ['publish_datetime', 'publish_utc']:
                 self.assertEqual(type(result_value), type(datetime.today()))
                 result_value = result_value.isoformat(sep=' ')
 

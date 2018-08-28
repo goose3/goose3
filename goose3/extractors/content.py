@@ -374,8 +374,8 @@ class ContentExtractor(BaseExtractor):
         for elm in self.parser.getChildren(node):
             e_tag = self.parser.getTag(elm)
             if e_tag not in parse_tags:
-                if (self.is_highlink_density(elm) or self.is_table_and_no_para_exist(elm)
-                        or not self.is_nodescore_threshold_met(node, elm)):
+                if (self.is_highlink_density(elm) or self.is_table_and_no_para_exist(elm) or
+                        not self.is_nodescore_threshold_met(node, elm)):
                     self.parser.remove(elm)
         return node
 

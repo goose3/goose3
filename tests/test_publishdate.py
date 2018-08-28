@@ -32,43 +32,43 @@ class TestPublishDate(TestExtractionBase):
 
     def test_publish_date(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_rnews(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_article(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_schema(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_parsely_page(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_tag(self):
         config = {'known_publish_date_tags': {'attribute': 'class', 'value': 'pubdate',
                                               'tag': 'div'}}
         article = self.getArticle(config)
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
     def test_publish_date_config(self):
         # Test with configuring the pubdate with a dict and no domain filter
         config0 = {'known_publish_date_tags': {'attribute': 'name', 'value': 'super-rare-date-tag',
                                                'content': 'value'}}
         article = self.getArticle(config_=config0)
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
         # Test with configuring the pubdate with a PublishDatePattern and no domain filter
         config1 = {'known_publish_date_tags': PublishDatePattern(attr='name',
                                                                  value='super-rare-date-tag',
                                                                  content='value')}
         article = self.getArticle(config_=config1)
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])
 
         # Test with configuring the incorrect domain filter
         config2 = {'known_publish_date_tags': PublishDatePattern(attr='name',
@@ -78,6 +78,7 @@ class TestPublishDate(TestExtractionBase):
         article = self.getArticle(config_=config2)
         assert not article.publish_date
         assert not article.publish_datetime
+        assert not article.publish_utc
 
         # Test with configuring the correct domain filter
         config3 = {'known_publish_date_tags': PublishDatePattern(attr='name',
@@ -85,4 +86,4 @@ class TestPublishDate(TestExtractionBase):
                                                                  content='value',
                                                                  domain='example.com')}
         article = self.getArticle(config_=config3)
-        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime'])
+        self.runArticleAssertions(article=article, fields=['publish_date', 'publish_datetime', 'publish_utc'])

@@ -141,9 +141,9 @@ class OutputFormatter(object):
             tag = self.parser.getTag(elm)
             text = self.parser.getText(elm)
             stop_words = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
-            if ((tag != 'br' or text != '\\r') and stop_words.get_stopword_count() < 3
-                    and len(self.parser.getElementsByTag(elm, tag='object')) == 0
-                    and len(self.parser.getElementsByTag(elm, tag='embed')) == 0):
+            if ((tag != 'br' or text != '\\r') and stop_words.get_stopword_count() < 3 and
+                    len(self.parser.getElementsByTag(elm, tag='object')) == 0 and
+                    len(self.parser.getElementsByTag(elm, tag='embed')) == 0):
                 self.parser.remove(elm)
             # TODO
             # check if it is in the right place
