@@ -21,6 +21,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import json
+from datetime import datetime
 import os
 import unittest
 
@@ -110,6 +111,11 @@ class TestExtractionBase(unittest.TestCase):
             expected_value = self.data['expected'][field]
             result_value = getattr(article, field, None)
 
+            # handle checking datetimes...
+            if field == 'publish_datetime':
+                self.assertEqual(type(result_value), type(datetime.today()))
+                result_value = result_value.isoformat(sep=' ')
+
             # custom assertion for a given field
             assertion = 'assert_%s' % field
             if hasattr(self, assertion):
@@ -117,7 +123,7 @@ class TestExtractionBase(unittest.TestCase):
                 continue
 
             # default assertion
-            msg = "Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+            msg = "Error %s \nexpected: %s\nresult:   %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     # def extract(self, instance):
@@ -181,4 +187,3 @@ class TestExtractionBase(unittest.TestCase):
                 return g.extract(url=self.data['url'])
             else:
                 return g.extract(raw_html=self.html)
-

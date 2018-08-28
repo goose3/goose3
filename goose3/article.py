@@ -49,6 +49,7 @@ class Article(object):
         self._doc = None
         self._raw_doc = None
         self._publish_date = None
+        self._publish_datetime = None
         self._additional_data = {}
 
     @property
@@ -248,6 +249,14 @@ class Article(object):
             Note:
                 Read only '''
         return self._publish_date
+
+    @property
+    def publish_datetime(self):
+        ''' datetime.datetime: The date time version of the published date based on meta tag extraction
+
+            Note:
+                Read only '''
+        return self._publish_datetime
 
     @property
     def additional_data(self):

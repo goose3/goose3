@@ -1,6 +1,7 @@
 {
   "url": "http://example.com/example",
     "expected": {
-        "publish_date": "2014-06-30T16:54:02+00:00"
+        "publish_date": "2014-06-30T16:54:02+00:00",
+        "publish_datetime": "2014-06-30 16:54:02+00:00"
     }
 }
