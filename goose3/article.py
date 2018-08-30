@@ -49,8 +49,7 @@ class Article(object):
         self._doc = None
         self._raw_doc = None
         self._publish_date = None
-        self._publish_datetime = None
-        self._publish_utc = None
+        self._publish_datetime_utc = None
         self._additional_data = {}
 
     @property
@@ -252,21 +251,13 @@ class Article(object):
         return self._publish_date
 
     @property
-    def publish_datetime(self):
-        ''' datetime.datetime: The date time version of the published date based on meta tag extraction
-
-            Note:
-                Read only '''
-        return self._publish_datetime
-
-    @property
-    def publish_utc(self):
+    def publish_datetime_utc(self):
         ''' datetime.datetime: The date time version of the published date based on meta tag extraction \
             in the UTC timezone, if timezone information is known
 
             Note:
                 Read only '''
-        return self._publish_utc
+        return self._publish_datetime_utc
 
     @property
     def additional_data(self):

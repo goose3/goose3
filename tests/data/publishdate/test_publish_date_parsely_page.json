@@ -2,7 +2,6 @@
   "url": "http://example.com/test_publish_date_parsely_page.html",
   "expected": {
       "publish_date": "2014-11-23T16:00:00+04:00",
-      "publish_datetime": "2014-11-23 16:00:00+04:00",
-      "publish_utc": "2014-11-23 12:00:00+00:00"
+      "publish_datetime_utc": "2014-11-23 12:00:00+00:00"
   }
 }

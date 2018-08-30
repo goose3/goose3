@@ -169,13 +169,13 @@ class Crawler(object):
         self.article._publish_date = self.publishdate_extractor.extract()
         if self.article.publish_date:
             try:
-                self.article._publish_datetime = dateutil.parser.parse(self.article.publish_date)
-                if self.article.publish_datetime.tzinfo:
-                    self.article._publish_utc = self.article._publish_datetime.astimezone(tzutc())
+                publish_datetime = dateutil.parser.parse(self.article.publish_date)
+                if publish_datetime.tzinfo:
+                    self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
                 else:
-                    self.article._publish_utc = self.article.publish_datetime
+                    self.article._publish_datetime_utc = publish_datetime
             except (ValueError, OverflowError):
-                self.article._publish_datetime = None
+                self.article._publish_datetime_utc = None
 
         # tags
         self.article._tags = self.tags_extractor.extract()
