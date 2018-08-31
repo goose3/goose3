@@ -24,6 +24,9 @@ import os
 import glob
 from copy import deepcopy
 
+import dateutil.parser
+from dateutil.tz import tzutc
+
 from goose3.article import Article
 from goose3.utils import URLHelper, RawHelper
 from goose3.extractors.content import StandardContentExtractor
@@ -164,6 +167,15 @@ class Crawler(object):
 
         # publishdate
         self.article._publish_date = self.publishdate_extractor.extract()
+        if self.article.publish_date:
+            try:
+                publish_datetime = dateutil.parser.parse(self.article.publish_date)
+                if publish_datetime.tzinfo:
+                    self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
+                else:
+                    self.article._publish_datetime_utc = publish_datetime
+            except (ValueError, OverflowError):
+                self.article._publish_datetime_utc = None
 
         # tags
         self.article._tags = self.tags_extractor.extract()

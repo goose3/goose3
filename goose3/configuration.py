@@ -53,7 +53,8 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
     ArticleContextPattern(attr='itemprop', value='articleBody'),
     ArticleContextPattern(attr='class', value='post-content'),
     ArticleContextPattern(attr='class', value='g-content'),
-    ArticleContextPattern(tag='article')
+    ArticleContextPattern(attr='class', value='post-outer'),
+    ArticleContextPattern(tag='article'),
 ]
 
 
@@ -86,7 +87,7 @@ KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='itemprop', value='datePublished', content='datetime'),
     PublishDatePattern(attr='name', value='published_time_telegram', content='content'),
     PublishDatePattern(attr='name', value='parsely-page', content='content', subcontent='pub_date'),
-    PublishDatePattern(tag='time')
+    PublishDatePattern(tag='time'),
 ]
 
 
