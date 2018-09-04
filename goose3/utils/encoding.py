@@ -65,7 +65,7 @@ def force_unicode(string, encoding='utf-8', strings_only=False, errors='strict')
         return string
     try:
         if not isinstance(string, str):
-            if hasattr(string, '__unicode__'):
+            if hasattr(string, '__unicode__'):  # this is python2 only
                 string = string.__unicode__()
             else:
                 try:
@@ -127,5 +127,5 @@ def smart_str(string, encoding='utf-8', strings_only=False, errors='strict'):
                 return ' '.join([smart_str(arg, encoding, strings_only,
                                            errors) for arg in string])
             return str(string).encode(encoding, errors)
-    else:
+    else:  # the bytes version...
         return string
