@@ -258,7 +258,7 @@ class Crawler(object):
             return crawl_candidate.raw_html
 
         # fetch HTML
-        html = self.fetcher.fetch(parsing_candidate.url)
+        html = self.fetcher.fetch(parsing_candidate.url, as_text=False)
         return html
 
     def get_metas_extractor(self):

@@ -47,18 +47,23 @@ class NetworkFetcher(object):
     def get_url(self):
         return self._url
 
-    def fetch(self, url):
+    def fetch(self, url, as_text=False):
         response = self._connection.get(url, timeout=self.config.http_timeout,
                                         headers=self.config.http_headers,
                                         proxies=self.config.http_proxies,
                                         auth=self.config.http_auth)
         if response.ok:
             self._url = response.url
-            text = response.content
+            if as_text:  # get the correctly encoded html
+                text = response.text
+            else:
+                text = response.content  # for images, etc
         else:
             self._url = None
             text = None
             if self.config.strict:
                 raise NetworkError(response.status_code, response.reason)
 
+        # print(response.encoding)
+        # print(response.text)
         return text
