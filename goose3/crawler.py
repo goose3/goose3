@@ -29,6 +29,7 @@ from dateutil.tz import tzutc
 
 from goose3.article import Article
 from goose3.utils import URLHelper, RawHelper
+from goose3.text import get_encodings_from_content
 from goose3.extractors.content import StandardContentExtractor
 from goose3.extractors.videos import VideoExtractor
 from goose3.extractors.title import TitleExtractor
@@ -258,8 +259,19 @@ class Crawler(object):
             return crawl_candidate.raw_html
 
         # fetch HTML
-        html = self.fetcher.fetch(parsing_candidate.url)
-        return html
+        response = self.fetcher.fetch_obj(parsing_candidate.url)
+        if response.encoding != 'ISO-8859-1':  # shows that we don't actually know
+            # return response as a unicode string
+            html = response.text
+        else:
+            html = response.content
+            if 'charset' not in response.headers.get('content-type'):
+                encodings = get_encodings_from_content(response.text)
+                if len(encodings) > 0:
+                    response.encoding = encodings[0]
+                    html = response.text
+
+        return html or ''
 
     def get_metas_extractor(self):
         return MetasExtractor(self.config, self.article)
