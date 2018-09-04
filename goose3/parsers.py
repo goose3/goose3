@@ -182,8 +182,11 @@ class Parser(object):
         return node.tag
 
     @classmethod
-    def getText(cls, node):
-        txts = [i for i in node.itertext()]
+    def getText(cls, node, encoding="utf-8"):
+        txts = [
+            etree.tostring(elem, method="text", encoding=encoding).decode("utf-8", "ignore")
+            for elem in node.iter()
+        ]
         return innerTrim(' '.join(txts).strip())
 
     @classmethod
