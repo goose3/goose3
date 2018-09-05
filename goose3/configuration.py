@@ -73,11 +73,11 @@ class PublishDatePattern(object):
 
     def __repr__(self):
         if self.tag:
-            return "PublishDatePattern(tag={}, attr={}, value={} domain={})".format(
-                        self.tag, self.attr, self.value, self.domain)
+            rpr = "PublishDatePattern(tag={}, attr={}, value={} domain={})"
+            return rpr.format(self.tag, self.attr, self.value, self.domain)
         else:
-            return "PublishDatePattern(attr={}, value={} content={} subcontent={} domain={})".format(
-                        self.attr, self.value, self.content, self.subcontent, self.domain)
+            rpr = "PublishDatePattern(attr={}, value={} content={} subcontent={} domain={})"
+            return rpr.format(self.attr, self.value, self.content, self.subcontent, self.domain)
 
 
 KNOWN_PUBLISH_DATE_TAGS = [

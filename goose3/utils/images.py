@@ -47,9 +47,6 @@ class ImageUtils(object):
                     width, height = image.size
             image_details.set_width(width)
             image_details.set_height(height)
-        except IOError:
-            image_details.set_mime_type('NA')
-            LOG.exception("File not found")
         except OSError:
             image_details.set_mime_type('NA')
             LOG.exception("Cannot identify image file")

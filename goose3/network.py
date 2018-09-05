@@ -61,7 +61,5 @@ class NetworkFetcher(object):
         return text
 
     def fetch_obj(self, url):
-        return self._connection.get(url, timeout=self.config.http_timeout,
-                                    headers=self.config.http_headers,
-                                    proxies=self.config.http_proxies,
-                                    auth=self.config.http_auth)
+        return self._connection.get(url, timeout=self.config.http_timeout, headers=self.config.http_headers,
+                                    proxies=self.config.http_proxies, auth=self.config.http_auth)
