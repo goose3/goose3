@@ -41,7 +41,7 @@ class TitleExtractor(BaseExtractor):
             # remove the site name from title
             title = title.replace(site_name, '').strip()
         elif (self.article.schema and "publisher" in self.article.schema and
-                "name" in self.article.schema["publisher"]):
+              "name" in self.article.schema["publisher"]):
             site_name = self.article.schema["publisher"]["name"]
             # remove the site name from title
             title = title.replace(site_name, '').strip()
