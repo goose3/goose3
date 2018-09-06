@@ -3,6 +3,7 @@
 ### Current Version
 * Added additional date parsing [see PR #71](https://github.com/goose3/goose3/pull/71) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Added datetime representation of the publish date `publish_datetime_utc` [see issue #72](https://github.com/goose3/goose3/issues/72)
+* Fixed mismatch encoding error [see issue #74](https://github.com/goose3/goose3/issues/74)
 
 ### Version 3.1.4
 * Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/59) Thanks [@dlrobertson](https://github.com/dlrobertson)!
