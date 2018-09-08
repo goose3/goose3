@@ -263,15 +263,16 @@ class Crawler(object):
         if response.encoding != 'ISO-8859-1':  # shows that we don't actually know
             # return response as a unicode string
             html = response.text
+            self.article._meta_encoding = response.encoding
         else:
             html = response.content
-            if 'charset' not in response.headers.get('content-type'):
-                encodings = get_encodings_from_content(response.text)
-                if len(encodings) > 0:
-                    response.encoding = encodings[0]
-                    html = response.text
-
-        return html or ''
+            encodings = get_encodings_from_content(response.text)
+            if len(encodings) > 0:
+                self.article._meta_encoding = encodings[0]
+                html = response.text
+            else:
+                self.article._meta_encoding = encodings
+        return html
 
     def get_metas_extractor(self):
         return MetasExtractor(self.config, self.article)
