@@ -403,7 +403,8 @@ class Configuration(object):
                 Defaults to the english stop words
             Note:
                 Current stop words available in `goose3.text` include: \n
-                `StopWords`, `StopWordsChinese`, `StopWordsArabic`, and `StopWordsKorean`
+                `StopWords`, `StopWordsChinese`, `StopWordsArabic`, `StopWordsKorean`, \n
+                and `StopWordsArmenian`
         '''
         return self._stopwords_class
 

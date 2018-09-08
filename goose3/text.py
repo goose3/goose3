@@ -222,3 +222,29 @@ class StopWordsKorean(StopWords):
         stats.set_stopword_count(len(overlapping_stopwords))
         stats.set_stop_words(overlapping_stopwords)
         return stats
+
+
+class StopWordsArmenian(StopWords):
+    """
+    Armenian segmentation
+    """
+    def __init__(self, language='hg'):
+        super(StopWordsArmenian, self).__init__(language='hg')
+
+    def get_stopword_count(self, content):
+        if not content:
+            return WordStats()
+        stats = WordStats()
+        stripped_input = self.remove_punctuation(content)
+        candidate_words = self.candidate_words(stripped_input)
+        overlapping_stopwords = []
+        i = 0
+        for _ in candidate_words:
+            i += 1
+            for stop_word in self._stop_words:
+                overlapping_stopwords.append(stop_word)
+
+        stats.set_word_count(i)
+        stats.set_stopword_count(len(overlapping_stopwords))
+        stats.set_stop_words(overlapping_stopwords)
+        return stats

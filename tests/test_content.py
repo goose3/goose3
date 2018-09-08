@@ -28,6 +28,7 @@ from goose3 import ArticleContextPattern
 from goose3.text import StopWordsChinese
 from goose3.text import StopWordsArabic
 from goose3.text import StopWordsKorean
+from goose3.text import StopWordsArmenian
 
 
 class TestExtractions(TestExtractionBase):
@@ -332,6 +333,19 @@ class TestExtractKorean(TestExtractionBase):
     def test_donga_korean(self):
         article = self.getArticle()
         fields = ['cleaned_text', 'meta_description', 'meta_keywords']
+        self.runArticleAssertions(article=article, fields=fields)
+
+
+class TestExtractArmenian(TestExtractionBase):
+
+    def getConfig(self):
+        config = super(TestExtractArmenian, self).getConfig()
+        config.stopwords_class = StopWordsArmenian
+        return config
+
+    def test_panarmenian_armenian(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
 
 
