@@ -1,12 +1,12 @@
 {
     "url": "http://www.panarmenian.net/arm/news/250976/",
-    "target_language": "hg",
+    "target_language": "hy",
     "expected": {
         "meta_description": "Հատուկ չափորոշիչներ են մշակվելու", 
         "domain": "panarmenian.net", 
         "final_url": "http://www.panarmenian.net/arm/news/250976/", 
         "meta_keywords": "", 
-        "cleaned_text": "Հատուկ չափորոշիչներ են մշակվելու", 
+        "cleaned_text": "PanARMENIAN.Net - Տարկետման իրավունք կստանան առանձնակի տաղանդ", 
         "meta_favicon": "", 
         "meta_lang": ""
     }
