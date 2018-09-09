@@ -1,0 +1,13 @@
+{
+    "url": "http://www.panarmenian.net/arm/news/250976/",
+    "target_language": "hg",
+    "expected": {
+        "meta_description": "Հատուկ չափորոշիչներ են մշակվելու", 
+        "domain": "panarmenian.net", 
+        "final_url": "http://www.panarmenian.net/arm/news/250976/", 
+        "meta_keywords": "", 
+        "cleaned_text": "Հատուկ չափորոշիչներ են մշակվելու", 
+        "meta_favicon": "", 
+        "meta_lang": ""
+    }
+}
