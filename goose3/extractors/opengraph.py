@@ -38,11 +38,10 @@ class OpenGraphExtractor(BaseExtractor):
         og_types = [
             self.parser.getAttribute(meta, 'content')
             for meta in metas
-            if (self.parser.getAttribute(meta, 'property') == "og:type" 
-                and self.parser.getAttribute(meta, 'content'))
+            if self.parser.getAttribute(meta, 'property') == "og:type"
         ]
         if og_types:
-            og_type = og_types[0] + ':'
+            og_type = og_types[0] + ":" if og_types[0] else None
 
         for meta in metas:
             attr = self.parser.getAttribute(meta, 'property')
