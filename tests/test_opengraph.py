@@ -34,4 +34,8 @@ class TestOpenGraph(TestExtractionBase):
 
     def test_opengraph_type(self):
         article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['opengraph', 'publish_date'])
+
+    def test_opengraph_type_none(self):
+        article = self.getArticle()
         self.runArticleAssertions(article=article, fields=['opengraph'])
