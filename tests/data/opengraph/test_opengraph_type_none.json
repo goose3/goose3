@@ -4,7 +4,7 @@
         "opengraph": {
             "url": "http://example.com/test_opengraph_type_none.html",
             "type": "book",
-            "book:release_date": "Sun Nov 23 16:00:00 EDT 2014",
+            "book:release_date": "Sun Nov 23 16:00:00 EDT 2014"
         }
     }
 }
