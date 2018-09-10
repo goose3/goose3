@@ -42,7 +42,7 @@ class OpenGraphExtractor(BaseExtractor):
                 and self.parser.getAttribute(meta, 'content'))
         ]
         if og_types:
-            og_type = og_types[0]
+            og_type = og_types[0] + ':'
 
         for meta in metas:
             attr = self.parser.getAttribute(meta, 'property')
