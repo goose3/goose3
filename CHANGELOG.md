@@ -1,9 +1,10 @@
 # Goose3
 
-### Current Version
+### Version 3.1.5
 * Added additional date parsing [see PR #71](https://github.com/goose3/goose3/pull/71) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Added datetime representation of the publish date `publish_datetime_utc` [see issue #72](https://github.com/goose3/goose3/issues/72)
 * Fixed mismatch encoding error [see issue #74](https://github.com/goose3/goose3/issues/74)
+* Fixed og_type with NoneType error [see issue #81](https://github.com/goose3/goose3/issues/81) Thanks [dust0x](https://github.com/dust0x)!
 
 ### Version 3.1.4
 * Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/59) Thanks [@dlrobertson](https://github.com/dlrobertson)!
