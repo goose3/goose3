@@ -3,7 +3,7 @@
     "expected": {
         "cleaned_text": "",
         "top_image": {
-            "extraction_type": "reportagenewsarticle",
+            "extraction_type": "schema.org",
             "src": "http://go.com/images/465395/",
             "confidence_score": 100,
             "bytes": 631,

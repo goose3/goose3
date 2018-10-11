@@ -25,8 +25,14 @@ import json
 
 from goose3.extractors import BaseExtractor
 
+KNOWN_SCHEMA_TYPES = (
+    "ReportageNewsArticle",
+    "NewsArticle",
+    "Article"
+)
 
-class ReportageNewsArticleExtractor(BaseExtractor):
+
+class SchemaExtractor(BaseExtractor):
 
     def extract(self):
         node = self.article.doc
@@ -38,11 +44,11 @@ class ReportageNewsArticleExtractor(BaseExtractor):
                 if isinstance(content, list):
                     for context in content:
                         if (context["@context"] == "http://schema.org" and
-                                context["@type"] == "ReportageNewsArticle"):
+                                context["@type"] in KNOWN_SCHEMA_TYPES):
                             return content
                 elif isinstance(content, dict):
                     if (content["@context"] == "http://schema.org" and
-                            content["@type"] == "ReportageNewsArticle"):
+                            content["@type"] in KNOWN_SCHEMA_TYPES):
                         return content
             except (ValueError, KeyError):
                 # If the contents are not proper JSON or a key we expect

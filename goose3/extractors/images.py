@@ -319,7 +319,7 @@ class ImageExtractor(BaseExtractor):
 
         Supported Schemas
          - Open Graph
-         - ReportageNewsArticle
+         - schema.org
         """
         if 'image' in self.article.opengraph:
             return self.get_image(self.article.opengraph["image"],
@@ -327,7 +327,7 @@ class ImageExtractor(BaseExtractor):
         elif (self.article.schema and 'image' in self.article.schema and
               "url" in self.article.schema["image"]):
             return self.get_image(self.article.schema["image"]["url"],
-                                  extraction_type='reportagenewsarticle')
+                                  extraction_type='schema.org')
         return None
 
     def get_local_image(self, src):
