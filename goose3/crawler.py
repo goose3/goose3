@@ -272,7 +272,7 @@ class Crawler(object):
             encodings = get_encodings_from_content(response.text)
             if len(encodings) > 0:
                 self.article._meta_encoding = encodings[0]
-                response.encoding = self.article._meta_encoding[0]
+                response.encoding = encodings[0]
                 html = response.text
             else:
                 self.article._meta_encoding = encodings
