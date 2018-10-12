@@ -39,3 +39,7 @@ class TestOpenGraph(TestExtractionBase):
     def test_opengraph_type_none(self):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=['opengraph'])
+
+    def test_opengraph_types_mult(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=['opengraph'])
