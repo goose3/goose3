@@ -263,7 +263,7 @@ class Crawler(object):
 
         # fetch HTML
         response = self.fetcher.fetch_obj(parsing_candidate.url)
-        if response.encoding != 'ISO-8859-1':  # shows that we don't actually know
+        if response.encoding != 'ISO-8859-1':  # requests has a good idea; use what it says
             # return response as a unicode string
             html = response.text
             self.article._meta_encoding = response.encoding
