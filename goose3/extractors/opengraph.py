@@ -28,7 +28,6 @@ class OpenGraphExtractor(BaseExtractor):
 
     def extract(self):
         opengraph_dict = {}
-        og_type = None
         node = self.article.doc
         metas = self.parser.getElementsByTag(node, 'meta')
 
@@ -37,9 +36,10 @@ class OpenGraphExtractor(BaseExtractor):
         og_types = [
             self.parser.getAttribute(meta, 'content')
             for meta in metas
-            if (self.parser.getAttribute(meta, 'property') == "og:type"
-                and self.parser.getAttribute(meta, 'content'))
+            if (self.parser.getAttribute(meta, 'property') == "og:type" and
+                self.parser.getAttribute(meta, 'content'))
         ]
+
         if og_types:
             # make unique set of possible prefixes
             og_types = tuple([x for x in set(og_types)])
