@@ -33,8 +33,7 @@ class OpenGraphExtractor(BaseExtractor):
         metas = self.parser.getElementsByTag(node, 'meta')
 
         # Open Graph type that is supported. In theory it is possible
-        # that a page has multiple types, but we will only consider
-        # the first one.
+        # that a page has multiple types
         og_types = [
             self.parser.getAttribute(meta, 'content')
             for meta in metas
@@ -42,7 +41,8 @@ class OpenGraphExtractor(BaseExtractor):
                 and self.parser.getAttribute(meta, 'content'))
         ]
         if og_types:
-            og_type = og_types[0] + ":"
+            # make unique set of possible prefixes
+            og_types = tuple([x for x in set(og_types)])
 
         for meta in metas:
             attr = self.parser.getAttribute(meta, 'property')
@@ -50,7 +50,12 @@ class OpenGraphExtractor(BaseExtractor):
             if attr and value:
                 if attr.startswith("og:"):
                     opengraph_dict.update({attr.split(":", 1)[1]: value})
-                elif og_type and attr.startswith(og_type):
+                elif og_types and attr.startswith(og_types):
                     opengraph_dict.update({attr: value})
+
+        # add all the types in... if there are multiple
+        if len(og_types) > 1:
+            opengraph_dict.pop('type')
+            opengraph_dict['types'] = [x for x in sorted(og_types)]
 
         return opengraph_dict
