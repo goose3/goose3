@@ -40,7 +40,7 @@ from goose3.extractors.authors import AuthorsExtractor
 from goose3.extractors.tags import TagsExtractor
 from goose3.extractors.opengraph import OpenGraphExtractor
 from goose3.extractors.publishdate import PublishDateExtractor
-from goose3.extractors.reportagenewsarticle import ReportageNewsArticleExtractor
+from goose3.extractors.schema import SchemaExtractor
 from goose3.extractors.metas import MetasExtractor
 from goose3.cleaners import StandardDocumentCleaner
 from goose3.outputformatters import StandardOutputFormatter
@@ -82,8 +82,8 @@ class Crawler(object):
         # opengraph extractor
         self.opengraph_extractor = self.get_opengraph_extractor()
 
-        # reportage news article extractor
-        self.reportagenewsarticle_extractor = self.get_reportagenewsarticle_extractor()
+        # schema.org news article extractor
+        self.schema_extractor = self.get_schema_extractor()
 
         # publishdate extractor
         self.publishdate_extractor = self.get_publishdate_extractor()
@@ -146,8 +146,11 @@ class Crawler(object):
         # open graph
         self.article._opengraph = self.opengraph_extractor.extract()
 
-        # schema (ReportageNewsArticle) https://pending.schema.org/ReportageNewsArticle
-        self.article._schema = self.reportagenewsarticle_extractor.extract()
+        # schema.org:
+        #  - (ReportageNewsArticle) https://pending.schema.org/ReportageNewsArticle
+        #  - (NewsArticle) https://schema.org/NewsArticle
+        #  - (Article) https://schema.org/Article
+        self.article._schema = self.schema_extractor.extract()
 
         if not self.article._final_url:
             if "url" in self.article.opengraph:
@@ -283,8 +286,8 @@ class Crawler(object):
     def get_opengraph_extractor(self):
         return OpenGraphExtractor(self.config, self.article)
 
-    def get_reportagenewsarticle_extractor(self):
-        return ReportageNewsArticleExtractor(self.config, self.article)
+    def get_schema_extractor(self):
+        return SchemaExtractor(self.config, self.article)
 
     def get_tags_extractor(self):
         return TagsExtractor(self.config, self.article)
