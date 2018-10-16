@@ -46,6 +46,11 @@ class TestArticleAuthor(TestExtractionBase):
         self.assertEqual(expected_value, result_value, msg=msg)
 
     def test_author_config(self):
+        field = 'authors'
+
+        # Do not call self.runArticleAssertions because need to sort results,
+        # because set not save ordering, so test failed;
+
         config = {
             'known_author_patterns':
                 [
@@ -68,4 +73,12 @@ class TestArticleAuthor(TestExtractionBase):
                 ]
         }
         article = self.getArticle(config_=config)
-        self.runArticleAssertions(article=article, fields=['authors'])
+        expected_value = self.data['expected'][field]
+        result_value = getattr(article, field, None)
+
+        expected_value.sort()
+        result_value.sort()
+
+        # default assertion
+        msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+        self.assertEqual(expected_value, result_value, msg=msg)
