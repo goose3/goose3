@@ -27,18 +27,34 @@ from goose3.extractors import BaseExtractor
 class AuthorsExtractor(BaseExtractor):
 
     def extract(self):
-        authors = []
-        author_nodes = self.parser.getElementsByTag(self.article.doc,
-                                                    attr='itemprop',
-                                                    value='author')
+        authors = set()
 
-        for author in author_nodes:
-            name_nodes = self.parser.getElementsByTag(author,
-                                                      attr='itemprop',
-                                                      value='name')
+        for known_tag in self.config.known_author_patterns:
+            meta_tags = self.parser.getElementsByTag(self.article.doc,
+                                                     attr=known_tag.attr,
+                                                     value=known_tag.value,
+                                                     tag=known_tag.tag)
+            if not meta_tags:
+                continue
 
-            if len(name_nodes) > 0:
-                name = self.parser.getText(name_nodes[0])
-                authors.append(name)
+            for meta_tag in meta_tags:
 
-        return list(set(authors))
+                if known_tag.subpattern:
+                    name_nodes = self.parser.getElementsByTag(meta_tag,
+                                                              attr=known_tag.subpattern.attr,
+                                                              value=known_tag.subpattern.value,
+                                                              tag=known_tag.subpattern.tag)
+
+                    if len(name_nodes) > 0:
+                        name = self.parser.getText(name_nodes[0])
+                        authors.add(name)
+                else:
+                    if known_tag.tag is None:
+                        name = self.parser.getAttribute(meta_tag, known_tag.content)
+                        if not name:
+                            continue
+
+                        authors.add(name)
+                    else:
+                        authors.add(meta_tag.text_content().strip())
+        return list(authors)

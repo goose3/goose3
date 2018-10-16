@@ -88,6 +88,33 @@ KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='name', value='published_time_telegram', content='content'),
     PublishDatePattern(attr='name', value='parsely-page', content='content', subcontent='pub_date'),
     PublishDatePattern(tag='time'),
+    PublishDatePattern(attr='itemprop', value='datePublished', content='content')
+]
+
+
+class AuthorPattern(object):
+
+    def __init__(self, *, attr=None, value=None, content=None, tag=None, subpattern=None):
+        if (not attr and not value) and not tag:
+            raise Exception("`attr` and `value` must be set or `tag` must be set")
+        self.attr = attr
+        self.value = value
+        self.content = content
+        self.tag = tag
+        self.subpattern = subpattern
+
+    def __repr__(self):
+        if self.tag:
+            rpr = "AuthorPattern(tag={}, attr={}, value={})"
+            return rpr.format(self.tag, self.attr, self.value)
+        else:
+            rpr = "AuthorPattern(attr={}, value={} content={} subpattern={})"
+            return rpr.format(self.attr, self.value, self.content, self.subpattern)
+
+
+KNOWN_AUTHOR_PATTERNS = [
+    AuthorPattern(attr='itemprop', value='author', subpattern=AuthorPattern(attr='itemprop', value='name')),
+    AuthorPattern(attr='name', value='author', content='content')
 ]
 
 
@@ -109,6 +136,7 @@ class Configuration(object):
         self._local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
         self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS[:]
         self._known_publish_date_tags = KNOWN_PUBLISH_DATE_TAGS[:]
+        self._known_author_patterns = KNOWN_AUTHOR_PATTERNS[:]
         self._target_language = 'en'
         self._use_meta_language = True
 
@@ -222,6 +250,52 @@ class Configuration(object):
             self._known_publish_date_tags.insert(0, create_pat_from_dict(val))
         else:
             raise Exception("Unknown type: {}. Use a PublishDatePattern.".format(type(val)))
+
+    @property
+    def known_author_patterns(self):
+        ''' list: The tags to search to find the likely published date
+
+            Note:
+                Each entry must be a dictionary with the following keys: `attribute`, `value`, \
+                and `content`.
+        '''
+        return self._known_author_patterns
+
+    @known_author_patterns.setter
+    def known_author_patterns(self, val):
+        ''' val must be a dictionary or list of dictionaries
+            e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
+                or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
+                    {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
+        '''
+
+        def create_pat_from_dict(val):
+            '''Helper function used to create an PublishDatePattern from a dictionary
+            '''
+            if "tag" in val:
+                pat = AuthorPattern(tag=val["tag"])
+                if "attribute" in val:
+                    pat.attr = val["attribute"]
+                    pat.value = val["value"]
+            elif "attribute" in val:
+                pat = AuthorPattern(attr=val["attribute"], value=val["value"],
+                                    content=val["content"])
+            if "subpattern" in val:
+                pat.subpattern = create_pat_from_dict(val["subpattern"])
+
+            return pat
+
+        if isinstance(val, list):
+            self._known_author_patterns = [
+                                              x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
+                                              for x in val
+                                          ] + self.known_author_patterns
+        elif isinstance(val, PublishDatePattern):
+            self._known_author_patterns.insert(0, val)
+        elif isinstance(val, dict):
+            self._known_author_patterns.insert(0, create_pat_from_dict(val))
+        else:
+            raise Exception("Unknown type: {}. Use a AuthorPattern.".format(type(val)))
 
     @property
     def strict(self):

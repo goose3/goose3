@@ -44,3 +44,41 @@ class TestArticleAuthor(TestExtractionBase):
         # default assertion
         msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
         self.assertEqual(expected_value, result_value, msg=msg)
+
+    def test_author_config(self):
+        field = 'authors'
+
+        # Do not call self.runArticleAssertions because need to sort results,
+        # because set not save ordering, so test failed;
+
+        config = {
+            'known_author_patterns':
+                [
+                    {
+                        'tag': 'span',
+                        'attribute': 'class',
+                        'value': 'author',
+                        'content': 'content'
+                    },
+                    {
+                        'tag': 'span',
+                        'attribute': 'class',
+                        'value': 'byline',
+                        'subpattern': {
+                            'attribute': 'itemprop',
+                            'value': 'name',
+                            'content': 'data-byline-name'
+                        }
+                    }
+                ]
+        }
+        article = self.getArticle(config_=config)
+        expected_value = self.data['expected'][field]
+        result_value = getattr(article, field, None)
+
+        expected_value.sort()
+        result_value.sort()
+
+        # default assertion
+        msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+        self.assertEqual(expected_value, result_value, msg=msg)
