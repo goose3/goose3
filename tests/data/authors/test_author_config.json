@@ -1,0 +1,9 @@
+{
+    "url": "http://exemple.com/tweet/",
+    "expected": {
+        "authors": [
+            "KEVIN SACK",
+            "SHERI FINK"
+        ]
+    }
+}

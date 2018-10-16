@@ -44,3 +44,28 @@ class TestArticleAuthor(TestExtractionBase):
         # default assertion
         msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
         self.assertEqual(expected_value, result_value, msg=msg)
+
+    def test_author_config(self):
+        config = {
+            'known_author_patterns':
+                [
+                    {
+                        'tag': 'span',
+                        'attribute': 'class',
+                        'value': 'author',
+                        'content': 'content'
+                    },
+                    {
+                        'tag': 'span',
+                        'attribute': 'class',
+                        'value': 'byline',
+                        'subpattern': {
+                            'attribute': 'itemprop',
+                            'value': 'name',
+                            'content': 'data-byline-name'
+                        }
+                    }
+                ]
+        }
+        article = self.getArticle(config_=config)
+        self.runArticleAssertions(article=article, fields=['authors'])
