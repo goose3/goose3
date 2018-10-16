@@ -47,6 +47,9 @@ class PublishDateExtractor(BaseExtractor):
             if meta_tags:
                 if known_meta_tag.tag is None:
                     content = self.parser.getAttribute(meta_tags[0], known_meta_tag.content)
+                    # if not content try to get from other publish date tags
+                    if not content:
+                        continue
                     if known_meta_tag.subcontent:
                         try:
                             subcontent = json.loads(content)

@@ -88,6 +88,7 @@ KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='name', value='published_time_telegram', content='content'),
     PublishDatePattern(attr='name', value='parsely-page', content='content', subcontent='pub_date'),
     PublishDatePattern(tag='time'),
+    PublishDatePattern(attr='itemprop', value='datePublished', content='content')
 ]
 
 
