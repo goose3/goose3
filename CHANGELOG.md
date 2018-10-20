@@ -1,5 +1,11 @@
 # Goose3
 
+### Version 3.1.6
+* Improved handling of page encoding [see PR #92](https://github.com/goose3/goose3/pull/92)
+* Improved author and published date extraction [see PR #93](https://github.com/goose3/goose3/pull/93) Thanks [@timoilya](https://github.com/timoilya)!
+* Added additional schema extractors for schema.org parser [see PR #89](https://github.com/goose3/goose3/pull/89)
+* Allow for pulling more then the first og:type data for Opengraph [see PR #90](https://github.com/goose3/goose3/pull/90)
+
 ### Version 3.1.5
 * Added additional date parsing [see PR #71](https://github.com/goose3/goose3/pull/71) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Added datetime representation of the publish date `publish_datetime_utc` [see issue #72](https://github.com/goose3/goose3/issues/72)
