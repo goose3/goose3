@@ -55,7 +55,7 @@
     * Added `close` method to the Goose object
 * Allow the Goose object to be a context manager
 ``` python
-from goose3 import Goose
+from vklabs.goose3 import Goose
 with Goose() as g:
     g.extract(url='some-url-here')
 ```

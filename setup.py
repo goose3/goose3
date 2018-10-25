@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vklabs.goose3',
-    version='0.0.1',
+    version='0.0.4',
     python_requires='>=3.6',
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
@@ -19,13 +19,12 @@ setup(
         'python-dateutil>=2.7.3',
         'requests>=2.20.0',
         'six>=1.11.0',
-        'urllib3>=1.24',
-        'flake8>=3.6.0',
-        'requests-mock>=1.5.2'
+        'urllib3>=1.24'
     ],
     setup_requires=['pytest-runner'],
     tests_require=[
-        'pytest>=3.3.0',
+        'flake8==3.6.0',
+        'requests-mock==1.5.2',
     ],
     entry_points='''
     ''',

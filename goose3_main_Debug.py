@@ -1,4 +1,4 @@
-from goose3 import Goose
+from vklabs.goose3 import Goose
 import requests
 
 
