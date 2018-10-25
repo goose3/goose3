@@ -102,3 +102,4 @@ ENV/
 
 # pytest
 .pytest_cache/
+project_goose3_v/
