@@ -246,6 +246,8 @@ class DocumentCleaner(object):
                     div.remove(child)
 
                 for i, node in enumerate(replace_nodes):
+                    if node is None:
+                        continue
                     div.insert(i, node)
 
                 else_divs += 1

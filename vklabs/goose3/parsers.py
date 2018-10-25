@@ -52,15 +52,20 @@ class Parser(object):
     def fromstring(cls, html):
         if html is None:
             return html
-        encoding = get_encodings_from_content(html)
-        encoding = encoding and encoding[0] or None
-        if not encoding:
-            html = encodeValue(html)
-            doc = lxml.html.fromstring(html.encode('utf8'))
-        else:
-            html = smart_str(html, encoding=encoding)
-            parser = lxml.html.HTMLParser(encoding=encoding)
-            doc = lxml.html.fromstring(html, parser=parser)
+        doc = None
+        try:
+            encoding = get_encodings_from_content(html)
+            encoding = encoding and encoding[0] or None
+            if not encoding:
+                html = encodeValue(html)
+                doc = lxml.html.fromstring(html.encode('utf8'))
+            else:
+                html = smart_str(html, encoding=encoding)
+                parser = lxml.html.HTMLParser(encoding=encoding)
+                doc = lxml.html.fromstring(html, parser=parser)
+
+        except Exception:
+            return doc
         return doc
 
     @classmethod
