@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='vklabs.goose3',
-    version='0.0.4',
+    version='0.0.8',
     python_requires='>=3.6',
     packages=find_packages(exclude=['tests']),
-    include_package_data=True,
+    package_data={'vklabs.goose3': ['resources/images/*.txt', 'resources/text/*.txt']},
     install_requires=[
         'beautifulsoup4>=4.6.3',
         'certifi>=2018.10.15',
