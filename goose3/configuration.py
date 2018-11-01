@@ -34,7 +34,8 @@ AVAILABLE_PARSERS = {
 
 
 class ArticleContextPattern(object):
-
+    '''
+    '''
     def __init__(self, attr=None, value=None, tag=None, domain=None):
         if (not attr and not value) and not tag:
             raise Exception("`attr` and `value` must be set or `tag` must be set")
@@ -59,6 +60,8 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 
 
 class PublishDatePattern(object):
+
+    __slots__ = ['attr', 'value', 'content', 'subcontent', 'tag', 'domain']
 
     def __init__(self, attr=None, value=None, content=None, subcontent=None,
                  tag=None, domain=None):
@@ -93,6 +96,8 @@ KNOWN_PUBLISH_DATE_TAGS = [
 
 
 class AuthorPattern(object):
+
+    __slots__ = ['attr', 'value', 'content', 'tag', 'subpattern']
 
     def __init__(self, *, attr=None, value=None, content=None, tag=None, subpattern=None):
         if (not attr and not value) and not tag:
@@ -170,7 +175,8 @@ class Configuration(object):
 
     @known_context_patterns.setter
     def known_context_patterns(self, val):
-        ''' val must be a dictionary or list of dictionaries
+        ''' val must be an ArticleContextPattern, a dictionary, or list of \
+            dictionaries
             e.g., {'attr': 'class', 'value': 'my-article-class'}
                 or [{'attr': 'class', 'value': 'my-article-class'},
                     {'attr': 'id', 'value': 'my-article-id'}]
