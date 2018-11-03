@@ -34,9 +34,21 @@ AVAILABLE_PARSERS = {
 
 
 class ArticleContextPattern(object):
+    ''' Help ensure correctly generated article context patterns
+
+        Args:
+            attr (str): The attribute type: class, id, etc
+            value (str): The value of the attribute
+            tag (str): The type of tag, such as `article` that contains the \
+            main article body
+            domain (str): The domain to which this pattern pertains (optional)
+        Note:
+            Must provide, at a minimum, (attr and value) or (tag)
     '''
-    '''
-    def __init__(self, attr=None, value=None, tag=None, domain=None):
+
+    __slots__ = ['attr', 'value', 'tag', 'domain']
+
+    def __init__(self, *, attr=None, value=None, tag=None, domain=None):
         if (not attr and not value) and not tag:
             raise Exception("`attr` and `value` must be set or `tag` must be set")
         self.attr = attr
@@ -60,10 +72,25 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 
 
 class PublishDatePattern(object):
+    ''' Ensure correctly formed publish date patterns; to be used in conjuntion
+        with the configuration `known_publish_date_tags` property
+
+        Args:
+            attr (str): The attribute type: class, id, etc
+            value (str): The value of the attribute
+            content (str): The name of another attribute (of the element) that \
+            contains the value
+            subcontent (str): The name of a json object key (optional)
+            tag (str): The type of tag, such as `time` that contains the \
+            publish date
+            domain (str): The domain to which this pattern pertains (optional)
+        Note:
+            Must provide, at a minimum, (attr and value) or (tag)
+    '''
 
     __slots__ = ['attr', 'value', 'content', 'subcontent', 'tag', 'domain']
 
-    def __init__(self, attr=None, value=None, content=None, subcontent=None,
+    def __init__(self, *, attr=None, value=None, content=None, subcontent=None,
                  tag=None, domain=None):
         if (not attr and not value) and not tag:
             raise Exception("`attr` and `value` must be set or `tag` must be set")
@@ -96,6 +123,18 @@ KNOWN_PUBLISH_DATE_TAGS = [
 
 
 class AuthorPattern(object):
+    ''' Ensures that the author patterns are correctly formed for use with the
+        `known_author_patterns` of configuration
+
+        Args:
+            attr (str): The attribute type: class, id, etc
+            value (str): The value of the attribute
+            content (str): The name of another attribute (of the element) that \
+            contains the value
+            tag (str): The type of tag, such as `author` that contains the \
+            author information
+            subpattern (str): A subpattern for elements within the main attribute
+    '''
 
     __slots__ = ['attr', 'value', 'content', 'tag', 'subpattern']
 
@@ -276,7 +315,7 @@ class Configuration(object):
         '''
 
         def create_pat_from_dict(val):
-            '''Helper function used to create an PublishDatePattern from a dictionary
+            '''Helper function used to create an AuthorPatterns from a dictionary
             '''
             if "tag" in val:
                 pat = AuthorPattern(tag=val["tag"])
@@ -293,15 +332,15 @@ class Configuration(object):
 
         if isinstance(val, list):
             self._known_author_patterns = [
-                                              x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
-                                              for x in val
-                                          ] + self.known_author_patterns
-        elif isinstance(val, PublishDatePattern):
+                x if isinstance(x, AuthorPattern) else create_pat_from_dict(x)
+                for x in val
+            ] + self.known_author_patterns
+        elif isinstance(val, AuthorPattern):
             self._known_author_patterns.insert(0, val)
         elif isinstance(val, dict):
             self._known_author_patterns.insert(0, create_pat_from_dict(val))
         else:
-            raise Exception("Unknown type: {}. Use a AuthorPattern.".format(type(val)))
+            raise Exception("Unknown type: {}. Use an AuthorPattern.".format(type(val)))
 
     @property
     def strict(self):
