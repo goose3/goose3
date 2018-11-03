@@ -103,7 +103,7 @@ one would like to change:
     with Goose(config) as g:
         pass
 
-Or if there are few changes:
+Or if there are only a few changes:
 ::
 
     from goose3 import Goose
@@ -122,6 +122,29 @@ created:
 
     g = Goose()
     g.config.browser_user_agent = 'Mozilla 5.0'
+
+
+Configuration Helper Classes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+For some, more complex configuration options, there are classes available to
+help ensure that the correct values are provided. One does not need to use the
+provided classes, but it does make things a bit simpler.
+
+::
+
+    from goose3 import Goose
+    from goose3.configuration import Configuration, ArticleContextPattern, PublishDatePattern, AuthorPattern
+
+    config = Configuration()
+
+    # we know of a particular article location in the site we are pulling from
+    config.known_context_patterns = ArticleContextPattern(attr="id", value="my-site-article")
+
+    # publish date
+    config.known_publish_date_tags = PublishDatePattern(attr="id", value="pubdate", content="content")
+
+    # author
+    config.known_author_patterns = AuthorPattern(attr="id", value="writer", content="content")
 
 
 Reading Results
