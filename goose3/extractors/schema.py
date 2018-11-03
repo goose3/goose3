@@ -37,7 +37,7 @@ class SchemaExtractor(BaseExtractor):
     def extract(self):
         node = self.article.doc
         metas = self.parser.getElementsByTag(node, 'script', attr='type',
-                                             value='application/ld\+json')
+                                             value='application/ld\\+json')
         for meta in metas:
             try:
                 content = json.loads(meta.text_content())
