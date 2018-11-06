@@ -20,6 +20,15 @@ Configuration options to change how and what goose3 extracts and parses.
 .. autoclass:: goose3.Configuration
     :members:
 
+Configuration Helper Classes
+-------------------------------------------------------------------------------
+
+.. autoclass:: goose3.configuration.ArticleContextPattern
+
+.. autoclass:: goose3.configuration.AuthorPattern
+
+.. autoclass:: goose3.configuration.PublishDatePattern
+
 
 .. _articledocs:
 
