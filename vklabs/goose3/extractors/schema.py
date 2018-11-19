@@ -43,7 +43,7 @@ class SchemaExtractor(BaseExtractor):
                 content = json.loads(meta.text_content())
                 if isinstance(content, list):
                     for context in content:
-                        if not isinstance(content, dict):
+                        if not isinstance(context, dict):
                             continue
                         if (context["@context"] == "http://schema.org" and
                                 context["@type"] in KNOWN_SCHEMA_TYPES):
