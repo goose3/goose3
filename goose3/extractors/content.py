@@ -119,7 +119,7 @@ class ContentExtractor(BaseExtractor):
             def updateParent(node, depth=1):
                 parent_node = self.parser.getParent(node)
                 if parent_node is not None:
-                    self.update_score(parent_node, upscore*(2/(depth+1)))
+                    self.update_score(parent_node, upscore*(1.5/(depth+0.5)))
                     self.update_node_count(parent_node, 1)
 
                     if parent_node not in parent_nodes:
