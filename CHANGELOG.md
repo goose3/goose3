@@ -1,5 +1,8 @@
 # Goose3
 
+### Master Branch
+* Improve parent node scoring to get more of the correct data [see PR #102](https://github.com/goose3/goose3/pull/102) Thanks [@skruse](https://github.com/skruse)
+
 ### Version 3.1.6
 * Improved handling of page encoding [see PR #92](https://github.com/goose3/goose3/pull/92)
 * Improved author and published date extraction [see PR #93](https://github.com/goose3/goose3/pull/93) Thanks [@timoilya](https://github.com/timoilya)!
