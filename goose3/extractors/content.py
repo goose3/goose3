@@ -115,21 +115,20 @@ class ContentExtractor(BaseExtractor):
             word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
-            # parent node
-            parent_node = self.parser.getParent(node)
-            self.update_score(parent_node, upscore)
-            self.update_node_count(parent_node, 1)
+            # update all parents
+            def updateParent(node, depth=1):
+                parent_node = self.parser.getParent(node)
+                if parent_node is not None:
+                    self.update_score(parent_node, upscore*(1.5/(depth+0.5)))
+                    self.update_node_count(parent_node, 1)
 
-            if parent_node not in parent_nodes:
-                parent_nodes.append(parent_node)
+                    if parent_node not in parent_nodes:
+                        parent_nodes.append(parent_node)
 
-            # parentparent node
-            parent_parent_node = self.parser.getParent(parent_node)
-            if parent_parent_node is not None:
-                self.update_node_count(parent_parent_node, 1)
-                self.update_score(parent_parent_node, upscore / 2)
-                if parent_parent_node not in parent_nodes:
-                    parent_nodes.append(parent_parent_node)
+                    updateParent(parent_node, depth+1)
+
+            updateParent(node)
+
             cnt += 1
             i += 1
 
