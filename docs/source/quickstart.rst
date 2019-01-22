@@ -18,7 +18,7 @@ The easiest way to install goose3 is to use pip:
 
 ::
 
-    $ pip install pymediawiki
+    $ pip install goose3
 
 
 From source
