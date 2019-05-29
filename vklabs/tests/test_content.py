@@ -269,6 +269,11 @@ class TestExtractions(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=["cleaned_text"])
 
+    def test_wiwo(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
 
 class TestArticleTopNode(TestExtractionBase):
 
