@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vklabs.goose3',
-    version='0.1.1',
+    version='0.1.10',
     python_requires='>=3.6',
     packages=find_packages(exclude=['tests']),
     package_data={'vklabs.goose3': ['resources/images/*.txt', 'resources/text/*.txt']},
