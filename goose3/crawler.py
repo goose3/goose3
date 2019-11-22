@@ -132,14 +132,16 @@ class Crawler(object):
         return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
 
     def process(self, raw_html, final_url, link_hash):
+        #remove footnotes
+        raw_html_no_footnotes = self.formatter.remove_footnotes(raw_html)
 
         # create document
-        doc = self.get_document(raw_html)
+        doc = self.get_document(raw_html_no_footnotes)
 
         # article
         self.article._final_url = final_url
         self.article._link_hash = link_hash
-        self.article._raw_html = raw_html
+        self.article._raw_html = raw_html_no_footnotes
         self.article._doc = doc
         self.article._raw_doc = deepcopy(doc)
 
