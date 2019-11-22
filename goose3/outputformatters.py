@@ -22,6 +22,7 @@ limitations under the License.
 """
 
 import html
+import re
 
 from goose3.text import innerTrim
 
@@ -88,6 +89,10 @@ class OutputFormatter(object):
                 text = '\n• '.join(txt)
             else:
                 text = '\n'.join(txt)
+        return text
+
+    def remove_footnotes(self, raw_html):
+        text = re.sub("(<sup.*?>.*?</sup>)", "", raw_html)
         return text
 
     def add_newline_to_br(self):
