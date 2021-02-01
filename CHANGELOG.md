@@ -1,6 +1,7 @@
 # Goose3
 
-### Master Branch
+### Version 3.1.7
+* Fixed author configuration [see PR #96](https://github.com/goose3/goose3/pull/96)
 * Improve parent node scoring to get more of the correct data [see PR #102](https://github.com/goose3/goose3/pull/102) Thanks [@skruse](https://github.com/skruse)
 
 ### Version 3.1.6
