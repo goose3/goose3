@@ -1,10 +1,24 @@
 Goose3 - Article Extractor
 ===============================================
 
-.. image:: https://travis-ci.org/goose3/goose3.svg?branch=master
-    :target: https://travis-ci.org/goose3/goose3
+.. image:: https://img.shields.io/badge/license-Apache_2.0-blue.svg
+    :target: https://opensource.org/licenses/Apache-2.0/
+    :alt: License
+.. image:: https://github.com/goose3/goose3/workflows/Python%20package/badge.svg?branch=master
+    :target: https://github.com/goose3/goose3/actions?query=workflow%3A%22Python+package%22
+    :alt: Build Status
+.. image:: https://img.shields.io/github/release/goose3/goose3.svg
+    :target: https://github.com/goose3/goose3/releases
+    :alt: GitHub release
+.. image:: https://codecov.io/gh/goose3/goose3/branch/master/graph/badge.svg?token=PoWLaCLbW1
+    :target: https://codecov.io/gh/goose3/goose3
+    :alt: Test Coverage
 .. image:: https://badge.fury.io/py/goose3.svg
     :target: https://badge.fury.io/py/goose3
+    :alt: PyPi Release
+.. image:: http://pepy.tech/badge/goose3
+    :target: http://pepy.tech/count/goose3
+    :alt: Downloads
 
 Intro
 --------------------------------------------------------------------------------
