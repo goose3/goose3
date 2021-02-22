@@ -173,10 +173,7 @@ class TestExtractionBase(unittest.TestCase):
             blank_img = fobj.read()
 
         # run goose
-        g = Goose(config=config)
-
-        with requests_mock.Mocker(real_http=False) as m:
-
+        with Goose(config=config) as g, requests_mock.Mocker(real_http=False) as m:
             # load images for those tests
             m.get('http://go.com/images/465395/', content=blank_img)
             m.get('http://bla.com/images/465395/', content=blank_img)

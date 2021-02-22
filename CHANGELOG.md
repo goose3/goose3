@@ -1,5 +1,9 @@
 # Goose3
 
+### Version 3.1.8
+* Fixed title being an empty string when the title is the same as the site name [see PR #117](https://github.com/goose3/goose3/pull/117) Thanks [@Pradhvan](https://github.com/Pradhvan)
+* Add optional removal of footnotes [see issue #105](https://github.com/goose3/goose3/issues/105)
+
 ### Version 3.1.7
 * Fixed author configuration [see PR #96](https://github.com/goose3/goose3/pull/96)
 * Improve parent node scoring to get more of the correct data [see PR #102](https://github.com/goose3/goose3/pull/102) Thanks [@skruse](https://github.com/skruse)

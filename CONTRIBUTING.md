@@ -151,3 +151,4 @@ A special thanks to all the code contributors to goose3!
 [@jeffquach](https://github.com/jeffquach)
 [dust0x](https://github.com/dust0x)
 [@timoilya](https://github.com/timoilya)
+[@Pradhvan](https://github.com/Pradhvan)
