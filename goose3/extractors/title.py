@@ -36,7 +36,7 @@ class TitleExtractor(BaseExtractor):
         and use TITLE_SPLITTERS to reformat title
         """
         # check if we have the site name in opengraph data
-        if "site_name" in list(self.article.opengraph.keys()):
+        if "site_name" in list(self.article.opengraph.keys()) and self.article.opengraph['site_name'] != title:
             site_name = self.article.opengraph['site_name']
             # remove the site name from title
             title = title.replace(site_name, '').strip()
