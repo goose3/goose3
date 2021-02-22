@@ -128,7 +128,9 @@ class OutputFormatter(object):
         with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        self.parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br', 'sup')
+        self.parser.stripTags(self.get_top_node(), 'b', 'strong', 'i', 'br')
+        if self.config.keep_footnotes:
+            self.parser.stripTags(self.get_top_node(), 'sup')
 
     def remove_fewwords_paragraphs(self):
         """\

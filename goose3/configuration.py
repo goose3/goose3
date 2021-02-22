@@ -201,6 +201,7 @@ class Configuration(object):
         self._parse_lists = True
         self._pretty_lists = True
         self._parse_headers = True
+        self._keep_footnotes = True
 
     @property
     def known_context_patterns(self):
@@ -626,6 +627,20 @@ class Configuration(object):
     def parse_headers(self, val):
         ''' set if headers should be parsed '''
         self._parse_headers = bool(val)
+
+    @property
+    def keep_footnotes(self):
+        ''' bool: Specify if footnotes should be kept or not in the cleaned_text
+            output
+
+            Note:
+                Defaults to `True`'''
+        return self._keep_footnotes
+
+    @keep_footnotes.setter
+    def keep_footnotes(self, val):
+        ''' set if headers should be parsed '''
+        self._keep_footnotes = bool(val)
 
     def get_parser(self):
         ''' Retrieve the current parser class to use for extraction
