@@ -39,7 +39,7 @@ from goose3.extractors.tweets import TweetsExtractor
 from goose3.extractors.authors import AuthorsExtractor
 from goose3.extractors.tags import TagsExtractor
 from goose3.extractors.opengraph import OpenGraphExtractor
-from goose3.extractors.publishdate import PublishDateExtractor
+from goose3.extractors.publishdate import PublishDateExtractor, TIMEZONE_INFO
 from goose3.extractors.schema import SchemaExtractor
 from goose3.extractors.metas import MetasExtractor
 from goose3.cleaners import StandardDocumentCleaner
@@ -173,7 +173,7 @@ class Crawler(object):
         self.article._publish_date = self.publishdate_extractor.extract()
         if self.article.publish_date:
             try:
-                publish_datetime = dateutil.parser.parse(self.article.publish_date)
+                publish_datetime = dateutil.parser.parse(self.article.publish_date, tzinfos=TIMEZONE_INFO)
                 if publish_datetime.tzinfo:
                     self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
                 else:
