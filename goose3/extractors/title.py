@@ -43,8 +43,9 @@ class TitleExtractor(BaseExtractor):
         elif (self.article.schema and "publisher" in self.article.schema and
               "name" in self.article.schema["publisher"]):
             site_name = self.article.schema["publisher"]["name"]
-            # remove the site name from title
-            title = title.replace(site_name, '').strip()
+            # remove the site name from title if title matches the site name
+            if site_name == title:
+                title = title.replace(site_name, '').strip()
 
         # try to remove the domain from url
         if self.article.domain:
