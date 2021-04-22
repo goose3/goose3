@@ -41,21 +41,21 @@ def get_encodings_from_content(content):
     """
     if isinstance(content, bytes):
         find_charset = re.compile(
-            br'<meta.*?charset=["\']*([a-z0-9\-_]+?) *?["\'>]', flags=re.I
+            br'<meta.*?charset=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(
-            br'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
+            br'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
         ).findall
         return [encoding.decode('utf-8') for encoding in
                 find_charset(content) + find_xml(content)]
     else:
         find_charset = re.compile(
-            r'<meta.*?charset=["\']*([a-z0-9\-_]+?) *?["\'>]', flags=re.I
+            r'<meta.*?charset=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(
-            r'^<\?xml.*?encoding=["\']*([a-z0-9\-_]+?) *?["\'>]'
+            r'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
         ).findall
         return find_charset(content) + find_xml(content)
 
