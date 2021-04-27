@@ -52,6 +52,7 @@ class TitleExtractor(BaseExtractor):
         # if there is a sperator, speratate and check if site name is present
         seps = [s for s in TITLE_SPLITTERS if s in title]
         if seps:
+            # NOTE: Perhaps it should only be removed if, once seperated it is "by itself"
             title = title.replace(site_name, '').strip()
 
         # split the title in words
