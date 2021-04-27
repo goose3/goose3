@@ -1,5 +1,9 @@
 # Goose3
 
+### Version 3.1.9
+* Fix for removing site name from title when it is part of the title [see issue #123](https://github.com/goose3/goose3/issues/123)
+* Fix parsing encoding string when encoding information is capitalized [see issue #109](https://github.com/goose3/goose3/issues/109)
+
 ### Version 3.1.8
 * Fixed title being an empty string when the title is the same as the site name [see PR #117](https://github.com/goose3/goose3/pull/117) Thanks [@Pradhvan](https://github.com/Pradhvan)
 * Add optional removal of footnotes [see issue #105](https://github.com/goose3/goose3/issues/105)
