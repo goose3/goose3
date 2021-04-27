@@ -35,21 +35,24 @@ class TitleExtractor(BaseExtractor):
         in this case try to get rid of site name
         and use TITLE_SPLITTERS to reformat title
         """
-        # check if we have the site name in opengraph data
-        if "site_name" in list(self.article.opengraph.keys()) and self.article.opengraph['site_name'] != title:
-            site_name = self.article.opengraph['site_name']
-            # remove the site name from title
-            title = title.replace(site_name, '').strip()
-        elif (self.article.schema and "publisher" in self.article.schema and
-              "name" in self.article.schema["publisher"]):
-            site_name = self.article.schema["publisher"]["name"]
-            # remove the site name from title
-            title = title.replace(site_name, '').strip()
 
         # try to remove the domain from url
         if self.article.domain:
             pattern = re.compile(self.article.domain, re.IGNORECASE)
             title = pattern.sub("", title).strip()
+
+        site_name = ""
+        # check if we have the site name in opengraph data
+        if "site_name" in list(self.article.opengraph.keys()) and self.article.opengraph['site_name'] != title:
+            site_name = self.article.opengraph['site_name']
+        elif (self.article.schema and "publisher" in self.article.schema and "name" in self.article.schema["publisher"]):
+            site_name = self.article.schema["publisher"]["name"]
+
+
+        # if there is a sperator, speratate and check if site name is present
+        seps = [s for s in TITLE_SPLITTERS if s in title]
+        if seps:
+            title = title.replace(site_name, '').strip()
 
         # split the title in words
         # TechCrunch | my wonderfull article
