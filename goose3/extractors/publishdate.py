@@ -256,6 +256,9 @@ TIMEZONE_INFO = {
         "Z": 0 * 3600,
 }
 
+# Fix float offsets. See https://github.com/goose3/goose3/issues/128.
+TIMEZONE_INFO = {k: int(v) for k, v in TIMEZONE_INFO.items()}
+
 class PublishDateExtractor(BaseExtractor):
     def extract(self):
         # check the opengraph and ReportageNewsArticle dictionary for the
