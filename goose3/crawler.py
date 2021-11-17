@@ -24,6 +24,9 @@ import os
 import glob
 from copy import deepcopy
 
+from langdetect import detect, DetectorFactory
+from langdetect.lang_detect_exception import LangDetectException
+
 import dateutil.parser
 from dateutil.tz import tzutc
 
@@ -189,6 +192,20 @@ class Crawler(object):
 
         # title
         self.article._title = self.title_extractor.extract()
+
+        # jump through some hoops on attempting to get a language if not found
+        if self.article._meta_lang is None:
+            tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description, self.article._title, self.article._meta_keywords, self.article._tags)
+            tmp_lang_detect = " ".join(tmp_lang_detect.split())
+            if len(tmp_lang_detect) > 15:
+                # required to make it deterministic;
+                # see: https://github.com/Mimino666/langdetect/blob/master/README.md#basic-usage
+                DetectorFactory.seed = 0
+                try:
+                    self.article._meta_lang = detect(tmp_lang_detect)
+                except LangDetectException:
+                    self.article._meta_lang = None
+            # print(self.article._meta_lang)
 
         # check for known node as content body
         # if we find one force the article.doc to be the found node
