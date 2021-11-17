@@ -6,3 +6,4 @@ jieba
 beautifulsoup4
 nltk
 python-dateutil
+langdetect
