@@ -1,5 +1,9 @@
 # Goose3
 
+### Version 3.1.10
+* Fix for float based timezones [see issue #128](https://github.com/goose3/goose3/issues/128) Thanks [@Vasniktel](https://github.com/Vasniktel)!
+* Add `langdetect` dependency to help resolve some edge cases when missing language information causes text to not be pulled. [see issue #106](https://github.com/goose3/goose3/issues/106)
+
 ### Version 3.1.9
 * Fix for removing site name from title when it is part of the title [see issue #123](https://github.com/goose3/goose3/issues/123)
 * Fix parsing encoding string when encoding information is capitalized [see issue #109](https://github.com/goose3/goose3/issues/109)
