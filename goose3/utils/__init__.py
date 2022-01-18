@@ -21,11 +21,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import time
-import hashlib
 import os
 import codecs
+from typing import Union
 
 import goose3.version as base
+from goose3.utils.constants import UINT64_T_MAX
+
+KeyT = Union[str, bytes]
 
 
 class FileHelper(object):
@@ -58,7 +61,7 @@ class RawHelper(object):
     def get_parsing_candidate(cls, url, raw_html):
         if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
-        link_hash = '%s.%s' % (hashlib.md5(raw_html).hexdigest(), time.time())
+        link_hash = '%s.%s' % (fnv_1a(raw_html), time.time())
         return ParsingCandidate(url, link_hash)
 
 
@@ -74,7 +77,7 @@ class URLHelper(object):
         # url is only for calculating the link_hash
         url = final_url.encode("utf-8") if isinstance(final_url, str) else final_url
 
-        link_hash = '%s.%s' % (hashlib.md5(url).hexdigest(), time.time())
+        link_hash = '%s.%s' % (fnv_1a(url), time.time())
         return ParsingCandidate(final_url, link_hash)
 
 
@@ -113,3 +116,24 @@ class ReplaceSequence(object):
         for itm in self.replacements:
             mutated_string = itm.replaceAll(mutated_string)
         return mutated_string
+
+
+def fnv_1a(key: KeyT, seed: int = 0) -> str:
+    """Pure python implementation of the 64 bit fnv-1a hash
+    Args:
+        key (str): The element to be hashed
+        seed (int): Add a seed to the initial starting point (0 means no seed)
+    Returns:
+        str: 64-bit hashed representation of key
+    Note:
+        Uses the lower 64 bits when overflows occur"""
+    max64mod = UINT64_T_MAX + 1
+    hval = (14695981039346656037 + (31 * seed)) % max64mod
+    fnv_64_prime = 1099511628211
+    tmp = list(key) if not isinstance(key, str) else list(map(ord, key))
+    for t_str in tmp:
+        hval ^= t_str
+        hval *= fnv_64_prime
+        hval %= max64mod
+    # Remove the leading "0x".
+    return hex(hval)[2:]
