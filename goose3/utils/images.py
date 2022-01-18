@@ -20,13 +20,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import hashlib
 import logging
 import os
 import base64
 
 from PIL import Image
 
+from goose3.utils import fnv_1a
 from goose3.utils.encoding import smart_str
 from goose3.image import (ImageDetails, LocallyStoredImage)
 
@@ -127,7 +127,7 @@ class ImageUtils(object):
 
     @classmethod
     def get_localfile_name(cls, link_hash, src, config):
-        image_hash = hashlib.md5(smart_str(src)).hexdigest()
+        image_hash = fnv_1a(smart_str(src))
         return os.path.join(config.local_storage_path, '%s_%s' % (link_hash, image_hash))
 
     @classmethod

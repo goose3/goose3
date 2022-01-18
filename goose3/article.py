@@ -204,7 +204,7 @@ class Article(object):
 
     @property
     def link_hash(self):
-        ''' str: The MD5 of the final url to be used for various identification tasks
+        ''' str: The hash of the final url to be used for various identification tasks
 
             Note:
                 Read only '''
