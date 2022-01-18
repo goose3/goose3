@@ -144,12 +144,13 @@ flake8 goose3
 
 A special thanks to all the code contributors to goose3!
 
-[@lababidi](https://github.com/lababidi) (Maintainer)
-[@barrust](https://github.com/barrust) (Maintainer)
-[@nyanshell](https://github.com/nyanshell)
-[@dlrobertson](https://github.com/dlrobertson)
-[@jeffquach](https://github.com/jeffquach)
-[dust0x](https://github.com/dust0x)
-[@timoilya](https://github.com/timoilya)
-[@Pradhvan](https://github.com/Pradhvan)
-[@Vasniktel](https://github.com/Vasniktel)
+* [@lababidi](https://github.com/lababidi) (Maintainer)
+* [@barrust](https://github.com/barrust) (Maintainer)
+* [@nyanshell](https://github.com/nyanshell)
+* [@dlrobertson](https://github.com/dlrobertson)
+* [@jeffquach](https://github.com/jeffquach)
+* [dust0x](https://github.com/dust0x)
+* [@timoilya](https://github.com/timoilya)
+* [@Pradhvan](https://github.com/Pradhvan)
+* [@Vasniktel](https://github.com/Vasniktel)
+* [@openbrian](https://github.com/openbrian)

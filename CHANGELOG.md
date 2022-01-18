@@ -1,5 +1,8 @@
 # Goose3
 
+### Version 3.1.11
+* Replace `md5` with a pure python `fnv_1a` non-cryptographic hash [see issue #133](https://github.com/goose3/goose3/issues/133); Thanks [@openbrian](https://github.com/openbrian)
+
 ### Version 3.1.10
 * Fix for float based timezones [see issue #128](https://github.com/goose3/goose3/issues/128) Thanks [@Vasniktel](https://github.com/Vasniktel)!
 * Add `langdetect` dependency to help resolve some edge cases when missing language information causes text to not be pulled. [see issue #106](https://github.com/goose3/goose3/issues/106)
