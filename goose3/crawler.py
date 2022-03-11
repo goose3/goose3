@@ -175,15 +175,7 @@ class Crawler(object):
 
         # publishdate
         self.article._publish_date = self.publishdate_extractor.extract()
-        if self.article.publish_date:
-            try:
-                publish_datetime = dateutil.parser.parse(self.article.publish_date, tzinfos=TIMEZONE_INFO)
-                if publish_datetime.tzinfo:
-                    self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
-                else:
-                    self.article._publish_datetime_utc = publish_datetime
-            except (ValueError, OverflowError):
-                self.article._publish_datetime_utc = None
+        self.article._publish_datetime_utc = self._publish_date_to_utc() if self.article.publish_date else None
 
         # tags
         self.article._tags = self.tags_extractor.extract()
@@ -196,17 +188,7 @@ class Crawler(object):
 
         # jump through some hoops on attempting to get a language if not found
         if self.article._meta_lang is None:
-            tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description, self.article._title, self.article._meta_keywords, self.article._tags)
-            tmp_lang_detect = " ".join(tmp_lang_detect.split())
-            if len(tmp_lang_detect) > 15:
-                # required to make it deterministic;
-                # see: https://github.com/Mimino666/langdetect/blob/master/README.md#basic-usage
-                DetectorFactory.seed = 0
-                try:
-                    self.article._meta_lang = detect(tmp_lang_detect)
-                except LangDetectException:
-                    self.article._meta_lang = None
-            # print(self.article._meta_lang)
+            self.article._meta_lang = self._alternative_language_extractor()
 
         # check for known node as content body
         # if we find one force the article.doc to be the found node
@@ -356,12 +338,12 @@ class Crawler(object):
         try:
             publish_datetime = dateutil.parser.parse(self.article.publish_date, tzinfos=TIMEZONE_INFO)
             if publish_datetime.tzinfo:
-                self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
+                return publish_datetime.astimezone(tzutc())
             else:
-                self.article._publish_datetime_utc = publish_datetime
+                return publish_datetime
         except (ValueError, OverflowError):
             logger.debug(f"Publish date {self.article.publish_date} could not be resolved to UTC")
-            self.article._publish_datetime_utc = None
+            return None
 
     def _alternative_language_extractor(self):
         tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description, self.article._title, self.article._meta_keywords, self.article._tags)
@@ -371,7 +353,7 @@ class Crawler(object):
             # see: https://github.com/Mimino666/langdetect/blob/master/README.md#basic-usage
             DetectorFactory.seed = 0
             try:
-                self.article._meta_lang = detect(tmp_lang_detect)
+                return detect(tmp_lang_detect)
             except LangDetectException:
                 logger.debug(f"Alternative language extractor failed to extract a known language")
-                self.article._meta_lang = None
+                return None
