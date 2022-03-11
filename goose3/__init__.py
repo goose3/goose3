@@ -24,7 +24,7 @@ import logging
 import os
 import weakref
 from tempfile import mkstemp
-from typing import Union
+from typing import List, Union
 
 from goose3.configuration import ArticleContextPattern, Configuration, PublishDatePattern  # noqa: F401
 from goose3.article import Article  # noqa: F401 - to make it available for documentation!
@@ -130,7 +130,7 @@ class Goose(object):
 
     def __crawl(self, crawl_candidate: CrawlCandidate):
         ''' wrap the crawling functionality '''
-        def crawler_wrapper(parser: str, parsers: list[str], crawl_candidate: CrawlCandidate):
+        def crawler_wrapper(parser: str, parsers: List[str], crawl_candidate: CrawlCandidate):
             try:
                 crawler = Crawler(self.config, self.fetcher)
                 article = crawler.crawl(crawl_candidate)

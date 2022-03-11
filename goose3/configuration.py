@@ -22,7 +22,7 @@ limitations under the License.
 """
 import os
 import tempfile
-from typing import Union
+from typing import List, Union
 
 from goose3.text import StopWords
 from goose3.parsers import Parser, ParserSoup
@@ -215,7 +215,7 @@ class Configuration(object):
         return self._known_context_patterns
 
     @known_context_patterns.setter
-    def known_context_patterns(self, val: Union[dict, list[dict]]):
+    def known_context_patterns(self, val: Union[dict, List[dict]]):
         ''' val must be an ArticleContextPattern, a dictionary, or list of \
             dictionaries
             e.g., {'attr': 'class', 'value': 'my-article-class'}
@@ -262,7 +262,7 @@ class Configuration(object):
         return self._known_publish_date_tags
 
     @known_publish_date_tags.setter
-    def known_publish_date_tags(self, val: Union[dict, list[dict]]):
+    def known_publish_date_tags(self, val: Union[dict, List[dict]]):
         ''' val must be a dictionary or list of dictionaries
             e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
                 or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
@@ -311,7 +311,7 @@ class Configuration(object):
         return self._known_author_patterns
 
     @known_author_patterns.setter
-    def known_author_patterns(self, val: Union[dict, list[dict]]):
+    def known_author_patterns(self, val: Union[dict, List[dict]]):
         ''' val must be a dictionary or list of dictionaries
             e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
                 or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
@@ -401,7 +401,7 @@ class Configuration(object):
         self._parser_class = val
 
     @property
-    def available_parsers(self) -> list[str]:
+    def available_parsers(self) -> List[str]:
         ''' list(str): A list of all possible parser values for the parser_class
 
             Note:
