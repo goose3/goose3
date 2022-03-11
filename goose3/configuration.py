@@ -518,7 +518,7 @@ class Configuration(object):
     @stopwords_class.setter
     def stopwords_class(self, val):
         ''' set the stopwords class to use '''
-        if isinstance(val, StopWords):
+        if isinstance(val, StopWords) or issubclass(val, StopWords):
             self._stopwords_class = val
         else:
             raise ValueError(f"{val} must be an instance of StopWords")
