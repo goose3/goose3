@@ -54,6 +54,7 @@ from goose3.network import NetworkFetcher
 
 logger = logging.getLogger(__name__)
 
+
 class CrawlCandidate(object):
     def __init__(self, config: Configuration, url: str, raw_html: str):
         self.config = config
@@ -130,7 +131,7 @@ class Crawler(object):
         raw_html = self.get_html(crawl_candidate, parse_candidate)
 
         if raw_html is None:
-            logger.warning(f"No raw_html is provided or could be fetched; continuing with an empty Article object")
+            logger.warning("No raw_html is provided or could be fetched; continuing with an empty Article object")
             return self.article
 
         return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
@@ -346,7 +347,10 @@ class Crawler(object):
             return None
 
     def _alternative_language_extractor(self):
-        tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description, self.article._title, self.article._meta_keywords, self.article._tags)
+        tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description,
+                                               self.article._title,
+                                               self.article._meta_keywords,
+                                               self.article._tags)
         tmp_lang_detect = " ".join(tmp_lang_detect.split())
         if len(tmp_lang_detect) > 15:
             # required to make it deterministic;
@@ -355,5 +359,5 @@ class Crawler(object):
             try:
                 return detect(tmp_lang_detect)
             except LangDetectException:
-                logger.debug(f"Alternative language extractor failed to extract a known language")
+                logger.debug("Alternative language extractor failed to extract a known language")
                 return None
