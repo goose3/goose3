@@ -20,6 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import logging
 import os
 import glob
 from copy import deepcopy
@@ -30,8 +31,9 @@ from langdetect.lang_detect_exception import LangDetectException
 import dateutil.parser
 from dateutil.tz import tzutc
 
+from goose3 import Configuration
 from goose3.article import Article
-from goose3.utils import URLHelper, RawHelper
+from goose3.utils import URLHelper, RawHelper, ParsingCandidate
 from goose3.text import get_encodings_from_content
 from goose3.extractors.content import StandardContentExtractor
 from goose3.extractors.videos import VideoExtractor
@@ -50,9 +52,10 @@ from goose3.outputformatters import StandardOutputFormatter
 
 from goose3.network import NetworkFetcher
 
+logger = logging.getLogger(__name__)
 
 class CrawlCandidate(object):
-    def __init__(self, config, url, raw_html):
+    def __init__(self, config: Configuration, url: str, raw_html: str):
         self.config = config
         # parser
         self.parser = self.config.get_parser()
@@ -61,7 +64,7 @@ class CrawlCandidate(object):
 
 
 class Crawler(object):
-    def __init__(self, config, fetcher=None):
+    def __init__(self, config: Configuration, fetcher=None):
         # config
         self.config = config
         # parser
@@ -118,9 +121,6 @@ class Crawler(object):
         # image extractor
         self.image_extractor = self.get_image_extractor()
 
-        # TODO: use the log prefix
-        self.log_prefix = "crawler: "
-
     def crawl(self, crawl_candidate):
 
         # parser candidate
@@ -130,11 +130,12 @@ class Crawler(object):
         raw_html = self.get_html(crawl_candidate, parse_candidate)
 
         if raw_html is None:
+            logger.warning(f"No raw_html is provided or could be fetched; continuing with an empty Article object")
             return self.article
 
         return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
 
-    def process(self, raw_html, final_url, link_hash):
+    def process(self, raw_html: str, final_url: str, link_hash: str) -> Article:
 
         # create document
         doc = self.get_document(raw_html)
@@ -262,7 +263,7 @@ class Crawler(object):
         return self.article
 
     @staticmethod
-    def get_parse_candidate(crawl_candidate):
+    def get_parse_candidate(crawl_candidate: CrawlCandidate) -> ParsingCandidate:
         if crawl_candidate.raw_html:
             return RawHelper.get_parsing_candidate(crawl_candidate.url, crawl_candidate.raw_html)
         return URLHelper.get_parsing_candidate(crawl_candidate.url)
@@ -272,13 +273,15 @@ class Crawler(object):
         top_node = self.article.top_node
         self.article._top_image = self.image_extractor.get_best_image(doc, top_node)
 
-    def get_html(self, crawl_candidate, parsing_candidate):
+    def get_html(self, crawl_candidate: CrawlCandidate, parsing_candidate: ParsingCandidate) -> str:
         # we got a raw_tml
         # no need to fetch remote content
         if crawl_candidate.raw_html:
+            logger.debug(f"Using raw_html for {crawl_candidate}")
             return crawl_candidate.raw_html
 
         # fetch HTML
+        logger.debug(f"Fetching html from {crawl_candidate.url}")
         response = self.fetcher.fetch_obj(parsing_candidate.url)
         if response.encoding != 'ISO-8859-1':  # requests has a good idea; use what it says
             # return response as a unicode string
@@ -347,5 +350,28 @@ class Crawler(object):
             try:
                 os.remove(fname)
             except OSError:
-                # TODO: better log handeling
-                pass
+                logger.error(f"File {fname} could not be removed")
+
+    def _publish_date_to_utc(self):
+        try:
+            publish_datetime = dateutil.parser.parse(self.article.publish_date, tzinfos=TIMEZONE_INFO)
+            if publish_datetime.tzinfo:
+                self.article._publish_datetime_utc = publish_datetime.astimezone(tzutc())
+            else:
+                self.article._publish_datetime_utc = publish_datetime
+        except (ValueError, OverflowError):
+            logger.debug(f"Publish date {self.article.publish_date} could not be resolved to UTC")
+            self.article._publish_datetime_utc = None
+
+    def _alternative_language_extractor(self):
+        tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description, self.article._title, self.article._meta_keywords, self.article._tags)
+        tmp_lang_detect = " ".join(tmp_lang_detect.split())
+        if len(tmp_lang_detect) > 15:
+            # required to make it deterministic;
+            # see: https://github.com/Mimino666/langdetect/blob/master/README.md#basic-usage
+            DetectorFactory.seed = 0
+            try:
+                self.article._meta_lang = detect(tmp_lang_detect)
+            except LangDetectException:
+                logger.debug(f"Alternative language extractor failed to extract a known language")
+                self.article._meta_lang = None

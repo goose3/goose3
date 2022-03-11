@@ -20,9 +20,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import logging
 import os
 import weakref
 from tempfile import mkstemp
+from typing import Union
 
 from goose3.configuration import ArticleContextPattern, Configuration, PublishDatePattern  # noqa: F401
 from goose3.article import Article  # noqa: F401 - to make it available for documentation!
@@ -30,6 +32,9 @@ from goose3.image import Image  # noqa: F401 - to make it available for document
 from goose3.video import Video  # noqa: F401 - to make it available for documentation!
 from goose3.crawler import (CrawlCandidate, Crawler)
 from goose3.network import NetworkFetcher
+
+
+logger = logging.getLogger(__name__)
 
 
 class Goose(object):
@@ -41,7 +46,7 @@ class Goose(object):
             representation of the configuration file
         Returns:
             Goose: An instance of the goose extraction object '''
-    def __init__(self, config=None):
+    def __init__(self, config: Union[Configuration, dict] = None):
         # Use the passed in configuration if it is of the right type, otherwise
         # use the default as a base
         if isinstance(config, Configuration):
@@ -100,7 +105,7 @@ class Goose(object):
             self.shutdown_network()
         self.finalizer.atexit = False  # turn off the garbage collection close
 
-    def extract(self, url=None, raw_html=None):
+    def extract(self, url: str = None, raw_html: str = None) -> Article:
         ''' Extract the most likely article content from the html page
 
             Args:
@@ -109,6 +114,9 @@ class Goose(object):
             Returns:
                 Article: Representation of the article contents \
                 including other parsed and extracted metadata '''
+        if not url and not raw_html:
+            raise ValueError("Either url or raw_html should be provided")
+
         crawl_candidate = CrawlCandidate(self.config, url, raw_html)
         return self.__crawl(crawl_candidate)
 
@@ -120,16 +128,17 @@ class Goose(object):
         self.fetcher.close()
         self.fetcher = None
 
-    def __crawl(self, crawl_candidate):
+    def __crawl(self, crawl_candidate: CrawlCandidate):
         ''' wrap the crawling functionality '''
-        def crawler_wrapper(parser, parsers_lst, crawl_candidate):
+        def crawler_wrapper(parser: str, parsers: list[str], crawl_candidate: CrawlCandidate):
             try:
                 crawler = Crawler(self.config, self.fetcher)
                 article = crawler.crawl(crawl_candidate)
             except (UnicodeDecodeError, ValueError) as ex:
-                if parsers_lst:
-                    parser = parsers_lst.pop(0)  # remove it also!
-                    return crawler_wrapper(parser, parsers_lst, crawl_candidate)
+                logger.error(f"Parser {parser} failed to parse the content")
+                if parsers:
+                    parser = parsers.pop(0)  # remove it also!
+                    return crawler_wrapper(parser, parsers, crawl_candidate)
                 else:
                     raise ex
             return article

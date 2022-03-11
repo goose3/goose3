@@ -22,6 +22,7 @@ limitations under the License.
 """
 import os
 import tempfile
+from typing import Union
 
 from goose3.text import StopWords
 from goose3.parsers import Parser, ParserSoup
@@ -58,7 +59,7 @@ class ArticleContextPattern(object):
 
     def __repr__(self):
         return "ArticleContextPattern(attr={} value={} tag={} domain={})".format(
-                    self.attr, self.value, self.tag, self.domain)
+            self.attr, self.value, self.tag, self.domain)
 
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
@@ -186,7 +187,7 @@ class Configuration(object):
 
         # general configuration
         self._strict = True
-        self._debug = False
+        self._log_level = "ERROR"
         self._stopwords_class = StopWords
 
         # imagemagick executable paths
@@ -204,7 +205,7 @@ class Configuration(object):
         self._keep_footnotes = True
 
     @property
-    def known_context_patterns(self):
+    def known_context_patterns(self) -> list:
         ''' list: The context patterns to search to find the likely article content
 
             Note:
@@ -214,13 +215,14 @@ class Configuration(object):
         return self._known_context_patterns
 
     @known_context_patterns.setter
-    def known_context_patterns(self, val):
+    def known_context_patterns(self, val: Union[dict, list[dict]]):
         ''' val must be an ArticleContextPattern, a dictionary, or list of \
             dictionaries
             e.g., {'attr': 'class', 'value': 'my-article-class'}
                 or [{'attr': 'class', 'value': 'my-article-class'},
                     {'attr': 'id', 'value': 'my-article-id'}]
         '''
+
         def create_pat_from_dict(val):
             '''Helper function used to create an ArticleContextPattern from a dictionary
             '''
@@ -239,9 +241,9 @@ class Configuration(object):
 
         if isinstance(val, list):
             self._known_context_patterns = [
-                x if isinstance(x, ArticleContextPattern) else create_pat_from_dict(x)
-                for x in val
-            ] + self.known_context_patterns
+                                               x if isinstance(x, ArticleContextPattern) else create_pat_from_dict(x)
+                                               for x in val
+                                           ] + self.known_context_patterns
         elif isinstance(val, ArticleContextPattern):
             self._known_context_patterns.insert(0, val)
         elif isinstance(val, dict):
@@ -260,12 +262,13 @@ class Configuration(object):
         return self._known_publish_date_tags
 
     @known_publish_date_tags.setter
-    def known_publish_date_tags(self, val):
+    def known_publish_date_tags(self, val: Union[dict, list[dict]]):
         ''' val must be a dictionary or list of dictionaries
             e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
                 or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
                     {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
         '''
+
         def create_pat_from_dict(val):
             '''Helper function used to create an PublishDatePattern from a dictionary
             '''
@@ -287,9 +290,9 @@ class Configuration(object):
 
         if isinstance(val, list):
             self._known_publish_date_tags = [
-                x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
-                for x in val
-            ] + self.known_publish_date_tags
+                                                x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
+                                                for x in val
+                                            ] + self.known_publish_date_tags
         elif isinstance(val, PublishDatePattern):
             self._known_publish_date_tags.insert(0, val)
         elif isinstance(val, dict):
@@ -298,7 +301,7 @@ class Configuration(object):
             raise Exception("Unknown type: {}. Use a PublishDatePattern.".format(type(val)))
 
     @property
-    def known_author_patterns(self):
+    def known_author_patterns(self) -> list:
         ''' list: The tags to search to find the likely published date
 
             Note:
@@ -308,7 +311,7 @@ class Configuration(object):
         return self._known_author_patterns
 
     @known_author_patterns.setter
-    def known_author_patterns(self, val):
+    def known_author_patterns(self, val: Union[dict, list[dict]]):
         ''' val must be a dictionary or list of dictionaries
             e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
                 or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
@@ -333,9 +336,9 @@ class Configuration(object):
 
         if isinstance(val, list):
             self._known_author_patterns = [
-                x if isinstance(x, AuthorPattern) else create_pat_from_dict(x)
-                for x in val
-            ] + self.known_author_patterns
+                                              x if isinstance(x, AuthorPattern) else create_pat_from_dict(x)
+                                              for x in val
+                                          ] + self.known_author_patterns
         elif isinstance(val, AuthorPattern):
             self._known_author_patterns.insert(0, val)
         elif isinstance(val, dict):
@@ -344,7 +347,7 @@ class Configuration(object):
             raise Exception("Unknown type: {}. Use an AuthorPattern.".format(type(val)))
 
     @property
-    def strict(self):
+    def strict(self) -> bool:
         ''' bool: Enable `strict mode` and throw exceptions instead of
             swallowing them.
 
@@ -353,7 +356,7 @@ class Configuration(object):
         return self._strict
 
     @strict.setter
-    def strict(self, val):
+    def strict(self, val: bool):
         ''' set the strict property '''
         self._strict = bool(val)
 
@@ -385,22 +388,7 @@ class Configuration(object):
         self._local_storage_path = val
 
     @property
-    def debug(self):
-        ''' bool: Turn on or off debugging
-
-            Note:
-                Defaults to `False`
-            Warning:
-                Debugging is currently not implemented '''
-        return self._debug
-
-    @debug.setter
-    def debug(self, val):
-        ''' set the debug property '''
-        self._debug = bool(val)
-
-    @property
-    def parser_class(self):
+    def parser_class(self) -> str:
         ''' str: The key of the parser to use
 
             Note:
@@ -408,12 +396,12 @@ class Configuration(object):
         return self._parser_class
 
     @parser_class.setter
-    def parser_class(self, val):
+    def parser_class(self, val: str):
         ''' set the parser_class property '''
         self._parser_class = val
 
     @property
-    def available_parsers(self):
+    def available_parsers(self) -> list[str]:
         ''' list(str): A list of all possible parser values for the parser_class
 
             Note:
@@ -421,7 +409,7 @@ class Configuration(object):
         return self._available_parsers
 
     @property
-    def http_auth(self):
+    def http_auth(self) -> tuple:
         ''' tuple: Authentication class and information to pass to the requests
             library
 
@@ -431,12 +419,12 @@ class Configuration(object):
         return self._http_auth
 
     @http_auth.setter
-    def http_auth(self, val):
+    def http_auth(self, val: tuple):
         ''' set the http_auth property '''
         self._http_auth = val
 
     @property
-    def http_proxies(self):
+    def http_proxies(self) -> dict:
         ''' dict: Proxy information to pass directly to the supporting `requests` object
 
             See Also:
@@ -445,12 +433,12 @@ class Configuration(object):
         return self._http_proxies
 
     @http_proxies.setter
-    def http_proxies(self, val):
+    def http_proxies(self, val: dict):
         ''' set the http_proxies property '''
         self._http_proxies = val
 
     @property
-    def http_headers(self):
+    def http_headers(self) -> dict:
         ''' dict: Custom headers to pass directly to the supporting `requests` object
 
             See Also:
@@ -459,12 +447,12 @@ class Configuration(object):
         return self._http_headers
 
     @http_headers.setter
-    def http_headers(self, val):
+    def http_headers(self, val: dict):
         ''' set the http_headers property '''
         self._http_headers = val
 
     @property
-    def browser_user_agent(self):
+    def browser_user_agent(self) -> str:
         ''' Browser user agent string to use when making URL requests
 
             Note:
@@ -481,12 +469,12 @@ class Configuration(object):
         return self._browser_user_agent
 
     @browser_user_agent.setter
-    def browser_user_agent(self, val):
+    def browser_user_agent(self, val: str):
         ''' set the browser user agent string '''
         self._browser_user_agent = val
 
     @property
-    def imagemagick_identify_path(self):
+    def imagemagick_identify_path(self) -> str:
         ''' str: Path to the identify program that is part of imagemagick
 
             Note:
@@ -496,12 +484,12 @@ class Configuration(object):
         return self._imagemagick_identify_path
 
     @imagemagick_identify_path.setter
-    def imagemagick_identify_path(self, val):
+    def imagemagick_identify_path(self, val: str):
         ''' set the imagemagick identify program path '''
         self._imagemagick_identify_path = val
 
     @property
-    def imagemagick_convert_path(self):
+    def imagemagick_convert_path(self) -> str:
         ''' str: Path to the convert program that is part of imagemagick
 
             Note:
@@ -511,12 +499,12 @@ class Configuration(object):
         return self._imagemagick_convert_path
 
     @imagemagick_convert_path.setter
-    def imagemagick_convert_path(self, val):
+    def imagemagick_convert_path(self, val: str):
         ''' set the imagemagick convert program path '''
         self._imagemagick_convert_path = val
 
     @property
-    def stopwords_class(self):
+    def stopwords_class(self) -> type(StopWords):
         ''' StopWords: The StopWords class to use when analyzing article content
 
             Note:
@@ -530,11 +518,13 @@ class Configuration(object):
     @stopwords_class.setter
     def stopwords_class(self, val):
         ''' set the stopwords class to use '''
-        # TODO: add a check to see if a valid class is provided!
-        self._stopwords_class = val
+        if isinstance(val, StopWords):
+            self._stopwords_class = val
+        else:
+            raise ValueError(f"{val} must be an instance of StopWords")
 
     @property
-    def target_language(self):
+    def target_language(self) -> str:
         ''' str: The default target language if the language is not extractable
             or if use_meta_language is set to False
 
@@ -544,12 +534,12 @@ class Configuration(object):
         return self._target_language
 
     @target_language.setter
-    def target_language(self, val):
+    def target_language(self, val: str):
         ''' set the target language property '''
         self._target_language = val
 
     @property
-    def use_meta_language(self):
+    def use_meta_language(self) -> bool:
         ''' bool: Determine if language should be extracted from the meta tags
             or not. If this is set to `False` then the target_language will be
             used. Also, if extraction fails then the target_language will be
@@ -560,12 +550,12 @@ class Configuration(object):
         return self._use_meta_language
 
     @use_meta_language.setter
-    def use_meta_language(self, val):
+    def use_meta_language(self, val: bool):
         ''' set the use_meta_language property '''
         self._use_meta_language = bool(val)
 
     @property
-    def enable_image_fetching(self):
+    def enable_image_fetching(self) -> bool:
         ''' bool: Turn on or off image extraction
 
             Note:
@@ -573,12 +563,12 @@ class Configuration(object):
         return self._enable_image_fetching
 
     @enable_image_fetching.setter
-    def enable_image_fetching(self, val):
+    def enable_image_fetching(self, val: bool):
         ''' set the enable_image_fetching property '''
         self._enable_image_fetching = bool(val)
 
     @property
-    def images_min_bytes(self):
+    def images_min_bytes(self) -> int:
         ''' int: Minimum number of bytes for an image to be evaluated to be the
             main image of the site
 
@@ -587,12 +577,12 @@ class Configuration(object):
         return self._images_min_bytes
 
     @images_min_bytes.setter
-    def images_min_bytes(self, val):
+    def images_min_bytes(self, val: int):
         ''' set the images_min_bytes property '''
         self._images_min_bytes = int(val)
 
     @property
-    def pretty_lists(self):
+    def pretty_lists(self) -> bool:
         ''' bool: Specify if lists should be pretty printed in the cleaned_text
             output
 
@@ -601,21 +591,21 @@ class Configuration(object):
         return self._pretty_lists
 
     @pretty_lists.setter
-    def pretty_lists(self, val):
+    def pretty_lists(self, val: bool):
         ''' set if lists should be pretty printed '''
         self._pretty_lists = bool(val)
 
     @property
-    def parse_lists(self):
+    def parse_lists(self) -> bool:
         return self._parse_lists
 
     @parse_lists.setter
-    def parse_lists(self, val):
+    def parse_lists(self, val: bool):
         ''' set if headers should be parsed '''
         self._parse_lists = bool(val)
 
     @property
-    def parse_headers(self):
+    def parse_headers(self) -> bool:
         ''' bool: Specify if headers should be pulled or not in the cleaned_text
             output
 
@@ -624,12 +614,12 @@ class Configuration(object):
         return self._parse_headers
 
     @parse_headers.setter
-    def parse_headers(self, val):
+    def parse_headers(self, val: bool):
         ''' set if headers should be parsed '''
         self._parse_headers = bool(val)
 
     @property
-    def keep_footnotes(self):
+    def keep_footnotes(self) -> bool:
         ''' bool: Specify if footnotes should be kept or not in the cleaned_text
             output
 
@@ -638,11 +628,11 @@ class Configuration(object):
         return self._keep_footnotes
 
     @keep_footnotes.setter
-    def keep_footnotes(self, val):
+    def keep_footnotes(self, val: bool):
         ''' set if headers should be parsed '''
         self._keep_footnotes = bool(val)
 
-    def get_parser(self):
+    def get_parser(self) -> Union[Parser, ParserSoup, any]:
         ''' Retrieve the current parser class to use for extraction
 
             Returns:
