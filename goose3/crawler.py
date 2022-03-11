@@ -343,7 +343,7 @@ class Crawler(object):
             else:
                 return publish_datetime
         except (ValueError, OverflowError):
-            logger.debug(f"Publish date {self.article.publish_date} could not be resolved to UTC")
+            logger.warning(f"Publish date {self.article.publish_date} could not be resolved to UTC")
             return None
 
     def _alternative_language_extractor(self):
@@ -359,5 +359,5 @@ class Crawler(object):
             try:
                 return detect(tmp_lang_detect)
             except LangDetectException:
-                logger.debug("Alternative language extractor failed to extract a known language")
+                logger.warning("Alternative language extractor failed to extract a known language")
                 return None
