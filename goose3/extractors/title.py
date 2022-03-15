@@ -48,7 +48,6 @@ class TitleExtractor(BaseExtractor):
         elif (self.article.schema and "publisher" in self.article.schema and "name" in self.article.schema["publisher"]):
             site_name = self.article.schema["publisher"]["name"]
 
-
         # if there is a sperator, speratate and check if site name is present
         seps = [s for s in TITLE_SPLITTERS if s in title]
         if seps:

@@ -50,15 +50,14 @@ class FileHelper(object):
 
 
 class ParsingCandidate(object):
-
-    def __init__(self, url_string, link_hash):
+    def __init__(self, url_string: str, link_hash: str):
         self.url = url_string
         self.link_hash = link_hash
 
 
 class RawHelper(object):
     @classmethod
-    def get_parsing_candidate(cls, url, raw_html):
+    def get_parsing_candidate(cls, url: str, raw_html: str) -> ParsingCandidate:
         if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
         link_hash = '%s.%s' % (fnv_1a(raw_html), time.time())
@@ -67,7 +66,7 @@ class RawHelper(object):
 
 class URLHelper(object):
     @classmethod
-    def get_parsing_candidate(cls, url_to_crawl):
+    def get_parsing_candidate(cls, url_to_crawl: str) -> ParsingCandidate:
         # replace shebang is urls
         if '#!' in url_to_crawl:
             final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
