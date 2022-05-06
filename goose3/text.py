@@ -204,6 +204,15 @@ class StopWordsKorean(StopWords):
     """
     def __init__(self, language='ko'):
         super(StopWordsKorean, self).__init__(language='ko')
+        '''
+        Korean StopWords are attached at noun without a space
+        To find the stopwords in given sentences quickly, Ahocorasick is needed
+        '''
+        import ahocorasick
+        self.A = ahocorasick.Automaton()
+        for word in self._stop_words:
+            self.A.add_word(word, word)
+        self.A.make_automaton()
 
     def get_stopword_count(self, content):
         if not content:
@@ -212,13 +221,10 @@ class StopWordsKorean(StopWords):
         stripped_input = self.remove_punctuation(content)
         candidate_words = self.candidate_words(stripped_input)
         overlapping_stopwords = []
-        i = 0
-        for _ in candidate_words:
-            i += 1
-            for stop_word in self._stop_words:
-                overlapping_stopwords.append(stop_word)
+        for item in self.A.iter(''.join(candidate_words)):
+            overlapping_stopwords.append(item[1])
 
-        stats.set_word_count(i)
+        stats.set_word_count(len(candidate_words))
         stats.set_stopword_count(len(overlapping_stopwords))
         stats.set_stop_words(overlapping_stopwords)
         return stats
