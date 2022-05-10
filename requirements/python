@@ -7,3 +7,4 @@ beautifulsoup4
 nltk
 python-dateutil
 langdetect
+pyahocorasick
