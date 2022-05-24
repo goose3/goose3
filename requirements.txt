@@ -1,0 +1,2 @@
+-r api/requirements.txt
+-r requirements/python
