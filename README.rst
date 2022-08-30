@@ -67,6 +67,12 @@ To install using pip:
 
     pip install goose3
 
+To install with all languages which will install additional dependencies:
+
+.. code-block::
+
+    pip install goose3[all]
+
 To install from source:
 
 .. code-block::
