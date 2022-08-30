@@ -73,6 +73,12 @@ To install with all languages which will install additional dependencies:
 
     pip install goose3[all]
 
+To install just the dependencies for a single language:
+
+.. code-block::
+    pip install goose3[chinese]
+    pip install goose3[arabic]
+
 To install from source:
 
 .. code-block::

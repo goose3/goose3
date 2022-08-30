@@ -1,5 +1,8 @@
 # Goose3
 
+### Version 3.1.12
+* Allow for extra dependencies [see issue #141](https://github.com/goose3/goose3/issues/141)
+
 ### Version 3.1.11
 * Replace `md5` with a pure python `fnv_1a` non-cryptographic hash [see issue #133](https://github.com/goose3/goose3/issues/133); Thanks [@openbrian](https://github.com/openbrian)
 
