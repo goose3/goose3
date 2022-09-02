@@ -42,7 +42,7 @@ def get_encodings_from_content(content):
     """
     if isinstance(content, bytes):
         find_charset = re.compile(
-            br'<meta.*?charset=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]', flags=re.I
+            br'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(
@@ -52,7 +52,7 @@ def get_encodings_from_content(content):
                 find_charset(content) + find_xml(content)]
     else:
         find_charset = re.compile(
-            r'<meta.*?charset=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]', flags=re.I
+            r'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
         ).findall
 
         find_xml = re.compile(

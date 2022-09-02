@@ -154,3 +154,4 @@ A special thanks to all the code contributors to goose3!
 * [@Pradhvan](https://github.com/Pradhvan)
 * [@Vasniktel](https://github.com/Vasniktel)
 * [@openbrian](https://github.com/openbrian)
+* [@nnick14](https://github.com/nnick14)
