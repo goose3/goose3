@@ -2,8 +2,6 @@ requests
 Pillow
 lxml
 cssselect
-jieba
 beautifulsoup4
-nltk
 python-dateutil
 langdetect

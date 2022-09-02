@@ -23,6 +23,7 @@ limitations under the License.
 import os
 import re
 import string
+import warnings
 
 from goose3.utils import FileHelper
 from goose3.utils.encoding import (smart_unicode, smart_str, DjangoUnicodeDecodeError)
@@ -172,7 +173,11 @@ class StopWordsChinese(StopWords):
         # jieba build a tree that takes sometime
         # avoid building the tree if we don't use
         # chinese language
-        import jieba
+        try:
+            import jieba
+        except ImportError:
+            warnings.warn("jieba is not installed. To use Chinese, one must install the jieba package")
+            return []
         return jieba.cut(stripped_input, cut_all=True)
 
 
@@ -190,7 +195,11 @@ class StopWordsArabic(StopWords):
 
     @staticmethod
     def candidate_words(stripped_input):
-        import nltk
+        try:
+            import nltk
+        except ImportError:
+            warnings.warn("NLTK is not installed. To use Arabic, one must install the nltk package")
+            return []
         stemmer = nltk.stem.isri.ISRIStemmer()
         words = []
         for word in nltk.tokenize.wordpunct_tokenize(stripped_input):

@@ -79,6 +79,11 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=dependencies,
-    test_requires=test_dependencies,
+    extras_require={
+        'chinese': ['jieba'],
+        'arabic': ['nltk'],
+        'all': ['jieba', 'nltk']
+    },
+    tests_require=test_dependencies,
     test_suite="tests"
 )
