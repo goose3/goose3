@@ -61,17 +61,17 @@ documentation.
 Setup
 --------------------------------------------------------------------------------
 
-To install using pip:
-
-.. code-block::
-
-    pip install goose3
-
-To install with all languages which will install additional dependencies:
+To install using pip, with all supported languages, which will install additional dependencies:
 
 .. code-block::
 
     pip install goose3[all]
+
+To install the minimal version:
+
+.. code-block::
+
+    pip install goose3
 
 To install just the dependencies for a single language:
 
