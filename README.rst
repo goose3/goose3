@@ -76,6 +76,7 @@ To install the minimal version:
 To install just the dependencies for a single language:
 
 .. code-block::
+
     pip install goose3[chinese]
     pip install goose3[arabic]
 

@@ -67,6 +67,7 @@ setup(
     version=version.__version__,
     description=description,
     long_description=long_description,
+    long_description_content_type="text/x-rst",
     keywords='scrapping, extractor, web scrapping',
     classifiers=CLASSIFIERS,
     maintainer='Mahmoud Lababidi',
