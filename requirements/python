@@ -5,3 +5,4 @@ cssselect
 beautifulsoup4
 python-dateutil
 langdetect
+pyahocorasick
