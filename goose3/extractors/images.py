@@ -406,7 +406,7 @@ class ImageExtractor(BaseExtractor):
 
     def load_customesite_mapping(self):
         # TODO
-        path = os.path.join('images', 'known-image-css.txt')
+        path = os.path.join('resources', 'images', 'known-image-css.txt')
         data_file = FileHelper.loadResourceFile(path)
         lines = data_file.splitlines()
         for line in lines:

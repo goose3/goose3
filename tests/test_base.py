@@ -24,15 +24,22 @@ import json
 from datetime import datetime
 import os
 import unittest
+import codecs
 
 import requests_mock
 
 from goose3 import Goose
-from goose3.utils import FileHelper
 from goose3.configuration import Configuration
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
+def load_resource(path):
+    try:
+        with codecs.open(path, 'r', 'utf-8') as fobj:
+            content = fobj.read()
+        return content
+    except IOError:
+        raise IOError("Couldn't open file %s" % path)
 
 class TestExtractionBase(unittest.TestCase):
     """\
@@ -49,7 +56,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = load_resource(path)
         return content
 
     def loadData(self):
@@ -67,7 +74,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.json" % func)
         path = os.path.abspath(path)
-        content = FileHelper.loadResourceFile(path)
+        content = load_resource(path)
         self.data = json.loads(content)
 
     def loadHtml(self):
@@ -79,7 +86,7 @@ class TestExtractionBase(unittest.TestCase):
             module.partition('test_')[2],
             "%s.html" % func)
         path = os.path.abspath(path)
-        self.html = FileHelper.loadResourceFile(path)
+        self.html = load_resource(path)
 
     def assert_cleaned_text(self, field, expected_value, result_value):
         # # TODO : handle verbose level in tests

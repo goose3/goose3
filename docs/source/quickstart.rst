@@ -167,3 +167,21 @@ For more details and for all available properties, see :ref:`articledocs`
         for tmp in urls:
             article = g.extract(url=tmp)
             print(article.cleaned_text)
+
+
+Using with PyInstaller
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+It should be possible to use ``goose3`` with tools such as PyInstaller to add
+goose to your executable program. To do so, you will need to add the
+required resources to the executable.
+
+You will need to add the files to a folder in your executable called **goose3/resources/**
+to match the location that ``goose3`` checks for the required files.
+
+.. code:: bash
+
+    pyinstaller \
+        --add-data="goose3/resources/images/*;goose3/resources/images/" \
+        --add-data="goose3/resources/text/*;goose3/resources/text/" \
+        my_prog.py

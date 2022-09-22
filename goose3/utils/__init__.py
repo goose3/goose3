@@ -23,6 +23,7 @@ limitations under the License.
 import time
 import os
 import codecs
+import pkgutil
 from typing import Union
 
 import goose3.version as base
@@ -35,18 +36,10 @@ class FileHelper(object):
 
     @classmethod
     def loadResourceFile(cls, filename):
-        if not os.path.isabs(filename):
-            dirpath = os.path.dirname(base.__file__)
-            path = os.path.join(dirpath, 'resources', filename)
-        else:
-            path = filename
-
         try:
-            with codecs.open(path, 'r', 'utf-8') as fobj:
-                content = fobj.read()
-            return content
-        except IOError:
-            raise IOError("Couldn't open file %s" % path)
+            return pkgutil.get_data("goose3", filename).decode('utf-8')
+        except:
+            raise IOError("Couldn't open file %s" % filename)
 
 
 class ParsingCandidate(object):
