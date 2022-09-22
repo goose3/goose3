@@ -21,12 +21,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import time
-import os
-import codecs
 import pkgutil
 from typing import Union
 
-import goose3.version as base
 from goose3.utils.constants import UINT64_T_MAX
 
 KeyT = Union[str, bytes]

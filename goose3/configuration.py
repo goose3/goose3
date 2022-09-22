@@ -22,7 +22,7 @@ limitations under the License.
 """
 import os
 import tempfile
-from typing import List, Union
+from typing import List, Type, Union
 
 from goose3.text import StopWords
 from goose3.parsers import Parser, ParserSoup
@@ -504,7 +504,7 @@ class Configuration(object):
         self._imagemagick_convert_path = val
 
     @property
-    def stopwords_class(self) -> type(StopWords):
+    def stopwords_class(self) -> Type[StopWords]:
         ''' StopWords: The StopWords class to use when analyzing article content
 
             Note:
