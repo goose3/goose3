@@ -24,7 +24,7 @@ limitations under the License.
 import os
 from imp import load_source
 
-from setuptools import (setup, find_packages)
+from setuptools import setup
 
 
 def read_file(filepath):
@@ -74,7 +74,7 @@ setup(
     maintainer_email='lababidi+py@gmail.com',
     url='https://github.com/goose3/goose3',
     license='Apache',
-    packages=find_packages(exclude=['tests']),
+    packages=['goose3', 'goose3.extractors', 'goose3.utils', 'goose3.resources.text', 'goose3.resources.images'],
     package_data={'goose3': ['resources/images/*.txt', 'resources/text/*.txt',
                              'requirements/python']},
     include_package_data=True,

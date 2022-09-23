@@ -20,6 +20,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import codecs
 import os
 import unittest
 
@@ -30,6 +31,15 @@ from goose3.parsers import ParserSoup
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
+def load_resource(path):
+    try:
+        with codecs.open(path, 'r', 'utf-8') as fobj:
+            content = fobj.read()
+        return content
+    except IOError:
+        raise IOError("Couldn't open file %s" % path)
+        
+
 class ParserBase(unittest.TestCase):
 
     def setUp(self):
@@ -38,7 +48,7 @@ class ParserBase(unittest.TestCase):
     def get_html(self, filename):
         path = os.path.join(CURRENT_PATH, 'data', filename)
         path = os.path.abspath(path)
-        return FileHelper.loadResourceFile(path)
+        return load_resource(path)
 
     def test_cssselect(self):
         html = '<html><body>'

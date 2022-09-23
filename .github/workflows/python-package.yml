@@ -40,3 +40,21 @@ jobs:
       with:
         file: ./coverage.xml
         fail_ci_if_error: true
+
+  build-verification:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: | 
+        python -m pip install --upgrade pip
+        if [ -f ./requirements/python ]; then pip install -r ./requirements/python; fi
+        pip install setuptools wheel twine
+    - name: Build and check twine
+      run: |
+        python setup.py sdist bdist_wheel
+        twine check dist/*
