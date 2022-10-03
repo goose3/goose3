@@ -51,9 +51,9 @@ class DocumentCleaner:
             "|legende|ajoutVideo|timestamp|js_replies|disclaim"
         )
         self.regexp_namespace = "http://exslt.org/regular-expressions"
-        self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
-        self.nauthy_classes_re = "//*[re:test(@class, '%s', 'i')]" % self.remove_nodes_re
-        self.nauthy_names_re = "//*[re:test(@name, '%s', 'i')]" % self.remove_nodes_re
+        self.nauthy_ids_re = f"//*[re:test(@id, '{self.remove_nodes_re}', 'i')]"
+        self.nauthy_classes_re = f"//*[re:test(@class, '{self.remove_nodes_re}', 'i')]"
+        self.nauthy_names_re = f"//*[re:test(@name, '{self.remove_nodes_re}', 'i')]"
         # self.div_to_p_re = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.caption_re = "^caption$"
         self.google_re = " google "

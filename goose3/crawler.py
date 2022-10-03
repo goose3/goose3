@@ -327,7 +327,7 @@ class Crawler:
         return StandardContentExtractor(self.config, self.article)
 
     def release_resources(self):
-        path = os.path.join(self.config.local_storage_path, '%s_*' % self.article.link_hash)
+        path = os.path.join(self.config.local_storage_path, f'{self.article.link_hash}_*')
         for fname in glob.glob(path):
             try:
                 os.remove(fname)
@@ -346,10 +346,8 @@ class Crawler:
             return None
 
     def _alternative_language_extractor(self):
-        tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description,
-                                               self.article._title,
-                                               self.article._meta_keywords,
-                                               self.article._tags)
+        art = self.article
+        tmp_lang_detect = f"{art.meta_description} {art.title} {art.meta_keywords} {art.tags}"
         tmp_lang_detect = " ".join(tmp_lang_detect.split())
         if len(tmp_lang_detect) > 15:
             # required to make it deterministic;

@@ -72,8 +72,7 @@ class Goose:
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            msg = ('{} directory does not seem to exist, you need to set this for '
-                   'image processing downloads').format(self.config.local_storage_path)
+            msg = f'{self.config.local_storage_path} directory does not seem to exist, you need to set this for image processing downloads'
             raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
@@ -83,8 +82,7 @@ class Goose:
                 pass
             os.remove(path)
         except OSError:
-            msg = ('{} directory is not writeble, you need to set this for image '
-                   'processing downloads').format(self.config.local_storage_path)
+            msg = f'{self.config.local_storage_path} directory is not writeble, you need to set this for image processing downloads'
             raise Exception(msg)
 
     def __enter__(self):

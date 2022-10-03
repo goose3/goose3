@@ -74,7 +74,7 @@ class Parser:
 
     @classmethod
     def getElementById(cls, node, idd):
-        selector = '//*[@id="%s"]' % idd
+        selector = f'//*[@id="{idd}"]'
         elems = node.xpath(selector)
         if elems:
             return elems[0]
@@ -83,8 +83,8 @@ class Parser:
     @classmethod
     def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
         namespace = "http://exslt.org/regular-expressions"
-        # selector = tag or '*'
-        selector = 'descendant-or-self::%s' % (tag or '*')
+        sel = tag or '*'
+        selector = f'descendant-or-self::{sel}'
         if attr and value:
             selector = f'{selector}[re:test(@{attr}, "{value}", "i")]'
         elems = node.xpath(selector, namespaces={"re": namespace})

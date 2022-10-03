@@ -57,8 +57,7 @@ class ArticleContextPattern:
         self.domain = domain
 
     def __repr__(self):
-        return "ArticleContextPattern(attr={} value={} tag={} domain={})".format(
-            self.attr, self.value, self.tag, self.domain)
+        return f"ArticleContextPattern(attr={self.attr} value={self.value} tag={self.tag} domain={self.domain})"
 
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
@@ -103,12 +102,8 @@ class PublishDatePattern:
 
     def __repr__(self):
         if self.tag:
-            rpr = "PublishDatePattern(tag={}, attr={}, value={} domain={})"
-            return rpr.format(self.tag, self.attr, self.value, self.domain)
-        else:
-            rpr = "PublishDatePattern(attr={}, value={} content={} subcontent={} domain={})"
-            return rpr.format(self.attr, self.value, self.content, self.subcontent, self.domain)
-
+            return f"PublishDatePattern(tag={self.tag}, attr={self.attr}, value={self.value} domain={self.domain})"
+        return f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} subcontent={self.subcontent} domain={self.domain})"
 
 KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='property', value='rnews:datePublished', content='content'),
@@ -149,11 +144,8 @@ class AuthorPattern:
 
     def __repr__(self):
         if self.tag:
-            rpr = "AuthorPattern(tag={}, attr={}, value={})"
-            return rpr.format(self.tag, self.attr, self.value)
-        else:
-            rpr = "AuthorPattern(attr={}, value={} content={} subpattern={})"
-            return rpr.format(self.attr, self.value, self.content, self.subpattern)
+            return f"AuthorPattern(tag={self.tag}, attr={self.attr}, value={self.value})"
+        return f"AuthorPattern(attr={self.attr}, value={self.value} content={self.content} subpattern={self.subpattern})"
 
 
 KNOWN_AUTHOR_PATTERNS = [
@@ -170,7 +162,7 @@ class Configuration:
         self._parser_class = 'lxml'
 
         # URL extraction parameters
-        self._browser_user_agent = 'Goose/%s' % __version__
+        self._browser_user_agent = f'Goose/{__version__}'
         self._http_timeout = 30.0
         self._http_auth = None
         self._http_proxies = None

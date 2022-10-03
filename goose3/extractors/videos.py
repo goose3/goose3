@@ -129,7 +129,7 @@ class VideoExtractor(BaseExtractor):
         # and check if src attribute belongs to a video provider
         for candidate in self.candidates:
             tag = self.parser.getTag(candidate)
-            attr = "get_%s_tag" % tag
+            attr = f"get_{tag}_tag"
             if hasattr(self, attr):
                 movie = getattr(self, attr)(candidate)
                 if movie is not None and movie.provider is not None:
