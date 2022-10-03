@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -81,7 +80,7 @@ def encodeValue(value):
     return value
 
 
-class WordStats(object):
+class WordStats:
 
     def __init__(self):
         # total number of stopwords or
@@ -114,16 +113,16 @@ class WordStats(object):
         self.word_count = cnt
 
 
-class StopWords(object):
+class StopWords:
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
         if language not in self._cached_stop_words:
-            path = os.path.join('resources', 'text', 'stopwords-%s.txt' % language)
+            path = os.path.join('resources', 'text', f'stopwords-{language}.txt')
             try:
                 content = FileHelper.loadResourceFile(path)
                 word_list = content.splitlines()
-            except IOError:
+            except OSError:
                 word_list = []
             self._cached_stop_words[language] = set(word_list)
         self._stop_words = self._cached_stop_words[language]
@@ -166,7 +165,7 @@ class StopWordsChinese(StopWords):
     """
     def __init__(self, language='zh'):
         # force zh languahe code
-        super(StopWordsChinese, self).__init__(language='zh')
+        super().__init__(language='zh')
 
     @staticmethod
     def candidate_words(stripped_input):
@@ -187,7 +186,7 @@ class StopWordsArabic(StopWords):
     """
     def __init__(self, language='ar'):
         # force ar languahe code
-        super(StopWordsArabic, self).__init__(language='ar')
+        super().__init__(language='ar')
 
     @staticmethod
     def remove_punctuation(content):
@@ -212,11 +211,9 @@ class StopWordsKorean(StopWords):
     Korean segmentation
     """
     def __init__(self, language='ko'):
-        super(StopWordsKorean, self).__init__(language='ko')
-        '''
-        Korean StopWords are attached at noun without a space
-        To find the stopwords in given sentences quickly, Ahocorasick is needed
-        '''
+        super().__init__(language='ko')
+        # Korean StopWords are attached at noun without a space
+        # To find the stopwords in given sentences quickly, Ahocorasick is needed
         import ahocorasick
         self.A = ahocorasick.Automaton()
         for word in self._stop_words:

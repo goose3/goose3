@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -33,7 +32,7 @@ from goose3.image import (ImageDetails, LocallyStoredImage)
 LOG = logging.getLogger(__name__)
 
 
-class ImageUtils(object):
+class ImageUtils:
 
     @classmethod
     def get_image_dimensions(cls, identify_program, path):
@@ -53,12 +52,12 @@ class ImageUtils(object):
         except Exception as ex:
             # TODO: Should we look into other possible exceptions?
             image_details.set_mime_type('NA')
-            LOG.exception("Exception: {}".format(ex))
+            LOG.exception(f"Exception: {ex}")
         return image_details
 
     @classmethod
     def store_image(cls, http_client, link_hash, src, config):
-        """\
+        """
         Writes an image src http string to disk as a temporary file
         and returns the LocallyStoredImage object
         that has the info you should need on the image
@@ -128,7 +127,7 @@ class ImageUtils(object):
     @classmethod
     def get_localfile_name(cls, link_hash, src, config):
         image_hash = fnv_1a(smart_str(src))
-        return os.path.join(config.local_storage_path, '%s_%s' % (link_hash, image_hash))
+        return os.path.join(config.local_storage_path, f'{link_hash}_{image_hash}')
 
     @classmethod
     def clean_src_string(cls, src):

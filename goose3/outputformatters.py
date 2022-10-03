@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -26,7 +25,7 @@ import html
 from goose3.text import innerTrim
 
 
-class OutputFormatter(object):
+class OutputFormatter:
 
     def __init__(self, config, article):
         # config
@@ -45,7 +44,7 @@ class OutputFormatter(object):
         self.top_node = None
 
     def get_language(self):
-        """\
+        """
         Returns the language is by the article or
         the configuration language
         """
@@ -95,7 +94,7 @@ class OutputFormatter(object):
             elm.text = r'\n'
 
     def links_to_text(self):
-        """\
+        """
         cleans up and converts any nodes that
         should be considered text into text
         """
@@ -105,10 +104,10 @@ class OutputFormatter(object):
         """ make any list element read like a list
         """
         for elm in self.parser.getElementsByTag(self.top_node, tag='li'):
-            elm.text = r'• {}'.format(elm.text)
+            elm.text = fr'• {elm.text}'
 
     def remove_negativescores_nodes(self):
-        """\
+        """
         if there are elements inside our top node
         that have a negative gravity score,
         let's give em the boot
@@ -121,7 +120,7 @@ class OutputFormatter(object):
                 item.getparent().remove(item)
 
     def replace_with_text(self):
-        """\
+        """
         replace common tags with just
         text so we don't have any crazy formatting issues
         so replace <br>, <i>, <strong>, etc....
@@ -133,7 +132,7 @@ class OutputFormatter(object):
             self.parser.stripTags(self.get_top_node(), 'sup')
 
     def remove_fewwords_paragraphs(self):
-        """\
+        """
         remove paragraphs that have less than x number of words,
         would indicate that it's some sort of link
         """

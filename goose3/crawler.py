@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -55,7 +54,7 @@ from goose3.network import NetworkFetcher
 logger = logging.getLogger(__name__)
 
 
-class CrawlCandidate(object):
+class CrawlCandidate:
     def __init__(self, config: Configuration, url: str, raw_html: str):
         self.config = config
         # parser
@@ -64,7 +63,7 @@ class CrawlCandidate(object):
         self.raw_html = raw_html
 
 
-class Crawler(object):
+class Crawler:
     def __init__(self, config: Configuration, fetcher=None):
         # config
         self.config = config
@@ -328,7 +327,7 @@ class Crawler(object):
         return StandardContentExtractor(self.config, self.article)
 
     def release_resources(self):
-        path = os.path.join(self.config.local_storage_path, '%s_*' % self.article.link_hash)
+        path = os.path.join(self.config.local_storage_path, f'{self.article.link_hash}_*')
         for fname in glob.glob(path):
             try:
                 os.remove(fname)
@@ -347,10 +346,8 @@ class Crawler(object):
             return None
 
     def _alternative_language_extractor(self):
-        tmp_lang_detect = "{} {} {} {}".format(self.article._meta_description,
-                                               self.article._title,
-                                               self.article._meta_keywords,
-                                               self.article._tags)
+        art = self.article
+        tmp_lang_detect = f"{art.meta_description} {art.title} {art.meta_keywords} {art.tags}"
         tmp_lang_detect = " ".join(tmp_lang_detect.split())
         if len(tmp_lang_detect) > 15:
             # required to make it deterministic;

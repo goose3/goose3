@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -20,12 +19,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from __future__ import unicode_literals
 
 from goose3.utils import ReplaceSequence
 
 
-class DocumentCleaner(object):
+class DocumentCleaner:
 
     def __init__(self, config, article):
         # config
@@ -53,9 +51,9 @@ class DocumentCleaner(object):
             "|legende|ajoutVideo|timestamp|js_replies|disclaim"
         )
         self.regexp_namespace = "http://exslt.org/regular-expressions"
-        self.nauthy_ids_re = "//*[re:test(@id, '%s', 'i')]" % self.remove_nodes_re
-        self.nauthy_classes_re = "//*[re:test(@class, '%s', 'i')]" % self.remove_nodes_re
-        self.nauthy_names_re = "//*[re:test(@name, '%s', 'i')]" % self.remove_nodes_re
+        self.nauthy_ids_re = f"//*[re:test(@id, '{self.remove_nodes_re}', 'i')]"
+        self.nauthy_classes_re = f"//*[re:test(@class, '{self.remove_nodes_re}', 'i')]"
+        self.nauthy_names_re = f"//*[re:test(@name, '{self.remove_nodes_re}', 'i')]"
         # self.div_to_p_re = r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)"
         self.caption_re = "^caption$"
         self.google_re = " google "
@@ -152,7 +150,7 @@ class DocumentCleaner(object):
 
     def remove_nodes_regex(self, doc, pattern):
         for selector in ['id', 'class']:
-            reg = "//*[re:test(@%s, '%s', 'i')]" % (selector, pattern)
+            reg = f"//*[re:test(@{selector}, '{pattern}', 'i')]"
             naughty_list = self.parser.xpath_re(doc, reg)
             for node in naughty_list:
                 self.parser.remove(node)

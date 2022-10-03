@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -38,7 +37,7 @@ KNOWN_IMG_DOM_NAMES = [
 ]
 
 
-class DepthTraversal(object):
+class DepthTraversal:
 
     def __init__(self, node, parent_depth, sibling_depth):
         self.node = node
@@ -49,7 +48,7 @@ class DepthTraversal(object):
 class ImageExtractor(BaseExtractor):
 
     def __init__(self, fetcher, config, article):
-        super(ImageExtractor, self).__init__(config, article)
+        super().__init__(config, article)
 
         self.fetcher = fetcher
         self.custom_site_mapping = {}
@@ -93,7 +92,7 @@ class ImageExtractor(BaseExtractor):
             return image
 
     def check_large_images(self, node, parent_depth_level, sibling_depth_level):
-        """\
+        """
         although slow the best way to determine the best image is to download
         them and check the actual dimensions of the image when on disk
         so we'll go through a phased approach...
@@ -144,7 +143,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def fetch_images(self, images, depth_level):
-        """\
+        """
         download the images to temp disk and set their dimensions
         - we're going to score the images in the order in which
           they appear so images higher up will have more importance,
@@ -211,7 +210,7 @@ class ImageExtractor(BaseExtractor):
 
     @staticmethod
     def is_banner_dimensions(width, height):
-        """\
+        """
         returns true if we think this is kind of a bannery dimension
         like 600 / 100 = 6 may be a fishy dimension for a good image
         """
@@ -237,7 +236,7 @@ class ImageExtractor(BaseExtractor):
         return images
 
     def filter_bad_names(self, images):
-        """\
+        """
         takes a list of image elements
         and filters out the ones with bad names
         """
@@ -248,7 +247,7 @@ class ImageExtractor(BaseExtractor):
         return good_images if len(good_images) > 0 else None
 
     def is_valid_filename(self, image_node):
-        """\
+        """
         will check the image src against a list
         of bad image files we know of like buttons, etc...
         """
@@ -273,7 +272,7 @@ class ImageExtractor(BaseExtractor):
         return good_images
 
     def get_images_bytesize_match(self, images):
-        """\
+        """
         loop through all the images and find the ones
         that have the best bytez to even make them a candidate
         """
@@ -301,7 +300,7 @@ class ImageExtractor(BaseExtractor):
         return node if node else None
 
     def check_link_tag(self):
-        """\
+        """
         checks to see if we were able to
         find open link_src on this page
         """
@@ -314,7 +313,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def check_known_schemas(self):
-        """\
+        """
         checks to see if we were able to find the image via known schemas:
 
         Supported Schemas
@@ -331,7 +330,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def get_local_image(self, src):
-        """\
+        """
         returns the bytes of the image file on disk
         """
         return ImageUtils.store_image(self.fetcher, self.article.link_hash, src, self.config)
@@ -342,7 +341,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def check_known_elements(self):
-        """\
+        """
         in here we check for known image contains from sites
         we've checked out like yahoo, techcrunch, etc... that have
         * known  places to look for good images.
@@ -390,7 +389,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def build_image_path(self, src):
-        """\
+        """
         This method will take an image path and build
         out the absolute path to that image
         * using the initial url we crawled

@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -28,7 +27,7 @@ from lxml import etree
 from goose3.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
 
 
-class Parser(object):
+class Parser:
 
     @classmethod
     def xpath_re(cls, node, expression):
@@ -75,7 +74,7 @@ class Parser(object):
 
     @classmethod
     def getElementById(cls, node, idd):
-        selector = '//*[@id="%s"]' % idd
+        selector = f'//*[@id="{idd}"]'
         elems = node.xpath(selector)
         if elems:
             return elems[0]
@@ -84,10 +83,10 @@ class Parser(object):
     @classmethod
     def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
         namespace = "http://exslt.org/regular-expressions"
-        # selector = tag or '*'
-        selector = 'descendant-or-self::%s' % (tag or '*')
+        sel = tag or '*'
+        selector = f'descendant-or-self::{sel}'
         if attr and value:
-            selector = '%s[re:test(@%s, "%s", "i")]' % (selector, attr, value)
+            selector = f'{selector}[re:test(@{attr}, "{value}", "i")]'
         elems = node.xpath(selector, namespaces={"re": namespace})
         # remove the root node
         # if we have a selection tag

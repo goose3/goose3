@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -146,7 +145,7 @@ class ContentExtractor(BaseExtractor):
         return top_node
 
     def is_boostable(self, node):
-        """\
+        """
         alot of times the first paragraph might be the caption under an image
         so we'll want to make sure if we're going to boost a parent node that
         it should be connected to other paragraphs,
@@ -267,7 +266,7 @@ class ContentExtractor(BaseExtractor):
         self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
-        """\
+        """
         stores how many decent nodes are under a parent node
         """
         current_score = 0
@@ -319,7 +318,7 @@ class ContentExtractor(BaseExtractor):
         return int(grv_score_string)
 
     def nodes_to_check(self, docs):
-        """\
+        """
         returns a list of nodes we want to search
         on like paragraphs and tables
         """
@@ -353,7 +352,7 @@ class ContentExtractor(BaseExtractor):
         return True
 
     def post_cleanup(self):
-        """\
+        """
         remove any divs that looks like non-content,
         clusters of links, or paras with no gusto
         """

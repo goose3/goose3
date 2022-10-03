@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -37,7 +36,7 @@ from goose3.network import NetworkFetcher
 logger = logging.getLogger(__name__)
 
 
-class Goose(object):
+class Goose:
     ''' Extract most likely article content and aditional metadata from a URL
         or previously fetched HTML document
 
@@ -73,8 +72,7 @@ class Goose(object):
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            msg = ('{} directory does not seem to exist, you need to set this for '
-                   'image processing downloads').format(self.config.local_storage_path)
+            msg = f'{self.config.local_storage_path} directory does not seem to exist, you need to set this for image processing downloads'
             raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
@@ -83,9 +81,8 @@ class Goose(object):
             with os.fdopen(level, "w"):
                 pass
             os.remove(path)
-        except IOError:
-            msg = ('{} directory is not writeble, you need to set this for image '
-                   'processing downloads').format(self.config.local_storage_path)
+        except OSError:
+            msg = f'{self.config.local_storage_path} directory is not writeble, you need to set this for image processing downloads'
             raise Exception(msg)
 
     def __enter__(self):

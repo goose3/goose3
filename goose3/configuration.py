@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -34,7 +33,7 @@ AVAILABLE_PARSERS = {
 }
 
 
-class ArticleContextPattern(object):
+class ArticleContextPattern:
     ''' Help ensure correctly generated article context patterns
 
         Args:
@@ -58,8 +57,7 @@ class ArticleContextPattern(object):
         self.domain = domain
 
     def __repr__(self):
-        return "ArticleContextPattern(attr={} value={} tag={} domain={})".format(
-            self.attr, self.value, self.tag, self.domain)
+        return f"ArticleContextPattern(attr={self.attr} value={self.value} tag={self.tag} domain={self.domain})"
 
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
@@ -72,7 +70,7 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 ]
 
 
-class PublishDatePattern(object):
+class PublishDatePattern:
     ''' Ensure correctly formed publish date patterns; to be used in conjuntion
         with the configuration `known_publish_date_tags` property
 
@@ -104,12 +102,8 @@ class PublishDatePattern(object):
 
     def __repr__(self):
         if self.tag:
-            rpr = "PublishDatePattern(tag={}, attr={}, value={} domain={})"
-            return rpr.format(self.tag, self.attr, self.value, self.domain)
-        else:
-            rpr = "PublishDatePattern(attr={}, value={} content={} subcontent={} domain={})"
-            return rpr.format(self.attr, self.value, self.content, self.subcontent, self.domain)
-
+            return f"PublishDatePattern(tag={self.tag}, attr={self.attr}, value={self.value} domain={self.domain})"
+        return f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} subcontent={self.subcontent} domain={self.domain})"
 
 KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='property', value='rnews:datePublished', content='content'),
@@ -123,7 +117,7 @@ KNOWN_PUBLISH_DATE_TAGS = [
 ]
 
 
-class AuthorPattern(object):
+class AuthorPattern:
     ''' Ensures that the author patterns are correctly formed for use with the
         `known_author_patterns` of configuration
 
@@ -150,11 +144,8 @@ class AuthorPattern(object):
 
     def __repr__(self):
         if self.tag:
-            rpr = "AuthorPattern(tag={}, attr={}, value={})"
-            return rpr.format(self.tag, self.attr, self.value)
-        else:
-            rpr = "AuthorPattern(attr={}, value={} content={} subpattern={})"
-            return rpr.format(self.attr, self.value, self.content, self.subpattern)
+            return f"AuthorPattern(tag={self.tag}, attr={self.attr}, value={self.value})"
+        return f"AuthorPattern(attr={self.attr}, value={self.value} content={self.content} subpattern={self.subpattern})"
 
 
 KNOWN_AUTHOR_PATTERNS = [
@@ -163,7 +154,7 @@ KNOWN_AUTHOR_PATTERNS = [
 ]
 
 
-class Configuration(object):
+class Configuration:
 
     def __init__(self):
         # parser information
@@ -171,7 +162,7 @@ class Configuration(object):
         self._parser_class = 'lxml'
 
         # URL extraction parameters
-        self._browser_user_agent = 'Goose/%s' % __version__
+        self._browser_user_agent = f'Goose/{__version__}'
         self._http_timeout = 30.0
         self._http_auth = None
         self._http_proxies = None
@@ -249,7 +240,7 @@ class Configuration(object):
         elif isinstance(val, dict):
             self._known_context_patterns.insert(0, create_pat_from_dict(val))
         else:
-            raise Exception("Unknown type: {}. Use a ArticleContextPattern.".format(type(val)))
+            raise Exception(f"Unknown type: {type(val)}. Use a ArticleContextPattern.")
 
     @property
     def known_publish_date_tags(self):
@@ -298,7 +289,7 @@ class Configuration(object):
         elif isinstance(val, dict):
             self._known_publish_date_tags.insert(0, create_pat_from_dict(val))
         else:
-            raise Exception("Unknown type: {}. Use a PublishDatePattern.".format(type(val)))
+            raise Exception(f"Unknown type: {type(val)}. Use a PublishDatePattern.")
 
     @property
     def known_author_patterns(self) -> list:
@@ -344,7 +335,7 @@ class Configuration(object):
         elif isinstance(val, dict):
             self._known_author_patterns.insert(0, create_pat_from_dict(val))
         else:
-            raise Exception("Unknown type: {}. Use an AuthorPattern.".format(type(val)))
+            raise Exception(f"Unknown type: {type(val)}. Use an AuthorPattern.")
 
     @property
     def strict(self) -> bool:

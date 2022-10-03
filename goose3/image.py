@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -22,7 +21,7 @@ limitations under the License.
 """
 
 
-class Image(object):
+class Image:
     def __init__(self):
         # holds the Element node of the image we think is top dog
         self._top_image_node = None
@@ -107,7 +106,7 @@ class Image(object):
         return self.src
 
 
-class ImageDetails(object):
+class ImageDetails:
     def __init__(self):
         # the width of the image
         self.width = 0
@@ -137,7 +136,7 @@ class ImageDetails(object):
         self.mime_type = mime_type
 
 
-class LocallyStoredImage(object):
+class LocallyStoredImage:
     def __init__(self, src='', local_filename='', link_hash='', size=int(0), file_extension='', height=0, width=0):
         self.src = src
         self.local_filename = local_filename

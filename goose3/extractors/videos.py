@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -29,11 +28,11 @@ VIDEO_PROVIDERS = ['youtube', 'vimeo', 'dailymotion', 'kewego']
 
 
 class VideoExtractor(BaseExtractor):
-    """\
+    """
     Extracts a list of video from Article top node
     """
     def __init__(self, config, article):
-        super(VideoExtractor, self).__init__(config, article)
+        super().__init__(config, article)
 
         # candidates
         self.candidates = []
@@ -130,7 +129,7 @@ class VideoExtractor(BaseExtractor):
         # and check if src attribute belongs to a video provider
         for candidate in self.candidates:
             tag = self.parser.getTag(candidate)
-            attr = "get_%s_tag" % tag
+            attr = f"get_{tag}_tag"
             if hasattr(self, attr):
                 movie = getattr(self, attr)(candidate)
                 if movie is not None and movie.provider is not None:

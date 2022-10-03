@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -29,32 +28,32 @@ from goose3.utils.constants import UINT64_T_MAX
 KeyT = Union[str, bytes]
 
 
-class FileHelper(object):
+class FileHelper:
 
     @classmethod
     def loadResourceFile(cls, filename):
         try:
             return pkgutil.get_data("goose3", filename).decode('utf-8')
         except:
-            raise IOError("Couldn't open file %s" % filename)
+            raise OSError(f"Couldn't open file {filename}")
 
 
-class ParsingCandidate(object):
+class ParsingCandidate:
     def __init__(self, url_string: str, link_hash: str):
         self.url = url_string
         self.link_hash = link_hash
 
 
-class RawHelper(object):
+class RawHelper:
     @classmethod
     def get_parsing_candidate(cls, url: str, raw_html: str) -> ParsingCandidate:
         if isinstance(raw_html, str):
             raw_html = raw_html.encode('utf-8')
-        link_hash = '%s.%s' % (fnv_1a(raw_html), time.time())
+        link_hash = f'{fnv_1a(raw_html)}.{time.time()}'
         return ParsingCandidate(url, link_hash)
 
 
-class URLHelper(object):
+class URLHelper:
     @classmethod
     def get_parsing_candidate(cls, url_to_crawl: str) -> ParsingCandidate:
         # replace shebang is urls
@@ -66,11 +65,11 @@ class URLHelper(object):
         # url is only for calculating the link_hash
         url = final_url.encode("utf-8") if isinstance(final_url, str) else final_url
 
-        link_hash = '%s.%s' % (fnv_1a(url), time.time())
+        link_hash = f'{fnv_1a(url)}.{time.time()}'
         return ParsingCandidate(final_url, link_hash)
 
 
-class StringReplacement(object):
+class StringReplacement:
 
     def __init__(self, pattern, replace_with):
         self.pattern = pattern
@@ -82,7 +81,7 @@ class StringReplacement(object):
         return string.replace(self.pattern, self.replace_with)
 
 
-class ReplaceSequence(object):
+class ReplaceSequence:
 
     def __init__(self):
         self.replacements = []
