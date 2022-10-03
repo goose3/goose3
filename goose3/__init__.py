@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -37,7 +36,7 @@ from goose3.network import NetworkFetcher
 logger = logging.getLogger(__name__)
 
 
-class Goose(object):
+class Goose:
     ''' Extract most likely article content and aditional metadata from a URL
         or previously fetched HTML document
 
@@ -83,7 +82,7 @@ class Goose(object):
             with os.fdopen(level, "w"):
                 pass
             os.remove(path)
-        except IOError:
+        except OSError:
             msg = ('{} directory is not writeble, you need to set this for image '
                    'processing downloads').format(self.config.local_storage_path)
             raise Exception(msg)

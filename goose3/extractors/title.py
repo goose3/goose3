@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -80,7 +79,7 @@ class TitleExtractor(BaseExtractor):
         return title
 
     def get_title(self):
-        """\
+        """
         Fetch the article title and analyze it
         """
         title = ''

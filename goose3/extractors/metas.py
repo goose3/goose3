@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -68,7 +67,7 @@ class MetasExtractor(BaseExtractor):
                     o = urlparse(href)
                     if not o.hostname:
                         tmp = urlparse(self.article.final_url)
-                        domain = '%s://%s' % (tmp.scheme, tmp.hostname)
+                        domain = f'{tmp.scheme}://{tmp.hostname}'
                         href = urljoin(domain, href)
                     return href
         return self.article.final_url

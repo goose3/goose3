@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+"""Handle Encoding"""
+
 import datetime
 
 from decimal import Decimal
@@ -11,10 +12,10 @@ class DjangoUnicodeDecodeError(UnicodeDecodeError):
 
     def __str__(self):
         original = UnicodeDecodeError.__str__(self)
-        return '%s. You passed in %r (%s)' % (original, self.obj, type(self.obj))
+        return f'{original}. You passed in {self.obj!r} ({type(self.obj)})'
 
 
-class StrAndUnicode(object):
+class StrAndUnicode:
     """
     A class whose __str__ returns its __unicode__ as a UTF-8 bytestring.
 

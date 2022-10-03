@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -29,11 +28,11 @@ VIDEO_PROVIDERS = ['youtube', 'vimeo', 'dailymotion', 'kewego']
 
 
 class VideoExtractor(BaseExtractor):
-    """\
+    """
     Extracts a list of video from Article top node
     """
     def __init__(self, config, article):
-        super(VideoExtractor, self).__init__(config, article)
+        super().__init__(config, article)
 
         # candidates
         self.candidates = []

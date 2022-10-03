@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -27,11 +26,11 @@ class NetworkError(RuntimeError):
     def __init__(self, status_code, reason):
         self.reason = reason
         self.status_code = status_code
-        self.message = 'NetworkError: status code: {}; reason: {}'.format(reason, status_code)
-        super(NetworkError, self).__init__(self.message)
+        self.message = f'NetworkError: status code: {reason}; reason: {status_code}'
+        super().__init__(self.message)
 
 
-class NetworkFetcher(object):
+class NetworkFetcher:
 
     def __init__(self, config):
         self.config = config

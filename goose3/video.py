@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -22,8 +21,8 @@ limitations under the License.
 """
 
 
-class Video(object):
-    """\
+class Video:
+    """
     Video object
     """
 

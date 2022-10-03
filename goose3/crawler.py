@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -55,7 +54,7 @@ from goose3.network import NetworkFetcher
 logger = logging.getLogger(__name__)
 
 
-class CrawlCandidate(object):
+class CrawlCandidate:
     def __init__(self, config: Configuration, url: str, raw_html: str):
         self.config = config
         # parser
@@ -64,7 +63,7 @@ class CrawlCandidate(object):
         self.raw_html = raw_html
 
 
-class Crawler(object):
+class Crawler:
     def __init__(self, config: Configuration, fetcher=None):
         # config
         self.config = config
