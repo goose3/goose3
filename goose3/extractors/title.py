@@ -43,7 +43,7 @@ class TitleExtractor(BaseExtractor):
         schema = self.article.schema
         site_name = ""
         # check if we have the site name in opengraph data
-        if "site_name" in list(self.article.opengraph.keys()) and self.article.opengraph['site_name'] != title:
+        if "site_name" in self.article.opengraph and self.article.opengraph['site_name'] != title:
             site_name = self.article.opengraph['site_name']
         elif (schema and "publisher" in schema and "name" in schema["publisher"]):
             site_name = self.article.schema["publisher"]["name"]
@@ -86,7 +86,7 @@ class TitleExtractor(BaseExtractor):
         title = ''
 
         # rely on opengraph in case we have the data
-        if "title" in list(self.article.opengraph.keys()):
+        if "title" in self.article.opengraph:
             return self.clean_title(self.article.opengraph['title'])
         if self.article.schema and "headline" in self.article.schema:
             return self.clean_title(self.article.schema['headline'])

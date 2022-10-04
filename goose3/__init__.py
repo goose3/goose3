@@ -55,7 +55,7 @@ class Goose:
 
         # if config was a passed in dict, parse it into the stored configuration
         if isinstance(config, dict):
-            for k, v in list(config.items()):
+            for k, v in config.items():
                 if hasattr(self.config, k):
                     setattr(self.config, k, v)
 
