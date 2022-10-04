@@ -50,7 +50,7 @@ class Parser:
     @classmethod
     def fromstring(cls, html):
         encoding = get_encodings_from_content(html)
-        encoding = encoding and encoding[0] or None
+        encoding = encoding[0] if encoding else None
         if not encoding:
             html = encodeValue(html)
             doc = lxml.html.fromstring(html)
@@ -182,8 +182,7 @@ class Parser:
 
     @classmethod
     def getText(cls, node):
-        txts = [i for i in node.itertext()]
-        return innerTrim(' '.join(txts).strip())
+        return innerTrim(' '.join(node.itertext()).strip())
 
     @classmethod
     def previousSiblings(cls, node):
@@ -212,7 +211,7 @@ class Parser:
 
     @classmethod
     def isTextNode(cls, node):
-        return True if node.tag == 'text' else False
+        return node.tag == 'text'
 
     @classmethod
     def getAttribute(cls, node, attr=None):

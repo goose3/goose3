@@ -258,11 +258,11 @@ class Crawler:
         # we got a raw_tml
         # no need to fetch remote content
         if crawl_candidate.raw_html:
-            logger.debug(f"Using raw_html for {crawl_candidate}")
+            logger.debug("Using raw_html for %s", crawl_candidate)
             return crawl_candidate.raw_html
 
         # fetch HTML
-        logger.debug(f"Fetching html from {crawl_candidate.url}")
+        logger.debug("Fetching html from %s", crawl_candidate.url)
         response = self.fetcher.fetch_obj(parsing_candidate.url)
         if response.encoding != 'ISO-8859-1':  # requests has a good idea; use what it says
             # return response as a unicode string
@@ -331,17 +331,16 @@ class Crawler:
             try:
                 os.remove(fname)
             except OSError:
-                logger.error(f"File {fname} could not be removed")
+                logger.error("File %s could not be removed", fname)
 
     def _publish_date_to_utc(self):
         try:
             publish_datetime = dateutil.parser.parse(self.article.publish_date, tzinfos=TIMEZONE_INFO)
             if publish_datetime.tzinfo:
                 return publish_datetime.astimezone(tzutc())
-            else:
-                return publish_datetime
+            return publish_datetime
         except (ValueError, OverflowError):
-            logger.warning(f"Publish date {self.article.publish_date} could not be resolved to UTC")
+            logger.warning("Publish date %s could not be resolved to UTC", self.article.publish_date)
             return None
 
     def _alternative_language_extractor(self):
@@ -356,4 +355,4 @@ class Crawler:
                 return detect(tmp_lang_detect)
             except LangDetectException:
                 logger.warning("Alternative language extractor failed to extract a known language")
-                return None
+        return None

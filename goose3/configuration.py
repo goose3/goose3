@@ -89,8 +89,7 @@ class PublishDatePattern:
 
     __slots__ = ['attr', 'value', 'content', 'subcontent', 'tag', 'domain']
 
-    def __init__(self, *, attr=None, value=None, content=None, subcontent=None,
-                 tag=None, domain=None):
+    def __init__(self, *, attr=None, value=None, content=None, subcontent=None, tag=None, domain=None):
         if (not attr and not value) and not tag:
             raise Exception("`attr` and `value` must be set or `tag` must be set")
         self.attr = attr
@@ -103,7 +102,9 @@ class PublishDatePattern:
     def __repr__(self):
         if self.tag:
             return f"PublishDatePattern(tag={self.tag}, attr={self.attr}, value={self.value} domain={self.domain})"
-        return f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} subcontent={self.subcontent} domain={self.domain})"
+        res = f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} " \
+              f"subcontent={self.subcontent} domain={self.domain})"
+        return res
 
 KNOWN_PUBLISH_DATE_TAGS = [
     PublishDatePattern(attr='property', value='rnews:datePublished', content='content'),
@@ -145,7 +146,9 @@ class AuthorPattern:
     def __repr__(self):
         if self.tag:
             return f"AuthorPattern(tag={self.tag}, attr={self.attr}, value={self.value})"
-        return f"AuthorPattern(attr={self.attr}, value={self.value} content={self.content} subpattern={self.subpattern})"
+        res = f"AuthorPattern(attr={self.attr}, value={self.value} " \
+              f"content={self.content} subpattern={self.subpattern})"
+        return res
 
 
 KNOWN_AUTHOR_PATTERNS = [

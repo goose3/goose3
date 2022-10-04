@@ -72,7 +72,8 @@ class Goose:
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            msg = f'{self.config.local_storage_path} directory does not seem to exist, you need to set this for image processing downloads'
+            msg = f'{self.config.local_storage_path} directory does not seem to exist, ' \
+                  'you need to set this for image processing downloads'
             raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
@@ -81,9 +82,10 @@ class Goose:
             with os.fdopen(level, "w"):
                 pass
             os.remove(path)
-        except OSError:
-            msg = f'{self.config.local_storage_path} directory is not writeble, you need to set this for image processing downloads'
-            raise Exception(msg)
+        except OSError as exc:
+            msg = f'{self.config.local_storage_path} directory is not writeble, '\
+                  'you need to set this for image processing downloads'
+            raise Exception(msg) from exc
 
     def __enter__(self):
         ''' Setup the context manager '''
@@ -132,12 +134,11 @@ class Goose:
                 crawler = Crawler(self.config, self.fetcher)
                 article = crawler.crawl(crawl_candidate)
             except (UnicodeDecodeError, ValueError) as ex:
-                logger.error(f"Parser {parser} failed to parse the content")
+                logger.error("Parser %s failed to parse the content", parser)
                 if parsers:
                     parser = parsers.pop(0)  # remove it also!
                     return crawler_wrapper(parser, parsers, crawl_candidate)
-                else:
-                    raise ex
+                raise ex
             return article
 
         # use the wrapper
