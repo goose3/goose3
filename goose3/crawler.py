@@ -251,9 +251,8 @@ class Crawler:
         return URLHelper.get_parsing_candidate(crawl_candidate.url)
 
     def get_image(self):
-        doc = self.article.raw_doc
         top_node = self.article.top_node
-        self.article._top_image = self.image_extractor.get_best_image(doc, top_node)
+        self.article._top_image = self.image_extractor.get_best_image(top_node)
 
     def get_html(self, crawl_candidate: CrawlCandidate, parsing_candidate: ParsingCandidate) -> str:
         # we got a raw_tml
