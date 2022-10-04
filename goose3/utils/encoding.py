@@ -34,9 +34,7 @@ def is_protected_type(obj):
     Objects of protected types are preserved as-is when passed to
     force_unicode(strings_only=True).
     """
-    return isinstance(obj, (type(None), int,
-                            datetime.datetime, datetime.date, datetime.time,
-                            float, Decimal))
+    return isinstance(obj, (type(None), int, datetime.datetime, datetime.date, datetime.time, float, Decimal))
 
 
 def force_unicode(string, encoding='utf-8', strings_only=False, errors='strict'):
@@ -69,9 +67,7 @@ def force_unicode(string, encoding='utf-8', strings_only=False, errors='strict')
                     # without raising a further exception. We do an
                     # approximation to what the Exception's standard str()
                     # output should be.
-                    string = ' '.join([force_unicode(arg, encoding,
-                                                     strings_only,
-                                                     errors) for arg in string])
+                    string = ' '.join([force_unicode(arg, encoding, strings_only, errors) for arg in string])
         elif not isinstance(string, str):
             # Note: We use .decode() here, instead of unicode(s, encoding,
             # errors), so that if s is a SafeString, it ends up being a

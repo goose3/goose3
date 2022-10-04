@@ -130,7 +130,7 @@ class ImageUtilsTests(unittest.TestCase):
         }
 
     def test_utils_get_image_dimensions(self):
-        image_detail = ImageUtils.get_image_dimensions(None, self.path)
+        image_detail = ImageUtils.get_image_dimensions(self.path)
 
         # test if we have an ImageDetails instance
         self.assertTrue(isinstance(image_detail, ImageDetails))
@@ -140,7 +140,7 @@ class ImageUtilsTests(unittest.TestCase):
             self.assertEqual(getattr(image_detail, k), v)
 
     def test_detail(self):
-        image_detail = ImageUtils.get_image_dimensions(None, self.path)
+        image_detail = ImageUtils.get_image_dimensions(self.path)
 
         # test if we have an ImageDetails instance
         self.assertTrue(isinstance(image_detail, ImageDetails))
