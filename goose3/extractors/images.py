@@ -66,7 +66,7 @@ class ImageExtractor(BaseExtractor):
             "|mediaplex.com|adsatt|view.atdmt"
         )
 
-    def get_best_image(self, doc, top_node):
+    def get_best_image(self, top_node):
         image = self.check_known_elements()
         if image:
             return image
@@ -87,9 +87,7 @@ class ImageExtractor(BaseExtractor):
             return image
 
         # check opengraph tag
-        image = self.check_known_schemas()
-        if image:
-            return image
+        return self.check_known_schemas()
 
     def check_large_images(self, node, parent_depth_level, sibling_depth_level):
         """
@@ -132,14 +130,14 @@ class ImageExtractor(BaseExtractor):
         max_parent_depth = 2
         if parent_depth > max_parent_depth:
             return None
-        else:
-            sibling_node = self.parser.previousSibling(node)
-            if sibling_node is not None:
-                return DepthTraversal(sibling_node, parent_depth, sibling_depth + 1)
-            elif node is not None:
-                parent = self.parser.getParent(node)
-                if parent is not None:
-                    return DepthTraversal(parent, parent_depth + 1, 0)
+
+        sibling_node = self.parser.previousSibling(node)
+        if sibling_node is not None:
+            return DepthTraversal(sibling_node, parent_depth, sibling_depth + 1)
+        if node is not None:
+            parent = self.parser.getParent(node)
+            if parent is not None:
+                return DepthTraversal(parent, parent_depth + 1, 0)
         return None
 
     def fetch_images(self, images, depth_level):
@@ -321,12 +319,9 @@ class ImageExtractor(BaseExtractor):
          - schema.org
         """
         if 'image' in self.article.opengraph:
-            return self.get_image(self.article.opengraph["image"],
-                                  extraction_type='opengraph')
-        elif (self.article.schema and 'image' in self.article.schema and
-              "url" in self.article.schema["image"]):
-            return self.get_image(self.article.schema["image"]["url"],
-                                  extraction_type='schema.org')
+            return self.get_image(self.article.opengraph["image"], extraction_type='opengraph')
+        if (self.article.schema and 'image' in self.article.schema and "url" in self.article.schema["image"]):
+            return self.get_image(self.article.schema["image"]["url"], extraction_type='schema.org')
         return None
 
     def get_local_image(self, src):
@@ -350,7 +345,7 @@ class ImageExtractor(BaseExtractor):
           are on specific sites
         """
         domain = self.get_clean_domain()
-        if domain in list(self.custom_site_mapping.keys()):
+        if domain in self.custom_site_mapping:
             classes = self.custom_site_mapping.get(domain).split('|')
             for classname in classes:
                 KNOWN_IMG_DOM_NAMES.append(classname)
@@ -404,7 +399,6 @@ class ImageExtractor(BaseExtractor):
         return urljoin(self.article.final_url, src)
 
     def load_customesite_mapping(self):
-        # TODO
         path = os.path.join('resources', 'images', 'known-image-css.txt')
         data_file = FileHelper.loadResourceFile(path)
         lines = data_file.splitlines()

@@ -33,11 +33,7 @@ class VideoExtractor(BaseExtractor):
     """
     def __init__(self, config, article):
         super().__init__(config, article)
-
-        # candidates
         self.candidates = []
-
-        # movies
         self.movies = []
 
     def get_embed_code(self, node):
@@ -78,11 +74,6 @@ class VideoExtractor(BaseExtractor):
 
     def get_iframe_tag(self, node):
         return self.get_video(node)
-
-    @staticmethod
-    def get_video_tag(node):
-        """extract html video tags"""
-        return Video()
 
     def get_embed_tag(self, node):
         # embed node may have an object node as parent

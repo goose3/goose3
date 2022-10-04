@@ -291,6 +291,5 @@ class PublishDateExtractor(BaseExtractor):
                         except (ValueError, KeyError):
                             return None
                     return content
-                else:
-                    return meta_tags[0].text_content().strip()
+                return meta_tags[0].text_content().strip()
         return None
