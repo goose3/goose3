@@ -30,7 +30,7 @@ from langdetect.lang_detect_exception import LangDetectException
 import dateutil.parser
 from dateutil.tz import tzutc
 
-from goose3 import Configuration
+from goose3.configuration import Configuration
 from goose3.article import Article
 from goose3.utils import URLHelper, RawHelper, ParsingCandidate
 from goose3.text import get_encodings_from_content

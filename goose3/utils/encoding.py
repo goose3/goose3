@@ -15,17 +15,6 @@ class DjangoUnicodeDecodeError(UnicodeDecodeError):
         return f'{original}. You passed in {self.obj!r} ({type(self.obj)})'
 
 
-class StrAndUnicode:
-    """
-    A class whose __str__ returns its __unicode__ as a UTF-8 bytestring.
-
-    Useful as a mix-in.
-    """
-    # TODO: Unused class that I recommend we remove!
-    def __str__(self):
-        return self.__unicode__().encode('utf-8')
-
-
 def smart_unicode(string, encoding='utf-8', strings_only=False, errors='strict'):
     """
     Returns a unicode object representing 's'. Treats bytestrings using the
@@ -90,15 +79,13 @@ def force_unicode(string, encoding='utf-8', strings_only=False, errors='strict')
             string = string.decode(encoding, errors)
     except UnicodeDecodeError as ex:
         if not isinstance(string, Exception):
-            raise DjangoUnicodeDecodeError(string, *ex.args)
-        else:
+            raise DjangoUnicodeDecodeError(string, *ex.args) from ex
             # If we get to here, the caller has passed in an Exception
-            # subclass populated with non-ASCII bytestring data without a
-            # working unicode method. Try to handle this without raising a
-            # further exception by individually forcing the exception args
-            # to unicode.
-            string = ' '.join([force_unicode(arg, encoding, strings_only,
-                                             errors) for arg in string])
+        # subclass populated with non-ASCII bytestring data without a
+        # working unicode method. Try to handle this without raising a
+        # further exception by individually forcing the exception args
+        # to unicode.
+        string = ' '.join([force_unicode(arg, encoding, strings_only, errors) for arg in string])
     return string
 
 
@@ -108,25 +95,24 @@ def smart_str(string, encoding='utf-8', strings_only=False, errors='strict'):
 
     If strings_only is True, don't convert (some) non-string-like objects.
     """
+    val = string
     if strings_only and isinstance(string, (type(None), int)):
-        return string
+        val = string
     # if isinstance(s, Promise):
     #     return unicode(s).encode(encoding, errors)
     if isinstance(string, str):
         try:
-            return string.encode(encoding, errors)
+            val = string.encode(encoding, errors)
         except UnicodeEncodeError:
-            return string.encode('utf-8', errors)
+            val = string.encode('utf-8', errors)
     elif not isinstance(string, bytes):
         try:
-            return str(string).encode(encoding, errors)
+            val = str(string).encode(encoding, errors)
         except UnicodeEncodeError:
             if isinstance(string, Exception):
                 # An Exception subclass containing non-ASCII data that doesn't
                 # know how to print itself properly. We shouldn't raise a
                 # further exception.
-                return ' '.join([smart_str(arg, encoding, strings_only,
-                                           errors) for arg in string])
-            return str(string).encode(encoding, errors)
-    else:
-        return string
+                val = ' '.join([smart_str(arg, encoding, strings_only, errors) for arg in string])
+            val = str(string).encode(encoding, errors)
+    return val
