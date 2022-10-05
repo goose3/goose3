@@ -46,7 +46,7 @@ def get_encodings_from_content(content):
     return find_charset(content) + find_xml(content)
 
 
-def innerTrim(value):
+def inner_trim(value):
     if isinstance(value, str):
         # remove tab and white space
         value = re.sub(TABSSPACE, " ", value)
@@ -55,7 +55,7 @@ def innerTrim(value):
     return ""
 
 
-def encodeValue(value):
+def encode_value(value):
     string_org = value
     try:
         value = smart_unicode(value)
@@ -105,7 +105,7 @@ class StopWords:
         if language not in self._cached_stop_words:
             path = os.path.join("resources", "text", f"stopwords-{language}.txt")
             try:
-                content = FileHelper.loadResourceFile(path)
+                content = FileHelper.load_resource_file(path)
                 word_list = content.splitlines()
             except OSError:
                 word_list = []

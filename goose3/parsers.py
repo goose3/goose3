@@ -24,7 +24,7 @@ from copy import deepcopy
 import lxml.html
 from lxml import etree
 
-from goose3.text import encodeValue, get_encodings_from_content, innerTrim, smart_str
+from goose3.text import encode_value, get_encodings_from_content, inner_trim, smart_str
 
 
 class Parser:
@@ -51,7 +51,7 @@ class Parser:
         encoding = get_encodings_from_content(html)
         encoding = encoding[0] if encoding else None
         if not encoding:
-            html = encodeValue(html)
+            html = encode_value(html)
             doc = lxml.html.fromstring(html)
         else:
             html = smart_str(html, encoding=encoding)
@@ -60,19 +60,19 @@ class Parser:
         return doc
 
     @classmethod
-    def nodeToString(cls, node):
+    def node_to_string(cls, node):
         return etree.tostring(node, encoding=str)
 
     @classmethod
-    def replaceTag(cls, node, tag):
+    def replace_tag(cls, node, tag):
         node.tag = tag
 
     @classmethod
-    def stripTags(cls, node, *tags):
+    def strip_tags(cls, node, *tags):
         etree.strip_tags(node, *tags)
 
     @classmethod
-    def getElementById(cls, node, idd):
+    def get_element_by_id(cls, node, idd):
         selector = f'//*[@id="{idd}"]'
         elems = node.xpath(selector)
         if elems:
@@ -80,7 +80,7 @@ class Parser:
         return None
 
     @classmethod
-    def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
+    def get_elements_by_tag(cls, node, tag=None, attr=None, value=None, childs=False):
         namespace = "http://exslt.org/regular-expressions"
         sel = tag or "*"
         selector = f"descendant-or-self::{sel}"
@@ -94,15 +94,15 @@ class Parser:
         return elems
 
     @classmethod
-    def appendChild(cls, node, child):
+    def append_child(cls, node, child):
         node.append(child)
 
     @classmethod
-    def childNodes(cls, node):
+    def child_nodes(cls, node):
         return list(node)
 
     @classmethod
-    def childNodesWithText(cls, node):
+    def child_nodes_with_text(cls, node):
         root = node
         # create the first text node
         # if we have some text in the node
@@ -120,20 +120,20 @@ class Parser:
                 continue
             # create a text node for tail
             if elm.tail:
-                tmp = cls.createElement(tag="text", text=elm.tail, tail=None)
+                tmp = cls.create_element(tag="text", text=elm.tail, tail=None)
                 root.insert(idx + 1, tmp)
         return list(root)
 
     @classmethod
-    def textToPara(cls, text):
+    def text_to_para(cls, text):
         return cls.fromstring(text)
 
     @classmethod
-    def getChildren(cls, node):
+    def get_children(cls, node):
         return node.getchildren()
 
     @classmethod
-    def getElementsByTags(cls, node, tags):
+    def get_elements_by_tags(cls, node, tags):
         selector = ",".join(tags)
         elems = cls.css_select(node, selector)
         # remove the root node
@@ -143,7 +143,7 @@ class Parser:
         return elems
 
     @classmethod
-    def createElement(cls, tag="p", text=None, tail=None):
+    def create_element(cls, tag="p", text=None, tail=None):
         elm = lxml.html.HtmlElement()
         elm.tag = tag
         elm.text = text
@@ -151,11 +151,11 @@ class Parser:
         return elm
 
     @classmethod
-    def getComments(cls, node):
+    def get_comments(cls, node):
         return node.xpath("//comment()")
 
     @classmethod
-    def getParent(cls, node):
+    def get_parent(cls, node):
         return node.getparent()
 
     @classmethod
@@ -176,22 +176,22 @@ class Parser:
             parent.remove(node)
 
     @classmethod
-    def getTag(cls, node):
+    def get_tag(cls, node):
         return node.tag
 
     @classmethod
-    def getText(cls, node):
-        return innerTrim(" ".join(node.itertext()).strip())
+    def get_text(cls, node):
+        return inner_trim(" ".join(node.itertext()).strip())
 
     @classmethod
-    def previousSiblings(cls, node):
+    def previous_siblings(cls, node):
         nodes = []
         for _, val in enumerate(node.itersiblings(preceding=True)):
             nodes.append(val)
         return nodes
 
     @classmethod
-    def previousSibling(cls, node):
+    def previous_sibling(cls, node):
         nodes = []
         for idx, val in enumerate(node.itersiblings(preceding=True)):
             nodes.append(val)
@@ -200,7 +200,7 @@ class Parser:
         return nodes[0] if nodes else None
 
     @classmethod
-    def nextSibling(cls, node):
+    def next_sibling(cls, node):
         nodes = []
         for idx, val in enumerate(node.itersiblings(preceding=False)):
             nodes.append(val)
@@ -209,34 +209,34 @@ class Parser:
         return nodes[0] if nodes else None
 
     @classmethod
-    def isTextNode(cls, node):
+    def is_text_node(cls, node):
         return node.tag == "text"
 
     @classmethod
-    def getAttribute(cls, node, attr=None):
+    def get_attribute(cls, node, attr=None):
         if attr:
             return node.attrib.get(attr, None)
         return attr
 
     @classmethod
-    def delAttribute(cls, node, attr=None):
+    def del_attribute(cls, node, attr=None):
         if attr:
             _attr = node.attrib.get(attr, None)
             if _attr:
                 del node.attrib[attr]
 
     @classmethod
-    def setAttribute(cls, node, attr=None, value=None):
+    def set_attribute(cls, node, attr=None, value=None):
         if attr and value:
             node.set(attr, value)
 
     @classmethod
-    def outerHtml(cls, node):
+    def outer_html(cls, node):
         tmp = node
         if tmp.tail:
             tmp = deepcopy(tmp)
             tmp.tail = None
-        return cls.nodeToString(tmp)
+        return cls.node_to_string(tmp)
 
 
 class ParserSoup(Parser):
@@ -244,6 +244,6 @@ class ParserSoup(Parser):
     def fromstring(cls, html):
         from lxml.html import soupparser
 
-        html = encodeValue(html)
+        html = encode_value(html)
         doc = soupparser.fromstring(html)
         return doc

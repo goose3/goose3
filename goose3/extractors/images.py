@@ -120,11 +120,11 @@ class ImageExtractor(BaseExtractor):
         if parent_depth > max_parent_depth:
             return None
 
-        sibling_node = self.parser.previousSibling(node)
+        sibling_node = self.parser.previous_sibling(node)
         if sibling_node is not None:
             return DepthTraversal(sibling_node, parent_depth, sibling_depth + 1)
         if node is not None:
-            parent = self.parser.getParent(node)
+            parent = self.parser.get_parent(node)
             if parent is not None:
                 return DepthTraversal(parent, parent_depth + 1, 0)
         return None
@@ -145,7 +145,7 @@ class ImageExtractor(BaseExtractor):
         cnt = float(1.0)
         min_width = 50
         for image in images[:30]:
-            src = self.parser.getAttribute(image, attr="src")
+            src = self.parser.get_attribute(image, attr="src")
             src = self.build_image_path(src)
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
@@ -212,7 +212,7 @@ class ImageExtractor(BaseExtractor):
         return False
 
     def get_node_images(self, node):
-        images = self.parser.getElementsByTag(node, tag="img")
+        images = self.parser.get_elements_by_tag(node, tag="img")
         if images is not None and len(images) < 1:
             return None
         return images
@@ -227,7 +227,7 @@ class ImageExtractor(BaseExtractor):
 
     def is_valid_filename(self, image_node):
         """will check the image src against a list of bad image files we know of like buttons, etc..."""
-        src = self.parser.getAttribute(image_node, attr="src")
+        src = self.parser.get_attribute(image_node, attr="src")
 
         if not src:
             return False
@@ -255,7 +255,7 @@ class ImageExtractor(BaseExtractor):
         for image in images:
             if cnt > 30:
                 return good_images
-            src = self.parser.getAttribute(image, attr="src")
+            src = self.parser.get_attribute(image, attr="src")
             src = self.build_image_path(src)
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
@@ -275,9 +275,9 @@ class ImageExtractor(BaseExtractor):
     def check_link_tag(self):
         """checks to see if we were able to find open link_src on this page"""
         node = self.article.raw_doc
-        meta = self.parser.getElementsByTag(node, tag="link", attr="rel", value="image_src")
+        meta = self.parser.get_elements_by_tag(node, tag="link", attr="rel", value="image_src")
         for item in meta:
-            src = self.parser.getAttribute(item, attr="href")
+            src = self.parser.get_attribute(item, attr="href")
             if src:
                 return self.get_image(src, extraction_type="linktag")
         return None
@@ -320,29 +320,29 @@ class ImageExtractor(BaseExtractor):
 
         def _check_elements(elements):
             for element in elements:
-                tag = self.parser.getTag(element)
+                tag = self.parser.get_tag(element)
                 if tag == "img":
                     return element
-                images = self.parser.getElementsByTag(element, tag="img")
+                images = self.parser.get_elements_by_tag(element, tag="img")
                 if images:
                     return images[0]
             return None
 
         # check for elements with known id
         for css in KNOWN_IMG_DOM_NAMES:
-            elements = self.parser.getElementsByTag(doc, attr="id", value=css)
+            elements = self.parser.get_elements_by_tag(doc, attr="id", value=css)
             image = _check_elements(elements)
             if image is not None:
-                src = self.parser.getAttribute(image, attr="src")
+                src = self.parser.get_attribute(image, attr="src")
                 if src:
                     return self.get_image(src, score=90, extraction_type="known")
 
         # check for elements with known classes
         for css in KNOWN_IMG_DOM_NAMES:
-            elements = self.parser.getElementsByTag(doc, attr="class", value=css)
+            elements = self.parser.get_elements_by_tag(doc, attr="class", value=css)
             image = _check_elements(elements)
             if image is not None:
-                src = self.parser.getAttribute(image, attr="src")
+                src = self.parser.get_attribute(image, attr="src")
                 if src:
                     return self.get_image(src, score=90, extraction_type="known")
 
@@ -361,7 +361,7 @@ class ImageExtractor(BaseExtractor):
 
     def load_customesite_mapping(self):
         path = os.path.join("resources", "images", "known-image-css.txt")
-        data_file = FileHelper.loadResourceFile(path)
+        data_file = FileHelper.load_resource_file(path)
         lines = data_file.splitlines()
         for line in lines:
             domain, css = line.split("^")

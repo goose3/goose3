@@ -29,7 +29,7 @@ KNOWN_SCHEMA_TYPES = ("ReportageNewsArticle", "NewsArticle", "Article")
 class SchemaExtractor(BaseExtractor):
     def extract(self):
         node = self.article.doc
-        metas = self.parser.getElementsByTag(node, "script", attr="type", value="application/ld\\+json")
+        metas = self.parser.get_elements_by_tag(node, "script", attr="type", value="application/ld\\+json")
         for meta in metas:
             try:
                 content = json.loads(meta.text_content())

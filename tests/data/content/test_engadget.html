@@ -182,7 +182,7 @@ Streaming and downloading TV content to mobiles is nice, but we enjoy watching T
      var d = document, s = d.createElement('script');
      s.type = 'text/javascript';
      s.src = 'http://o.aolcdn.com/omniunih.js';
-     d.getElementsByTagName('head')[0].appendChild(s);
+     d.get_elements_by_tagName('head')[0].appendChild(s);
  })();
         //-->
 </script>
@@ -501,7 +501,7 @@ var disqus_identifier = "19599059";
   (function() {
    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
    dsq.src = 'http://engadget2.disqus.com/embed.js';
-   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+   (document.get_elements_by_tagName('head')[0] || document.get_elements_by_tagName('body')[0]).appendChild(dsq);
   })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=engadget2">comments powered by Disqus.</a></noscript>
@@ -1159,7 +1159,7 @@ $("[name='aol-facebook-activity']").facebookSocial();
 })(jQuery);
 (function(d, t) {
 var g = d.createElement(t),
-	s = d.getElementsByTagName(t)[0];
+	s = d.get_elements_by_tagName(t)[0];
 g.async = true;
 g.src = 'https://apis.google.com/js/plusone.js';
 s.parentNode.insertBefore(g, s);
@@ -1177,14 +1177,14 @@ p : [["dL_ch", "us.engadget"],
 ["dL_dpt","Engadget"],
 ["dL_sDpt", ""],
 ["dL_cmsID", prop9]]
-};(function(){var c='http://o.aolcdn.com/',a=[c +'js/mg2.js'],d=document,h=d.getElementsByTagName('head')[0],s,i,l=a.length;for (i=0;i<l;i++){s=d.createElement('script');s.type='text/javascript';s.src=a[i];h.appendChild(s);}})();
+};(function(){var c='http://o.aolcdn.com/',a=[c +'js/mg2.js'],d=document,h=d.get_elements_by_tagName('head')[0],s,i,l=a.length;for (i=0;i<l;i++){s=d.createElement('script');s.type='text/javascript';s.src=a[i];h.appendChild(s);}})();
 </script> <!-- Beacon Code -->
 <script type="text/javascript">
 var disqus_shortname = 'engadget2';
 (function () {
   var s = document.createElement('script'); s.async = true;
   s.src = 'http://engadget2.disqus.com/count.js';
-  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  (document.get_elements_by_tagName('HEAD')[0] || document.get_elements_by_tagName('BODY')[0]).appendChild(s);
 }());
 </script>
 

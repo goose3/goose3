@@ -30,7 +30,7 @@ KeyT = Union[str, bytes]
 
 class FileHelper:
     @classmethod
-    def loadResourceFile(cls, filename):
+    def load_resource_file(cls, filename):
         try:
             return pkgutil.get_data("goose3", filename).decode("utf-8")
         except OSError as exc:
@@ -73,7 +73,7 @@ class StringReplacement:
         self.pattern = pattern
         self.replace_with = replace_with
 
-    def replaceAll(self, string):
+    def replace_all(self, string):
         if not string:
             return ""
         return string.replace(self.pattern, self.replace_with)
@@ -92,14 +92,14 @@ class ReplaceSequence:
     def append(self, pattern, replace_with=None):
         return self.create(pattern, replace_with)
 
-    def replaceAll(self, string):
+    def replace_all(self, string):
         if not string:
             return ""
 
         mutated_string = string
 
         for itm in self.replacements:
-            mutated_string = itm.replaceAll(mutated_string)
+            mutated_string = itm.replace_all(mutated_string)
         return mutated_string
 
 

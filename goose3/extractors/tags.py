@@ -41,7 +41,7 @@ class TagsExtractor(BaseExtractor):
                 return tags
 
         for elm in elements:
-            tag = self.parser.getText(elm)
+            tag = self.parser.get_text(elm)
             if tag:
                 tags.append(tag)
 
