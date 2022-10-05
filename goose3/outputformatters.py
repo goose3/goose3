@@ -92,10 +92,7 @@ class OutputFormatter:
             elm.text = r"\n"
 
     def links_to_text(self):
-        """
-        cleans up and converts any nodes that
-        should be considered text into text
-        """
+        """cleans up and converts any nodes that should be considered text into text"""
         self.parser.stripTags(self.get_top_node(), "a")
 
     def make_list_elms_pretty(self):
@@ -104,11 +101,7 @@ class OutputFormatter:
             elm.text = rf"• {elm.text}"
 
     def remove_negativescores_nodes(self):
-        """
-        if there are elements inside our top node
-        that have a negative gravity score,
-        let's give em the boot
-        """
+        """if there are elements inside our top node that have a negative gravity score, let's give em the boot"""
         gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
             score = self.parser.getAttribute(item, "gravityScore")
@@ -117,11 +110,8 @@ class OutputFormatter:
                 item.getparent().remove(item)
 
     def replace_with_text(self):
-        """
-        replace common tags with just
-        text so we don't have any crazy formatting issues
-        so replace <br>, <i>, <strong>, etc....
-        with whatever text is inside them
+        """replace common tags with just text so we don't have any crazy formatting issues
+        so replace <br>, <i>, <strong>, etc.... with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
         self.parser.stripTags(self.get_top_node(), "b", "strong", "i", "br")
@@ -129,10 +119,7 @@ class OutputFormatter:
             self.parser.stripTags(self.get_top_node(), "sup")
 
     def remove_fewwords_paragraphs(self):
-        """
-        remove paragraphs that have less than x number of words,
-        would indicate that it's some sort of link
-        """
+        """remove paragraphs that have less than x number of words, would indicate that it's some sort of link"""
         all_nodes = self.parser.getElementsByTags(self.get_top_node(), ["*"])
         all_nodes.reverse()
         for elm in all_nodes:

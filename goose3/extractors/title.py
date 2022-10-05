@@ -28,10 +28,8 @@ TITLE_SPLITTERS = ["|", "-", "»", ":"]
 
 class TitleExtractor(BaseExtractor):
     def clean_title(self, title):
-        """Clean title with the use of og:site_name
-        in this case try to get rid of site name
-        and use TITLE_SPLITTERS to reformat title
-        """
+        """Clean title with the use of og:site_name in this case try to get rid of site name and use
+        TITLE_SPLITTERS to reformat title"""
 
         # try to remove the domain from url
         if self.article.domain:
@@ -78,9 +76,7 @@ class TitleExtractor(BaseExtractor):
         return title
 
     def get_title(self):
-        """
-        Fetch the article title and analyze it
-        """
+        """Fetch the article title and analyze it"""
         title = ""
 
         # rely on opengraph in case we have the data

@@ -32,12 +32,9 @@ TABSSPACE = re.compile(r"[\s\t]+")
 
 
 def get_encodings_from_content(content):
-    """
-    Code from:
-    https://github.com/sigmavirus24/requests-toolbelt/blob/master/requests_toolbelt/utils/deprecated.py
+    """Code from: https://github.com/sigmavirus24/requests-toolbelt/blob/master/requests_toolbelt/utils/deprecated.py
     Return encodings from given content string.
-    :param content: string to extract encodings from.
-    """
+    :param content: string to extract encodings from."""
     if isinstance(content, bytes):
         content = content.decode()
 
@@ -148,9 +145,7 @@ class StopWords:
 
 
 class StopWordsChinese(StopWords):
-    """
-    Chinese segmentation
-    """
+    """Chinese segmentation"""
 
     def __init__(self, language="zh"):
         # force zh languahe code
@@ -170,9 +165,7 @@ class StopWordsChinese(StopWords):
 
 
 class StopWordsArabic(StopWords):
-    """
-    Arabic segmentation
-    """
+    """Arabic segmentation"""
 
     def __init__(self, language="ar"):
         # force ar languahe code
@@ -197,9 +190,7 @@ class StopWordsArabic(StopWords):
 
 
 class StopWordsKorean(StopWords):
-    """
-    Korean segmentation
-    """
+    """Korean segmentation"""
 
     def __init__(self, language="ko"):
         super().__init__(language="ko")

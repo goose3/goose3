@@ -34,16 +34,15 @@ AVAILABLE_PARSERS = {
 
 
 class ArticleContextPattern:
-    """ Help ensure correctly generated article context patterns
+    """Help ensure correctly generated article context patterns
 
-        Args:
-            attr (str): The attribute type: class, id, etc
-            value (str): The value of the attribute
-            tag (str): The type of tag, such as `article` that contains the \
-            main article body
-            domain (str): The domain to which this pattern pertains (optional)
-        Note:
-            Must provide, at a minimum, (attr and value) or (tag)
+    Args:
+        attr (str): The attribute type: class, id, etc
+        value (str): The value of the attribute
+        tag (str): The type of tag, such as `article` that contains the main article body
+        domain (str): The domain to which this pattern pertains (optional)
+    Note:
+        Must provide, at a minimum, (attr and value) or (tag)
     """
 
     __slots__ = ["attr", "value", "tag", "domain"]
@@ -71,20 +70,18 @@ KNOWN_ARTICLE_CONTENT_PATTERNS = [
 
 
 class PublishDatePattern:
-    """ Ensure correctly formed publish date patterns; to be used in conjuntion
-        with the configuration `known_publish_date_tags` property
+    """Ensure correctly formed publish date patterns; to be used in conjuntion with the configuration
+    `known_publish_date_tags` property
 
-        Args:
-            attr (str): The attribute type: class, id, etc
-            value (str): The value of the attribute
-            content (str): The name of another attribute (of the element) that \
-            contains the value
-            subcontent (str): The name of a json object key (optional)
-            tag (str): The type of tag, such as `time` that contains the \
-            publish date
-            domain (str): The domain to which this pattern pertains (optional)
-        Note:
-            Must provide, at a minimum, (attr and value) or (tag)
+    Args:
+        attr (str): The attribute type: class, id, etc
+        value (str): The value of the attribute
+        content (str): The name of another attribute (of the element) that contains the value
+        subcontent (str): The name of a json object key (optional)
+        tag (str): The type of tag, such as `time` that contains the publish date
+        domain (str): The domain to which this pattern pertains (optional)
+    Note:
+        Must provide, at a minimum, (attr and value) or (tag)
     """
 
     __slots__ = ["attr", "value", "content", "subcontent", "tag", "domain"]
@@ -122,17 +119,14 @@ KNOWN_PUBLISH_DATE_TAGS = [
 
 
 class AuthorPattern:
-    """ Ensures that the author patterns are correctly formed for use with the
-        `known_author_patterns` of configuration
+    """Ensures that the author patterns are correctly formed for use with the `known_author_patterns` of configuration
 
-        Args:
-            attr (str): The attribute type: class, id, etc
-            value (str): The value of the attribute
-            content (str): The name of another attribute (of the element) that \
-            contains the value
-            tag (str): The type of tag, such as `author` that contains the \
-            author information
-            subpattern (str): A subpattern for elements within the main attribute
+    Args:
+        attr (str): The attribute type: class, id, etc
+        value (str): The value of the attribute
+        content (str): The name of another attribute (of the element) that contains the value
+        tag (str): The type of tag, such as `author` that contains the author information
+        subpattern (str): A subpattern for elements within the main attribute
     """
 
     __slots__ = ["attr", "value", "content", "tag", "subpattern"]
@@ -204,21 +198,19 @@ class Configuration:
 
     @property
     def known_context_patterns(self) -> list:
-        """ list: The context patterns to search to find the likely article content
+        """list: The context patterns to search to find the likely article content
 
-            Note:
-                Each entry must be a dictionary with the following keys: `attr` and `value` \
-                or just `tag`
+        Note:
+            Each entry must be a dictionary with the following keys: `attr` and `value` or just `tag`
         """
         return self._known_context_patterns
 
     @known_context_patterns.setter
     def known_context_patterns(self, val: Union[dict, List[dict]]):
-        """ val must be an ArticleContextPattern, a dictionary, or list of \
-            dictionaries
-            e.g., {'attr': 'class', 'value': 'my-article-class'}
-                or [{'attr': 'class', 'value': 'my-article-class'},
-                    {'attr': 'id', 'value': 'my-article-id'}]
+        """val must be an ArticleContextPattern, a dictionary, or list of dictionaries
+        e.g., {'attr': 'class', 'value': 'my-article-class'}
+            or [{'attr': 'class', 'value': 'my-article-class'},
+                {'attr': 'id', 'value': 'my-article-id'}]
         """
 
         def create_pat_from_dict(val):
@@ -249,11 +241,10 @@ class Configuration:
 
     @property
     def known_publish_date_tags(self):
-        """ list: The tags to search to find the likely published date
+        """list: The tags to search to find the likely published date
 
-            Note:
-                Each entry must be a dictionary with the following keys: `attribute`, `value`, \
-                and `content`.
+        Note:
+            Each entry must be a dictionary with the following keys: `attribute`, `value`, and `content`.
         """
         return self._known_publish_date_tags
 
@@ -295,11 +286,10 @@ class Configuration:
 
     @property
     def known_author_patterns(self) -> list:
-        """ list: The tags to search to find the likely published date
+        """list: The tags to search to find the likely published date
 
-            Note:
-                Each entry must be a dictionary with the following keys: `attribute`, `value`, \
-                and `content`.
+        Note:
+            Each entry must be a dictionary with the following keys: `attribute`, `value`, and `content`.
         """
         return self._known_author_patterns
 
@@ -338,8 +328,7 @@ class Configuration:
 
     @property
     def strict(self) -> bool:
-        """bool: Enable `strict mode` and throw exceptions instead of
-        swallowing them.
+        """bool: Enable `strict mode` and throw exceptions instead of swallowing them.
 
         Note:
             Defaults to `True`"""
@@ -352,8 +341,7 @@ class Configuration:
 
     @property
     def http_timeout(self):
-        """float: The time delay to pass to `requests` to wait for the response
-        in seconds
+        """float: The time delay to pass to `requests` to wait for the response in seconds
 
         Note:
             Defaults to 30.0"""
@@ -400,8 +388,7 @@ class Configuration:
 
     @property
     def http_auth(self) -> tuple:
-        """tuple: Authentication class and information to pass to the requests
-        library
+        """tuple: Authentication class and information to pass to the requests library
 
         See Also:
             `Requests Authentication <http://docs.python-requests.org/en/master/user/authentication/>`__
@@ -449,8 +436,7 @@ class Configuration:
             Defaults to `Goose/{goose3.__version__}`
 
         Examples:
-            Using the non-standard browser agent string is advised when pulling
-            frequently
+            Using the non-standard browser agent string is advised when pulling frequently
 
             >>> config.browser_user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)'
             >>> config.browser_user_agent = 'AppleWebKit/534.52.7 (KHTML, like Gecko)'
@@ -515,8 +501,7 @@ class Configuration:
 
     @property
     def target_language(self) -> str:
-        """str: The default target language if the language is not extractable
-        or if use_meta_language is set to False
+        """str: The default target language if the language is not extractable or if use_meta_language is set to False
 
         Note:
             Default language is 'en'
@@ -530,10 +515,8 @@ class Configuration:
 
     @property
     def use_meta_language(self) -> bool:
-        """bool: Determine if language should be extracted from the meta tags
-        or not. If this is set to `False` then the target_language will be
-        used. Also, if extraction fails then the target_language will be
-        utilized.
+        """bool: Determine if language should be extracted from the meta tags or not. If this is set to `False` then
+        the target_language will be used. Also, if extraction fails then the target_language will be utilized.
 
         Note:
             Defaults to `True`"""
@@ -559,8 +542,7 @@ class Configuration:
 
     @property
     def images_min_bytes(self) -> int:
-        """int: Minimum number of bytes for an image to be evaluated to be the
-        main image of the site
+        """int: Minimum number of bytes for an image to be evaluated to be the main image of the site
 
         Note:
             Defaults to 4500 bytes"""
@@ -573,8 +555,7 @@ class Configuration:
 
     @property
     def pretty_lists(self) -> bool:
-        """bool: Specify if lists should be pretty printed in the cleaned_text
-        output
+        """bool: Specify if lists should be pretty printed in the cleaned_text output
 
         Note:
             Defaults to `True`"""
@@ -596,8 +577,7 @@ class Configuration:
 
     @property
     def parse_headers(self) -> bool:
-        """bool: Specify if headers should be pulled or not in the cleaned_text
-        output
+        """bool: Specify if headers should be pulled or not in the cleaned_text output
 
         Note:
             Defaults to `True`"""
@@ -610,8 +590,7 @@ class Configuration:
 
     @property
     def keep_footnotes(self) -> bool:
-        """bool: Specify if footnotes should be kept or not in the cleaned_text
-        output
+        """bool: Specify if footnotes should be kept or not in the cleaned_text output
 
         Note:
             Defaults to `True`"""

@@ -87,19 +87,13 @@ class ImageExtractor(BaseExtractor):
         return self.check_known_schemas()
 
     def check_large_images(self, node, parent_depth_level, sibling_depth_level):
-        """
-        although slow the best way to determine the best image is to download
-        them and check the actual dimensions of the image when on disk
-        so we'll go through a phased approach...
+        """although slow the best way to determine the best image is to download them and check the actual dimensions
+        of the image when on disk so we'll go through a phased approach...
         1. get a list of ALL images from the parent node
         2. filter out any bad image names that we know of (gifs, ads, etc..)
-        3. do a head request on each file to make sure it meets
-           our bare requirements
-        4. any images left over let's do a full GET request,
-           download em to disk and check their dimensions
-        5. Score images based on different factors like height/width
-           and possibly things like color density
-        """
+        3. do a head request on each file to make sure it meets our bare requirements
+        4. any images left over let's do a full GET request, download em to disk and check their dimensions
+        5. Score images based on different factors like height/width and possibly things like color density"""
         good_images = self.get_image_candidates(node)
 
         if good_images:
@@ -136,18 +130,15 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def fetch_images(self, images, depth_level):
-        """
-        download the images to temp disk and set their dimensions
-        - we're going to score the images in the order in which
-          they appear so images higher up will have more importance,
-        - we'll count the area of the 1st image as a score
-          of 1 and then calculate how much larger or small each image after it is
-        - we'll also make sure to try and weed out banner
-          type ad blocks that have big widths and small heights or vice versa
-        - so if the image is 3rd found in the dom it's
-          sequence score would be 1 / 3 = .33 * diff
-          in area from the first image
-        """
+        """download the images to temp disk and set their dimensions
+        - we're going to score the images in the order in which they appear so images higher up will have more
+          importance,
+        - we'll count the area of the 1st image as a score of 1 and then calculate how much larger or small
+          each image after it is
+        - we'll also make sure to try and weed out banner type ad blocks that have big widths and small heights
+          or vice versa
+        - so if the image is 3rd found in the dom it's sequence score would be 1 / 3 = .33 * diff in area from
+          the first image"""
         image_results = {}
         initial_area = float(0.0)
         total_score = float(0.0)
@@ -203,10 +194,8 @@ class ImageExtractor(BaseExtractor):
 
     @staticmethod
     def is_banner_dimensions(width, height):
-        """
-        returns true if we think this is kind of a bannery dimension
-        like 600 / 100 = 6 may be a fishy dimension for a good image
-        """
+        """returns true if we think this is kind of a bannery dimension like 600 / 100 = 6 may be a fishy
+        dimension for a good image"""
         if width == height:
             return False
 
@@ -229,10 +218,7 @@ class ImageExtractor(BaseExtractor):
         return images
 
     def filter_bad_names(self, images):
-        """
-        takes a list of image elements
-        and filters out the ones with bad names
-        """
+        """takes a list of image elements and filters out the ones with bad names"""
         good_images = []
         for image in images:
             if self.is_valid_filename(image):
@@ -240,10 +226,7 @@ class ImageExtractor(BaseExtractor):
         return good_images if len(good_images) > 0 else None
 
     def is_valid_filename(self, image_node):
-        """
-        will check the image src against a list
-        of bad image files we know of like buttons, etc...
-        """
+        """will check the image src against a list of bad image files we know of like buttons, etc..."""
         src = self.parser.getAttribute(image_node, attr="src")
 
         if not src:
@@ -265,10 +248,7 @@ class ImageExtractor(BaseExtractor):
         return good_images
 
     def get_images_bytesize_match(self, images):
-        """
-        loop through all the images and find the ones
-        that have the best bytez to even make them a candidate
-        """
+        """loop through all the images and find the ones that have the best bytez to even make them a candidate"""
         cnt = 0
         max_bytes_size = 15728640
         good_images = []
@@ -293,10 +273,7 @@ class ImageExtractor(BaseExtractor):
         return node if node else None
 
     def check_link_tag(self):
-        """
-        checks to see if we were able to
-        find open link_src on this page
-        """
+        """checks to see if we were able to find open link_src on this page"""
         node = self.article.raw_doc
         meta = self.parser.getElementsByTag(node, tag="link", attr="rel", value="image_src")
         for item in meta:
@@ -306,13 +283,11 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def check_known_schemas(self):
-        """
-        checks to see if we were able to find the image via known schemas:
+        """checks to see if we were able to find the image via known schemas:
 
         Supported Schemas
          - Open Graph
-         - schema.org
-        """
+         - schema.org"""
         if "image" in self.article.opengraph:
             return self.get_image(self.article.opengraph["image"], extraction_type="opengraph")
         if self.article.schema and "image" in self.article.schema and "url" in self.article.schema["image"]:
@@ -320,9 +295,7 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def get_local_image(self, src):
-        """
-        returns the bytes of the image file on disk
-        """
+        """returns the bytes of the image file on disk"""
         return ImageUtils.store_image(self.fetcher, self.article.link_hash, src, self.config)
 
     def get_clean_domain(self):
@@ -331,14 +304,11 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def check_known_elements(self):
-        """
-        in here we check for known image contains from sites
-        we've checked out like yahoo, techcrunch, etc... that have
+        """in here we check for known image contains from sites we've checked out like yahoo,
+        techcrunch, etc... that have
         * known  places to look for good images.
-        * TODO: enable this to use a series of settings files
-          so people can define what the image ids/classes
-          are on specific sites
-        """
+        * TODO: enable this to use a series of settings files so people can define what the image ids/classes are on
+                specific sites"""
         domain = self.get_clean_domain()
         if domain in self.custom_site_mapping:
             classes = self.custom_site_mapping.get(domain).split("|")
@@ -379,13 +349,9 @@ class ImageExtractor(BaseExtractor):
         return None
 
     def build_image_path(self, src):
-        """
-        This method will take an image path and build
-        out the absolute path to that image
-        * using the initial url we crawled
-          so we can find a link to the image
-          if they use relative urls like ../myimage.jpg
-        """
+        """This method will take an image path and build out the absolute path to that image
+        * using the initial url we crawled so we can find a link to the image if they use relative urls like
+        ../myimage.jpg"""
         o = urlparse(src)
         # we have a full url
         if o.netloc != "":

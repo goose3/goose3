@@ -166,8 +166,7 @@ class Article:
 
     @property
     def movies(self):
-        """list(Video): A listing of all videos within the article such as
-        YouTube or Vimeo
+        """list(Video): A listing of all videos within the article such as YouTube or Vimeo
 
         Returns:
             list(Video):  See more information on the goose3.Video class
@@ -193,8 +192,7 @@ class Article:
 
     @property
     def final_url(self):
-        """str: The URL that was used to pull and parsed; `None` if raw_html was used
-        and no url element was found.
+        """str: The URL that was used to pull and parsed; `None` if raw_html was used and no url element was found.
 
         Note:
             Read only"""
@@ -250,11 +248,11 @@ class Article:
 
     @property
     def publish_datetime_utc(self):
-        """ datetime.datetime: The date time version of the published date based on meta tag extraction \
-            in the UTC timezone, if timezone information is known
+        """datetime.datetime: The date time version of the published date based on meta tag extraction
+        in the UTC timezone, if timezone information is known
 
-            Note:
-                Read only """
+        Note:
+            Read only"""
         return self._publish_datetime_utc
 
     @property

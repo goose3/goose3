@@ -22,9 +22,7 @@ limitations under the License.
 
 
 class Video:
-    """
-    Video object
-    """
+    """Video object"""
 
     def __init__(self):
 

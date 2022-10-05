@@ -27,9 +27,7 @@ VIDEO_PROVIDERS = ["youtube", "vimeo", "dailymotion", "kewego"]
 
 
 class VideoExtractor(BaseExtractor):
-    """
-    Extracts a list of video from Article top node
-    """
+    """Extracts a list of video from Article top node"""
 
     def __init__(self, config, article):
         super().__init__(config, article)
@@ -60,9 +58,7 @@ class VideoExtractor(BaseExtractor):
         return None
 
     def get_video(self, node):
-        """
-        Create a video object from a video embed
-        """
+        """Create a video object from a video embed"""
         video = Video()
         video._embed_code = self.get_embed_code(node)
         video._embed_type = self.get_embed_type(node)

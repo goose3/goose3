@@ -26,10 +26,7 @@ from goose3.extractors import BaseExtractor
 
 class ContentExtractor(BaseExtractor):
     def get_language(self):
-        """
-        Returns the language is by the article or
-        the configuration language
-        """
+        """Returns the language is by the article or the configuration language"""
         # we don't want to force the target language
         # so we use the article.meta_lang
         if self.config.use_meta_language:
@@ -143,14 +140,10 @@ class ContentExtractor(BaseExtractor):
         return top_node
 
     def is_boostable(self, node):
-        """
-        alot of times the first paragraph might be the caption under an image
-        so we'll want to make sure if we're going to boost a parent node that
-        it should be connected to other paragraphs,
-        at least for the first n paragraphs so we'll want to make sure that
-        the next sibling is a paragraph and has at
-        least some substatial weight to it
-        """
+        """a lot of times the first paragraph might be the caption under an image so we'll want to make sure if we're
+        going to boost a parent node that it should be connected to other paragraphs, at least for the first n
+        paragraphs so we'll want to make sure that the next sibling is a paragraph and has at least some substatial
+        weight to it"""
         para = "p"
         steps_away = 0
         minimum_stopword_count = 5
@@ -193,9 +186,7 @@ class ContentExtractor(BaseExtractor):
         return top_node
 
     def get_siblings_content(self, current_sibling, baselinescore_siblings_para):
-        """
-        adds any siblings that may have a decent score to this node
-        """
+        """adds any siblings that may have a decent score to this node"""
         if current_sibling.tag == "p" and self.parser.getText(current_sibling):
             tmp = current_sibling
             if tmp.tail:
@@ -221,14 +212,11 @@ class ContentExtractor(BaseExtractor):
         return paragraphs
 
     def get_siblings_score(self, top_node):
-        """
-        we could have long articles that have tons of paragraphs
-        so if we tried to calculate the base score against
-        the total text score of those paragraphs it would be unfair.
-        So we need to normalize the score based on the average scoring
-        of the paragraphs within the top node.
-        For example if our total score of 10 paragraphs was 1000
-        but each had an average value of 100 then 100 should be our base.
+        """we could have long articles that have tons of paragraphs so if we tried to calculate the base score against
+        the total text score of those paragraphs it would be unfair. So we need to normalize the score based on the
+        average scoring of the paragraphs within the top node.
+        For example: if our total score of 10 paragraphs was 1000 but each had an average value of 100 then 100 should
+        be our base.
         """
         base = 100000
         paragraphs_number = 0
@@ -249,11 +237,8 @@ class ContentExtractor(BaseExtractor):
         return base
 
     def update_score(self, node, add_to_score):
-        """
-        adds a score to the gravityScore Attribute we put on divs
-        we'll get the current score then add the score
-        we're passing in to the current
-        """
+        """adds a score to the gravityScore Attribute we put on divs we'll get the current score then add the score
+        we're passing in to the current"""
         current_score = 0
         score_string = self.parser.getAttribute(node, "gravityScore")
         if score_string:
@@ -263,9 +248,7 @@ class ContentExtractor(BaseExtractor):
         self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
-        """
-        stores how many decent nodes are under a parent node
-        """
+        """stores how many decent nodes are under a parent node"""
         current_score = 0
         count_string = self.parser.getAttribute(node, "gravityNodes")
         if count_string:
@@ -275,11 +258,8 @@ class ContentExtractor(BaseExtractor):
         self.parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, element):
-        """
-        checks the density of links within a node,
-        is there not much text and most of it contains linky shit?
-        if so it's no good
-        """
+        """checks the density of links within a node, is there not much text and most of it contains linky shit?
+        if so it's no good"""
         links = self.parser.getElementsByTag(element, tag="a")
         if not links:
             return False
@@ -303,9 +283,7 @@ class ContentExtractor(BaseExtractor):
         # return True if score > 1.0 else False
 
     def get_score(self, node):
-        """
-        returns the gravityScore as an integer from this node
-        """
+        """returns the gravityScore as an integer from this node"""
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
@@ -315,10 +293,7 @@ class ContentExtractor(BaseExtractor):
         return int(grv_score_string)
 
     def nodes_to_check(self, docs):
-        """
-        returns a list of nodes we want to search
-        on like paragraphs and tables
-        """
+        """returns a list of nodes we want to search on like paragraphs and tables"""
         nodes_to_check = []
 
         for doc in docs:
@@ -349,10 +324,7 @@ class ContentExtractor(BaseExtractor):
         return True
 
     def post_cleanup(self):
-        """
-        remove any divs that looks like non-content,
-        clusters of links, or paras with no gusto
-        """
+        """remove any divs that looks like non-content, clusters of links, or paras with no gusto"""
         parse_tags = ["p"]
         if self.config.parse_lists:
             parse_tags.extend(["ul", "ol"])

@@ -14,9 +14,7 @@ class DjangoUnicodeDecodeError(UnicodeDecodeError):
 
 
 def smart_unicode(string, encoding="utf-8", strings_only=False, errors="strict"):
-    """
-    Returns a unicode object representing 's'. Treats bytestrings using the
-    'encoding' codec.
+    """Returns a unicode object representing 's'. Treats bytestrings using the 'encoding' codec.
 
     If strings_only is True, don't convert (some) non-string-like objects.
     """
@@ -29,16 +27,13 @@ def smart_unicode(string, encoding="utf-8", strings_only=False, errors="strict")
 def is_protected_type(obj):
     """Determine if the object instance is of a protected type.
 
-    Objects of protected types are preserved as-is when passed to
-    force_unicode(strings_only=True).
+    Objects of protected types are preserved as-is when passed to force_unicode(strings_only=True).
     """
     return isinstance(obj, (type(None), int, datetime.datetime, datetime.date, datetime.time, float, Decimal))
 
 
 def force_unicode(string, encoding="utf-8", strings_only=False, errors="strict"):
-    """
-    Similar to smart_unicode, except that lazy instances are resolved to
-    strings, rather than kept as lazy objects.
+    """Similar to smart_unicode, except that lazy instances are resolved to strings, rather than kept as lazy objects.
 
     If strings_only is True, don't convert (some) non-string-like objects.
     """
@@ -84,8 +79,7 @@ def force_unicode(string, encoding="utf-8", strings_only=False, errors="strict")
 
 
 def smart_str(string, encoding="utf-8", strings_only=False, errors="strict"):
-    """
-    Returns a bytestring version of 's', encoded as specified in 'encoding'.
+    """Returns a bytestring version of 's', encoded as specified in 'encoding'.
 
     If strings_only is True, don't convert (some) non-string-like objects.
     """

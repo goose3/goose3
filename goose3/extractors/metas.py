@@ -36,12 +36,9 @@ class MetasExtractor(BaseExtractor):
         return None
 
     def get_favicon(self):
-        """
-        Extract the favicon from a website
-        http://en.wikipedia.org/wiki/Favicon
-        <link rel="shortcut icon" type="image/png" href="favicon.png" />
-        <link rel="icon" type="image/png" href="favicon.png" />
-        """
+        """Extract the favicon from a website
+        http://en.wikipedia.org/wiki/Favicon<link rel="shortcut icon" type="image/png" href="favicon.png" />
+        <link rel="icon" type="image/png" href="favicon.png" />"""
         kwargs = {"tag": "link", "attr": "rel", "value": "icon"}
         meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
         if meta:
@@ -50,9 +47,7 @@ class MetasExtractor(BaseExtractor):
         return ""
 
     def get_canonical_link(self):
-        """
-        if the article has meta canonical link set in the url
-        """
+        """if the article has meta canonical link set in the url"""
         if self.article.final_url:
             kwargs = {"tag": "link", "attr": "rel", "value": "canonical"}
             meta = self.parser.getElementsByTag(self.article.doc, **kwargs)
@@ -69,9 +64,7 @@ class MetasExtractor(BaseExtractor):
         return self.article.final_url
 
     def get_meta_lang(self):
-        """
-        Extract content language from meta
-        """
+        """Extract content language from meta"""
         # we have a lang attribute in html
         attr = self.parser.getAttribute(self.article.doc, attr="lang")
         if attr is None:
@@ -94,9 +87,7 @@ class MetasExtractor(BaseExtractor):
         return None
 
     def get_meta_content(self, meta_name):
-        """
-        Extract a given meta content form document
-        """
+        """Extract a given meta content form document"""
         meta = self.parser.css_select(self.article.doc, meta_name)
         content = None
 
@@ -109,15 +100,11 @@ class MetasExtractor(BaseExtractor):
         return ""
 
     def get_meta_description(self):
-        """
-        if the article has meta description set in the source, use that
-        """
+        """if the article has meta description set in the source, use that"""
         return self.get_meta_content("meta[name=description]")
 
     def get_meta_keywords(self):
-        """
-        if the article has meta keywords set in the source, use that
-        """
+        """if the article has meta keywords set in the source, use that"""
         return self.get_meta_content("meta[name=keywords]")
 
     def get_meta_encoding(self):

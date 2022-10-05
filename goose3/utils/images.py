@@ -51,11 +51,8 @@ class ImageUtils:
 
     @classmethod
     def store_image(cls, http_client, link_hash, src, config):
-        """
-        Writes an image src http string to disk as a temporary file
-        and returns the LocallyStoredImage object
-        that has the info you should need on the image
-        """
+        """Writes an image src http string to disk as a temporary file and returns the LocallyStoredImage object
+        that has the info you should need on the image"""
         # check for a cache hit already on disk
         image = cls.read_localfile(link_hash, src, config)
         if image:

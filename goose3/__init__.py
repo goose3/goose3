@@ -40,14 +40,12 @@ logger = logging.getLogger(__name__)
 
 
 class Goose:
-    """ Extract most likely article content and aditional metadata from a URL
-        or previously fetched HTML document
+    """Extract most likely article content and aditional metadata from a URL or previously fetched HTML document
 
-        Args:
-            config (Configuration, dict): A configuration file or dictionary \
-            representation of the configuration file
-        Returns:
-            Goose: An instance of the goose extraction object """
+    Args:
+        config (Configuration, dict): A configuration file or dictionary representation of the configuration file
+    Returns:
+        Goose: An instance of the goose extraction object"""
 
     def __init__(self, config: Union[Configuration, dict] = None):
         # Use the passed in configuration if it is of the right type, otherwise
@@ -113,14 +111,13 @@ class Goose:
         self.finalizer.atexit = False  # turn off the garbage collection close
 
     def extract(self, url: str = None, raw_html: str = None) -> Article:
-        """ Extract the most likely article content from the html page
+        """Extract the most likely article content from the html page
 
-            Args:
-                url (str): URL to pull and parse
-                raw_html (str): String representation of the HTML page
-            Returns:
-                Article: Representation of the article contents \
-                including other parsed and extracted metadata """
+        Args:
+            url (str): URL to pull and parse
+            raw_html (str): String representation of the HTML page
+        Returns:
+            Article: Representation of the article contents including other parsed and extracted metadata"""
         if not url and not raw_html:
             raise ValueError("Either url or raw_html should be provided")
 
