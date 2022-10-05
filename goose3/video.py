@@ -49,48 +49,48 @@ class Video:
 
     @property
     def embed_type(self):
-        ''' str: The type of embeding such as embed, object, or iframe
+        """str: The type of embeding such as embed, object, or iframe
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._embed_type
 
     @property
     def provider(self):
-        ''' str: The video provider
+        """str: The video provider
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._provider
 
     @property
     def width(self):
-        ''' int: The video width in pixels
+        """int: The video width in pixels
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._width
 
     @property
     def height(self):
-        ''' int: The video height in pixels
+        """int: The video height in pixels
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._height
 
     @property
     def embed_code(self):
-        ''' str: The embed code of the video
+        """str: The embed code of the video
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._embed_code
 
     @property
     def src(self):
-        ''' str: The URL source of the video
+        """str: The URL source of the video
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._src

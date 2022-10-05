@@ -19,34 +19,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import base64
 import logging
 import os
-import base64
 
 from PIL import Image
 
+from goose3.image import ImageDetails, LocallyStoredImage
 from goose3.utils import fnv_1a
 from goose3.utils.encoding import smart_str
-from goose3.image import (ImageDetails, LocallyStoredImage)
 
 logger = logging.getLogger(__name__)
 
 
 class ImageUtils:
-
     @classmethod
     def get_image_dimensions(cls, path):
         image_details = ImageDetails()
         try:
             # workaround to force the file to actually be closed by Pillow
-            with open(path, 'rb') as img_file:
+            with open(path, "rb") as img_file:
                 with Image.open(img_file) as image:
                     image_details.set_mime_type(image.format)
                     width, height = image.size
             image_details.set_width(width)
             image_details.set_height(height)
         except OSError:
-            image_details.set_mime_type('NA')
+            image_details.set_mime_type("NA")
             logger.exception("Cannot identify image file")
         return image_details
 
@@ -65,7 +64,7 @@ class ImageUtils:
         # no cache found; do something else
 
         # parse base64 image
-        if src.startswith('data:image'):
+        if src.startswith("data:image"):
             image = cls.write_localfile_base64(link_hash, src, config)
             return image
 
@@ -82,12 +81,12 @@ class ImageUtils:
     def get_mime_type(cls, image_details):
         mime_type = image_details.get_mime_type().lower()
         mimes = {
-            'png': '.png',
-            'jpg': '.jpg',
-            'jpeg': '.jpg',
-            'gif': '.gif',
+            "png": ".png",
+            "jpg": ".jpg",
+            "jpeg": ".jpg",
+            "gif": ".gif",
         }
-        return mimes.get(mime_type, 'NA')
+        return mimes.get(mime_type, "NA")
 
     @classmethod
     def read_localfile(cls, link_hash, src, config):
@@ -96,32 +95,34 @@ class ImageUtils:
             image_details = cls.get_image_dimensions(local_image_name)
             file_extension = cls.get_mime_type(image_details)
             filesize = os.path.getsize(local_image_name)
-            return LocallyStoredImage(src=src,
-                                      local_filename=local_image_name,
-                                      link_hash=link_hash,
-                                      size=filesize,
-                                      file_extension=file_extension,
-                                      height=image_details.get_height(),
-                                      width=image_details.get_width())
+            return LocallyStoredImage(
+                src=src,
+                local_filename=local_image_name,
+                link_hash=link_hash,
+                size=filesize,
+                file_extension=file_extension,
+                height=image_details.get_height(),
+                width=image_details.get_width(),
+            )
         return None
 
     @classmethod
     def write_localfile(cls, entity, link_hash, src, config):
         local_path = cls.get_localfile_name(link_hash, src, config)
-        with open(local_path, 'wb') as fobj:
+        with open(local_path, "wb") as fobj:
             fobj.write(entity)
         return cls.read_localfile(link_hash, src, config)
 
     @classmethod
     def write_localfile_base64(cls, link_hash, src, config):
-        data = src[src.find('base64,') + 7:]
+        data = src[src.find("base64,") + 7 :]
         entity = bytes(base64.b64decode(data))
         return cls.write_localfile(entity, link_hash, src, config)
 
     @classmethod
     def get_localfile_name(cls, link_hash, src, config):
         image_hash = fnv_1a(smart_str(src))
-        return os.path.join(config.local_storage_path, f'{link_hash}_{image_hash}')
+        return os.path.join(config.local_storage_path, f"{link_hash}_{image_hash}")
 
     @classmethod
     def clean_src_string(cls, src):

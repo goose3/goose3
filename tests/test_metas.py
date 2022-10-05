@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -20,21 +19,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
-from __future__ import absolute_import
-
 from .test_base import TestExtractionBase
 
 
 class TestMetas(TestExtractionBase):
-
     def test_meta_encoding(self):
         # test that the encoding is pulled from the metadata, and also
         # show that we are pulling the cleaned text even though the encoding
         # doesn't match!
         article = self.getArticle()
-        self.assertEqual(article.meta_encoding, self.data['meta_encoding'])
-        
+        self.assertEqual(article.meta_encoding, self.data["meta_encoding"])
+
         # NOTE: The encoding doesn't match what we actually need!
         try:
             article.cleaned_text.encode(article.meta_encoding[0])

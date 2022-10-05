@@ -23,18 +23,18 @@ import os
 import tempfile
 from typing import List, Type, Union
 
-from goose3.text import StopWords
 from goose3.parsers import Parser, ParserSoup
+from goose3.text import StopWords
 from goose3.version import __version__
 
 AVAILABLE_PARSERS = {
-    'lxml': Parser,
-    'soup': ParserSoup,
+    "lxml": Parser,
+    "soup": ParserSoup,
 }
 
 
 class ArticleContextPattern:
-    ''' Help ensure correctly generated article context patterns
+    """ Help ensure correctly generated article context patterns
 
         Args:
             attr (str): The attribute type: class, id, etc
@@ -44,9 +44,9 @@ class ArticleContextPattern:
             domain (str): The domain to which this pattern pertains (optional)
         Note:
             Must provide, at a minimum, (attr and value) or (tag)
-    '''
+    """
 
-    __slots__ = ['attr', 'value', 'tag', 'domain']
+    __slots__ = ["attr", "value", "tag", "domain"]
 
     def __init__(self, *, attr=None, value=None, tag=None, domain=None):
         if (not attr and not value) and not tag:
@@ -61,17 +61,17 @@ class ArticleContextPattern:
 
 
 KNOWN_ARTICLE_CONTENT_PATTERNS = [
-    ArticleContextPattern(attr='class', value='short-story'),
-    ArticleContextPattern(attr='itemprop', value='articleBody'),
-    ArticleContextPattern(attr='class', value='post-content'),
-    ArticleContextPattern(attr='class', value='g-content'),
-    ArticleContextPattern(attr='class', value='post-outer'),
-    ArticleContextPattern(tag='article'),
+    ArticleContextPattern(attr="class", value="short-story"),
+    ArticleContextPattern(attr="itemprop", value="articleBody"),
+    ArticleContextPattern(attr="class", value="post-content"),
+    ArticleContextPattern(attr="class", value="g-content"),
+    ArticleContextPattern(attr="class", value="post-outer"),
+    ArticleContextPattern(tag="article"),
 ]
 
 
 class PublishDatePattern:
-    ''' Ensure correctly formed publish date patterns; to be used in conjuntion
+    """ Ensure correctly formed publish date patterns; to be used in conjuntion
         with the configuration `known_publish_date_tags` property
 
         Args:
@@ -85,9 +85,9 @@ class PublishDatePattern:
             domain (str): The domain to which this pattern pertains (optional)
         Note:
             Must provide, at a minimum, (attr and value) or (tag)
-    '''
+    """
 
-    __slots__ = ['attr', 'value', 'content', 'subcontent', 'tag', 'domain']
+    __slots__ = ["attr", "value", "content", "subcontent", "tag", "domain"]
 
     def __init__(self, *, attr=None, value=None, content=None, subcontent=None, tag=None, domain=None):
         if (not attr and not value) and not tag:
@@ -102,24 +102,27 @@ class PublishDatePattern:
     def __repr__(self):
         if self.tag:
             return f"PublishDatePattern(tag={self.tag}, attr={self.attr}, value={self.value} domain={self.domain})"
-        res = f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} " \
-              f"subcontent={self.subcontent} domain={self.domain})"
+        res = (
+            f"PublishDatePattern(attr={self.attr}, value={self.value} content={self.content} "
+            f"subcontent={self.subcontent} domain={self.domain})"
+        )
         return res
 
+
 KNOWN_PUBLISH_DATE_TAGS = [
-    PublishDatePattern(attr='property', value='rnews:datePublished', content='content'),
-    PublishDatePattern(attr='property', value='article:published_time', content='content'),
-    PublishDatePattern(attr='name', value='OriginalPublicationDate', content='content'),
-    PublishDatePattern(attr='itemprop', value='datePublished', content='datetime'),
-    PublishDatePattern(attr='name', value='published_time_telegram', content='content'),
-    PublishDatePattern(attr='name', value='parsely-page', content='content', subcontent='pub_date'),
-    PublishDatePattern(tag='time'),
-    PublishDatePattern(attr='itemprop', value='datePublished', content='content')
+    PublishDatePattern(attr="property", value="rnews:datePublished", content="content"),
+    PublishDatePattern(attr="property", value="article:published_time", content="content"),
+    PublishDatePattern(attr="name", value="OriginalPublicationDate", content="content"),
+    PublishDatePattern(attr="itemprop", value="datePublished", content="datetime"),
+    PublishDatePattern(attr="name", value="published_time_telegram", content="content"),
+    PublishDatePattern(attr="name", value="parsely-page", content="content", subcontent="pub_date"),
+    PublishDatePattern(tag="time"),
+    PublishDatePattern(attr="itemprop", value="datePublished", content="content"),
 ]
 
 
 class AuthorPattern:
-    ''' Ensures that the author patterns are correctly formed for use with the
+    """ Ensures that the author patterns are correctly formed for use with the
         `known_author_patterns` of configuration
 
         Args:
@@ -130,9 +133,9 @@ class AuthorPattern:
             tag (str): The type of tag, such as `author` that contains the \
             author information
             subpattern (str): A subpattern for elements within the main attribute
-    '''
+    """
 
-    __slots__ = ['attr', 'value', 'content', 'tag', 'subpattern']
+    __slots__ = ["attr", "value", "content", "tag", "subpattern"]
 
     def __init__(self, *, attr=None, value=None, content=None, tag=None, subpattern=None):
         if (not attr and not value) and not tag:
@@ -146,37 +149,38 @@ class AuthorPattern:
     def __repr__(self):
         if self.tag:
             return f"AuthorPattern(tag={self.tag}, attr={self.attr}, value={self.value})"
-        res = f"AuthorPattern(attr={self.attr}, value={self.value} " \
-              f"content={self.content} subpattern={self.subpattern})"
+        res = (
+            f"AuthorPattern(attr={self.attr}, value={self.value} "
+            f"content={self.content} subpattern={self.subpattern})"
+        )
         return res
 
 
 KNOWN_AUTHOR_PATTERNS = [
-    AuthorPattern(attr='itemprop', value='author', subpattern=AuthorPattern(attr='itemprop', value='name')),
-    AuthorPattern(attr='name', value='author', content='content')
+    AuthorPattern(attr="itemprop", value="author", subpattern=AuthorPattern(attr="itemprop", value="name")),
+    AuthorPattern(attr="name", value="author", content="content"),
 ]
 
 
 class Configuration:
-
     def __init__(self):
         # parser information
         self._available_parsers = list(AVAILABLE_PARSERS.keys())
-        self._parser_class = 'lxml'
+        self._parser_class = "lxml"
 
         # URL extraction parameters
-        self._browser_user_agent = f'Goose/{__version__}'
+        self._browser_user_agent = f"Goose/{__version__}"
         self._http_timeout = 30.0
         self._http_auth = None
         self._http_proxies = None
         self._http_headers = None
 
         # extraction information
-        self._local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
+        self._local_storage_path = os.path.join(tempfile.gettempdir(), "goose")
         self._known_context_patterns = KNOWN_ARTICLE_CONTENT_PATTERNS[:]
         self._known_publish_date_tags = KNOWN_PUBLISH_DATE_TAGS[:]
         self._known_author_patterns = KNOWN_AUTHOR_PATTERNS[:]
-        self._target_language = 'en'
+        self._target_language = "en"
         self._use_meta_language = True
 
         # general configuration
@@ -200,26 +204,25 @@ class Configuration:
 
     @property
     def known_context_patterns(self) -> list:
-        ''' list: The context patterns to search to find the likely article content
+        """ list: The context patterns to search to find the likely article content
 
             Note:
                 Each entry must be a dictionary with the following keys: `attr` and `value` \
                 or just `tag`
-        '''
+        """
         return self._known_context_patterns
 
     @known_context_patterns.setter
     def known_context_patterns(self, val: Union[dict, List[dict]]):
-        ''' val must be an ArticleContextPattern, a dictionary, or list of \
+        """ val must be an ArticleContextPattern, a dictionary, or list of \
             dictionaries
             e.g., {'attr': 'class', 'value': 'my-article-class'}
                 or [{'attr': 'class', 'value': 'my-article-class'},
                     {'attr': 'id', 'value': 'my-article-id'}]
-        '''
+        """
 
         def create_pat_from_dict(val):
-            '''Helper function used to create an ArticleContextPattern from a dictionary
-            '''
+            """Helper function used to create an ArticleContextPattern from a dictionary"""
             if "tag" in val:
                 pat = ArticleContextPattern(tag=val["tag"])
                 if "attr" in val:
@@ -235,9 +238,8 @@ class Configuration:
 
         if isinstance(val, list):
             self._known_context_patterns = [
-                                               x if isinstance(x, ArticleContextPattern) else create_pat_from_dict(x)
-                                               for x in val
-                                           ] + self.known_context_patterns
+                x if isinstance(x, ArticleContextPattern) else create_pat_from_dict(x) for x in val
+            ] + self.known_context_patterns
         elif isinstance(val, ArticleContextPattern):
             self._known_context_patterns.insert(0, val)
         elif isinstance(val, dict):
@@ -247,33 +249,31 @@ class Configuration:
 
     @property
     def known_publish_date_tags(self):
-        ''' list: The tags to search to find the likely published date
+        """ list: The tags to search to find the likely published date
 
             Note:
                 Each entry must be a dictionary with the following keys: `attribute`, `value`, \
                 and `content`.
-        '''
+        """
         return self._known_publish_date_tags
 
     @known_publish_date_tags.setter
     def known_publish_date_tags(self, val: Union[dict, List[dict]]):
-        ''' val must be a dictionary or list of dictionaries
-            e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
-                or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
-                    {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
-        '''
+        """val must be a dictionary or list of dictionaries
+        e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
+            or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
+                {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
+        """
 
         def create_pat_from_dict(val):
-            '''Helper function used to create an PublishDatePattern from a dictionary
-            '''
+            """Helper function used to create an PublishDatePattern from a dictionary"""
             if "tag" in val:
                 pat = PublishDatePattern(tag=val["tag"])
                 if "attribute" in val:
                     pat.attr = val["attribute"]
                     pat.value = val["value"]
             elif "attribute" in val:
-                pat = PublishDatePattern(attr=val["attribute"], value=val["value"],
-                                         content=val["content"])
+                pat = PublishDatePattern(attr=val["attribute"], value=val["value"], content=val["content"])
                 if "subcontent" in val:
                     pat.subcontent = val["subcontent"]
 
@@ -284,9 +284,8 @@ class Configuration:
 
         if isinstance(val, list):
             self._known_publish_date_tags = [
-                                                x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x)
-                                                for x in val
-                                            ] + self.known_publish_date_tags
+                x if isinstance(x, PublishDatePattern) else create_pat_from_dict(x) for x in val
+            ] + self.known_publish_date_tags
         elif isinstance(val, PublishDatePattern):
             self._known_publish_date_tags.insert(0, val)
         elif isinstance(val, dict):
@@ -296,33 +295,31 @@ class Configuration:
 
     @property
     def known_author_patterns(self) -> list:
-        ''' list: The tags to search to find the likely published date
+        """ list: The tags to search to find the likely published date
 
             Note:
                 Each entry must be a dictionary with the following keys: `attribute`, `value`, \
                 and `content`.
-        '''
+        """
         return self._known_author_patterns
 
     @known_author_patterns.setter
     def known_author_patterns(self, val: Union[dict, List[dict]]):
-        ''' val must be a dictionary or list of dictionaries
-            e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
-                or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
-                    {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
-        '''
+        """val must be a dictionary or list of dictionaries
+        e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
+            or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},
+                {'attrribute': 'property', 'value': 'pub_time', 'content': 'content'}]
+        """
 
         def create_pat_from_dict(val):
-            '''Helper function used to create an AuthorPatterns from a dictionary
-            '''
+            """Helper function used to create an AuthorPatterns from a dictionary"""
             if "tag" in val:
                 pat = AuthorPattern(tag=val["tag"])
                 if "attribute" in val:
                     pat.attr = val["attribute"]
                     pat.value = val["value"]
             elif "attribute" in val:
-                pat = AuthorPattern(attr=val["attribute"], value=val["value"],
-                                    content=val["content"])
+                pat = AuthorPattern(attr=val["attribute"], value=val["value"], content=val["content"])
             if "subpattern" in val:
                 pat.subpattern = create_pat_from_dict(val["subpattern"])
 
@@ -330,9 +327,8 @@ class Configuration:
 
         if isinstance(val, list):
             self._known_author_patterns = [
-                                              x if isinstance(x, AuthorPattern) else create_pat_from_dict(x)
-                                              for x in val
-                                          ] + self.known_author_patterns
+                x if isinstance(x, AuthorPattern) else create_pat_from_dict(x) for x in val
+            ] + self.known_author_patterns
         elif isinstance(val, AuthorPattern):
             self._known_author_patterns.insert(0, val)
         elif isinstance(val, dict):
@@ -342,176 +338,176 @@ class Configuration:
 
     @property
     def strict(self) -> bool:
-        ''' bool: Enable `strict mode` and throw exceptions instead of
-            swallowing them.
+        """bool: Enable `strict mode` and throw exceptions instead of
+        swallowing them.
 
-            Note:
-                Defaults to `True` '''
+        Note:
+            Defaults to `True`"""
         return self._strict
 
     @strict.setter
     def strict(self, val: bool):
-        ''' set the strict property '''
+        """set the strict property"""
         self._strict = bool(val)
 
     @property
     def http_timeout(self):
-        ''' float: The time delay to pass to `requests` to wait for the response
-            in seconds
+        """float: The time delay to pass to `requests` to wait for the response
+        in seconds
 
-            Note:
-                Defaults to 30.0 '''
+        Note:
+            Defaults to 30.0"""
         return self._http_timeout
 
     @http_timeout.setter
     def http_timeout(self, val):
-        ''' set the http_timeout property '''
+        """set the http_timeout property"""
         self._http_timeout = float(val)
 
     @property
     def local_storage_path(self):
-        ''' str: The local path to store temporary files
+        """str: The local path to store temporary files
 
-            Note:
-                Defaults to the value of `os.path.join(tempfile.gettempdir(), 'goose')` '''
+        Note:
+            Defaults to the value of `os.path.join(tempfile.gettempdir(), 'goose')`"""
         return self._local_storage_path
 
     @local_storage_path.setter
     def local_storage_path(self, val):
-        ''' set the local_storage_path property '''
+        """set the local_storage_path property"""
         self._local_storage_path = val
 
     @property
     def parser_class(self) -> str:
-        ''' str: The key of the parser to use
+        """str: The key of the parser to use
 
-            Note:
-                Defaults to `lxml` '''
+        Note:
+            Defaults to `lxml`"""
         return self._parser_class
 
     @parser_class.setter
     def parser_class(self, val: str):
-        ''' set the parser_class property '''
+        """set the parser_class property"""
         self._parser_class = val
 
     @property
     def available_parsers(self) -> List[str]:
-        ''' list(str): A list of all possible parser values for the parser_class
+        """list(str): A list of all possible parser values for the parser_class
 
-            Note:
-                Not settable '''
+        Note:
+            Not settable"""
         return self._available_parsers
 
     @property
     def http_auth(self) -> tuple:
-        ''' tuple: Authentication class and information to pass to the requests
-            library
+        """tuple: Authentication class and information to pass to the requests
+        library
 
-            See Also:
-                `Requests Authentication <http://docs.python-requests.org/en/master/user/authentication/>`__
-        '''
+        See Also:
+            `Requests Authentication <http://docs.python-requests.org/en/master/user/authentication/>`__
+        """
         return self._http_auth
 
     @http_auth.setter
     def http_auth(self, val: tuple):
-        ''' set the http_auth property '''
+        """set the http_auth property"""
         self._http_auth = val
 
     @property
     def http_proxies(self) -> dict:
-        ''' dict: Proxy information to pass directly to the supporting `requests` object
+        """dict: Proxy information to pass directly to the supporting `requests` object
 
-            See Also:
-                `Requests Proxy Support <http://docs.python-requests.org/en/master/user/advanced/#proxies>`__
-        '''
+        See Also:
+            `Requests Proxy Support <http://docs.python-requests.org/en/master/user/advanced/#proxies>`__
+        """
         return self._http_proxies
 
     @http_proxies.setter
     def http_proxies(self, val: dict):
-        ''' set the http_proxies property '''
+        """set the http_proxies property"""
         self._http_proxies = val
 
     @property
     def http_headers(self) -> dict:
-        ''' dict: Custom headers to pass directly to the supporting `requests` object
+        """dict: Custom headers to pass directly to the supporting `requests` object
 
-            See Also:
-                `Requests Custom Headers <http://docs.python-requests.org/en/master/user/quickstart/#custom-headers>`__
-        '''
+        See Also:
+            `Requests Custom Headers <http://docs.python-requests.org/en/master/user/quickstart/#custom-headers>`__
+        """
         return self._http_headers
 
     @http_headers.setter
     def http_headers(self, val: dict):
-        ''' set the http_headers property '''
+        """set the http_headers property"""
         self._http_headers = val
 
     @property
     def browser_user_agent(self) -> str:
-        ''' Browser user agent string to use when making URL requests
+        """Browser user agent string to use when making URL requests
 
-            Note:
-                Defaults to `Goose/{goose3.__version__}`
+        Note:
+            Defaults to `Goose/{goose3.__version__}`
 
-            Examples:
-                Using the non-standard browser agent string is advised when pulling
-                frequently
+        Examples:
+            Using the non-standard browser agent string is advised when pulling
+            frequently
 
-                >>> config.browser_user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)'
-                >>> config.browser_user_agent = 'AppleWebKit/534.52.7 (KHTML, like Gecko)'
-                >>> config.browser_user_agent = 'Version/5.1.2 Safari/534.52.7'
-        '''
+            >>> config.browser_user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2)'
+            >>> config.browser_user_agent = 'AppleWebKit/534.52.7 (KHTML, like Gecko)'
+            >>> config.browser_user_agent = 'Version/5.1.2 Safari/534.52.7'
+        """
         return self._browser_user_agent
 
     @browser_user_agent.setter
     def browser_user_agent(self, val: str):
-        ''' set the browser user agent string '''
+        """set the browser user agent string"""
         self._browser_user_agent = val
 
     @property
     def imagemagick_identify_path(self) -> str:
-        ''' str: Path to the identify program that is part of imagemagick
+        """str: Path to the identify program that is part of imagemagick
 
-            Note:
-                Defaults to `"/opt/local/bin/identify"`
-            Warning:
-                Currently not used / implemented '''
+        Note:
+            Defaults to `"/opt/local/bin/identify"`
+        Warning:
+            Currently not used / implemented"""
         return self._imagemagick_identify_path
 
     @imagemagick_identify_path.setter
     def imagemagick_identify_path(self, val: str):
-        ''' set the imagemagick identify program path '''
+        """set the imagemagick identify program path"""
         self._imagemagick_identify_path = val
 
     @property
     def imagemagick_convert_path(self) -> str:
-        ''' str: Path to the convert program that is part of imagemagick
+        """str: Path to the convert program that is part of imagemagick
 
-            Note:
-                Defaults to `"/opt/local/bin/convert"`
-            Warning:
-                Currently not used / implemented '''
+        Note:
+            Defaults to `"/opt/local/bin/convert"`
+        Warning:
+            Currently not used / implemented"""
         return self._imagemagick_convert_path
 
     @imagemagick_convert_path.setter
     def imagemagick_convert_path(self, val: str):
-        ''' set the imagemagick convert program path '''
+        """set the imagemagick convert program path"""
         self._imagemagick_convert_path = val
 
     @property
     def stopwords_class(self) -> Type[StopWords]:
-        ''' StopWords: The StopWords class to use when analyzing article content
+        """StopWords: The StopWords class to use when analyzing article content
 
-            Note:
-                Defaults to the english stop words
-            Note:
-                Current stop words available in `goose3.text` include: \n
-                `StopWords`, `StopWordsChinese`, `StopWordsArabic`, and `StopWordsKorean`
-        '''
+        Note:
+            Defaults to the english stop words
+        Note:
+            Current stop words available in `goose3.text` include: \n
+            `StopWords`, `StopWordsChinese`, `StopWordsArabic`, and `StopWordsKorean`
+        """
         return self._stopwords_class
 
     @stopwords_class.setter
     def stopwords_class(self, val):
-        ''' set the stopwords class to use '''
+        """set the stopwords class to use"""
         if isinstance(val, StopWords) or issubclass(val, StopWords):
             self._stopwords_class = val
         else:
@@ -519,74 +515,74 @@ class Configuration:
 
     @property
     def target_language(self) -> str:
-        ''' str: The default target language if the language is not extractable
-            or if use_meta_language is set to False
+        """str: The default target language if the language is not extractable
+        or if use_meta_language is set to False
 
-            Note:
-                Default language is 'en'
-        '''
+        Note:
+            Default language is 'en'
+        """
         return self._target_language
 
     @target_language.setter
     def target_language(self, val: str):
-        ''' set the target language property '''
+        """set the target language property"""
         self._target_language = val
 
     @property
     def use_meta_language(self) -> bool:
-        ''' bool: Determine if language should be extracted from the meta tags
-            or not. If this is set to `False` then the target_language will be
-            used. Also, if extraction fails then the target_language will be
-            utilized.
+        """bool: Determine if language should be extracted from the meta tags
+        or not. If this is set to `False` then the target_language will be
+        used. Also, if extraction fails then the target_language will be
+        utilized.
 
-            Note:
-                Defaults to `True` '''
+        Note:
+            Defaults to `True`"""
         return self._use_meta_language
 
     @use_meta_language.setter
     def use_meta_language(self, val: bool):
-        ''' set the use_meta_language property '''
+        """set the use_meta_language property"""
         self._use_meta_language = bool(val)
 
     @property
     def enable_image_fetching(self) -> bool:
-        ''' bool: Turn on or off image extraction
+        """bool: Turn on or off image extraction
 
-            Note:
-                Defaults to `False` '''
+        Note:
+            Defaults to `False`"""
         return self._enable_image_fetching
 
     @enable_image_fetching.setter
     def enable_image_fetching(self, val: bool):
-        ''' set the enable_image_fetching property '''
+        """set the enable_image_fetching property"""
         self._enable_image_fetching = bool(val)
 
     @property
     def images_min_bytes(self) -> int:
-        ''' int: Minimum number of bytes for an image to be evaluated to be the
-            main image of the site
+        """int: Minimum number of bytes for an image to be evaluated to be the
+        main image of the site
 
-            Note:
-                Defaults to 4500 bytes '''
+        Note:
+            Defaults to 4500 bytes"""
         return self._images_min_bytes
 
     @images_min_bytes.setter
     def images_min_bytes(self, val: int):
-        ''' set the images_min_bytes property '''
+        """set the images_min_bytes property"""
         self._images_min_bytes = int(val)
 
     @property
     def pretty_lists(self) -> bool:
-        ''' bool: Specify if lists should be pretty printed in the cleaned_text
-            output
+        """bool: Specify if lists should be pretty printed in the cleaned_text
+        output
 
-            Note:
-                Defaults to `True` '''
+        Note:
+            Defaults to `True`"""
         return self._pretty_lists
 
     @pretty_lists.setter
     def pretty_lists(self, val: bool):
-        ''' set if lists should be pretty printed '''
+        """set if lists should be pretty printed"""
         self._pretty_lists = bool(val)
 
     @property
@@ -595,40 +591,40 @@ class Configuration:
 
     @parse_lists.setter
     def parse_lists(self, val: bool):
-        ''' set if headers should be parsed '''
+        """set if headers should be parsed"""
         self._parse_lists = bool(val)
 
     @property
     def parse_headers(self) -> bool:
-        ''' bool: Specify if headers should be pulled or not in the cleaned_text
-            output
+        """bool: Specify if headers should be pulled or not in the cleaned_text
+        output
 
-            Note:
-                Defaults to `True`'''
+        Note:
+            Defaults to `True`"""
         return self._parse_headers
 
     @parse_headers.setter
     def parse_headers(self, val: bool):
-        ''' set if headers should be parsed '''
+        """set if headers should be parsed"""
         self._parse_headers = bool(val)
 
     @property
     def keep_footnotes(self) -> bool:
-        ''' bool: Specify if footnotes should be kept or not in the cleaned_text
-            output
+        """bool: Specify if footnotes should be kept or not in the cleaned_text
+        output
 
-            Note:
-                Defaults to `True`'''
+        Note:
+            Defaults to `True`"""
         return self._keep_footnotes
 
     @keep_footnotes.setter
     def keep_footnotes(self, val: bool):
-        ''' set if headers should be parsed '''
+        """set if headers should be parsed"""
         self._keep_footnotes = bool(val)
 
     def get_parser(self) -> Union[Parser, ParserSoup, any]:
-        ''' Retrieve the current parser class to use for extraction
+        """Retrieve the current parser class to use for extraction
 
-            Returns:
-                Parser: The parser to use '''
+        Returns:
+            Parser: The parser to use"""
         return AVAILABLE_PARSERS[self.parser_class]

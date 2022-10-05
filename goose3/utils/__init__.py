@@ -19,8 +19,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import time
 import pkgutil
+import time
 from typing import Union
 
 from goose3.utils.constants import UINT64_T_MAX
@@ -29,11 +29,10 @@ KeyT = Union[str, bytes]
 
 
 class FileHelper:
-
     @classmethod
     def loadResourceFile(cls, filename):
         try:
-            return pkgutil.get_data("goose3", filename).decode('utf-8')
+            return pkgutil.get_data("goose3", filename).decode("utf-8")
         except OSError as exc:
             raise OSError(f"Couldn't open file '{filename}' - {exc}") from exc
 
@@ -48,8 +47,8 @@ class RawHelper:
     @classmethod
     def get_parsing_candidate(cls, url: str, raw_html: str) -> ParsingCandidate:
         if isinstance(raw_html, str):
-            raw_html = raw_html.encode('utf-8')
-        link_hash = f'{fnv_1a(raw_html)}.{time.time()}'
+            raw_html = raw_html.encode("utf-8")
+        link_hash = f"{fnv_1a(raw_html)}.{time.time()}"
         return ParsingCandidate(url, link_hash)
 
 
@@ -57,38 +56,36 @@ class URLHelper:
     @classmethod
     def get_parsing_candidate(cls, url_to_crawl: str) -> ParsingCandidate:
         # replace shebang is urls
-        if '#!' in url_to_crawl:
-            final_url = url_to_crawl.replace('#!', '?_escaped_fragment_=')
+        if "#!" in url_to_crawl:
+            final_url = url_to_crawl.replace("#!", "?_escaped_fragment_=")
         else:
             final_url = url_to_crawl
 
         # url is only for calculating the link_hash
         url = final_url.encode("utf-8") if isinstance(final_url, str) else final_url
 
-        link_hash = f'{fnv_1a(url)}.{time.time()}'
+        link_hash = f"{fnv_1a(url)}.{time.time()}"
         return ParsingCandidate(final_url, link_hash)
 
 
 class StringReplacement:
-
     def __init__(self, pattern, replace_with):
         self.pattern = pattern
         self.replace_with = replace_with
 
     def replaceAll(self, string):
         if not string:
-            return ''
+            return ""
         return string.replace(self.pattern, self.replace_with)
 
 
 class ReplaceSequence:
-
     def __init__(self):
         self.replacements = []
 
     # @classmethod
     def create(self, first_pattern, replace_with=None):
-        result = StringReplacement(first_pattern, replace_with or '')
+        result = StringReplacement(first_pattern, replace_with or "")
         self.replacements.append(result)
         return self
 
@@ -97,7 +94,7 @@ class ReplaceSequence:
 
     def replaceAll(self, string):
         if not string:
-            return ''
+            return ""
 
         mutated_string = string
 

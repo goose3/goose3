@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -20,23 +19,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from __future__ import absolute_import
-
 import os
 import unittest
 
 from goose3.configuration import Configuration
-from goose3.image import Image
-from goose3.image import ImageDetails
+from goose3.image import Image, ImageDetails
 from goose3.utils.images import ImageUtils
-from .test_base import TestExtractionBase
 
+from .test_base import TestExtractionBase
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class ImageExtractionTests(TestExtractionBase):
-
     def getConfig(self):
         config = Configuration()
         config.enable_image_fetching = True
@@ -51,7 +46,7 @@ class ImageExtractionTests(TestExtractionBase):
         # expected image
         expected_image = Image()
         for k, v in list(expected_value.items()):
-            setattr(expected_image, '_{}'.format(k), v)
+            setattr(expected_image, f"_{k}", v)
         msg = "Expected value is not a Goose Image instance"
         self.assertTrue(isinstance(expected_image, Image), msg=msg)
 
@@ -66,23 +61,23 @@ class ImageExtractionTests(TestExtractionBase):
 
     def test_basic_image(self):
         article = self.getArticle()
-        fields = ['top_image']
+        fields = ["top_image"]
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_base64_image(self):
         article = self.getArticle()
-        fields = ['top_image']
+        fields = ["top_image"]
         self.runArticleAssertions(article=article, fields=fields)
 
     def _test_known_image_css(self, article):
         # check if we have an image in article.top_node
-        images = self.parser.getElementsByTag(article.top_node,  tag='img')
+        images = self.parser.getElementsByTag(article.top_node, tag="img")
         self.assertEqual(len(images), 0)
 
         # we dont' have an image in article.top_node
         # check if the correct image was retrieved
         # using the known-image-css.txt
-        fields = ['cleaned_text', 'top_image']
+        fields = ["cleaned_text", "top_image"]
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_known_image_name_parent(self):
@@ -106,7 +101,7 @@ class ImageExtractionTests(TestExtractionBase):
         self._test_known_image_css(article)
 
     def test_known_image_empty_src(self):
-        'Tests that img tags for known image sources with empty src attributes are skipped.'
+        "Tests that img tags for known image sources with empty src attributes are skipped."
         article = self.getArticle()
         self._test_known_image_css(article)
 
@@ -120,14 +115,9 @@ class ImageExtractionTests(TestExtractionBase):
 
 
 class ImageUtilsTests(unittest.TestCase):
-
     def setUp(self):
-        self.path = '{}/data/images/50850547cc7310bc53e30e802c6318f1'.format(CURRENT_PATH)
-        self.expected_results = {
-            'width': 476,
-            'height': 317,
-            'mime_type': 'JPEG'
-        }
+        self.path = f"{CURRENT_PATH}/data/images/50850547cc7310bc53e30e802c6318f1"
+        self.expected_results = {"width": 476, "height": 317, "mime_type": "JPEG"}
 
     def test_utils_get_image_dimensions(self):
         image_detail = ImageUtils.get_image_dimensions(self.path)
@@ -151,20 +141,16 @@ class ImageUtilsTests(unittest.TestCase):
 
         # test image_detail get_ methode
         for k, v in list(self.expected_results.items()):
-            attr = 'get_%s' % k
+            attr = "get_%s" % k
             self.assertEqual(getattr(image_detail, attr)(), v)
 
         # test image_detail set_ methode
-        expected_results = {
-            'width': 10,
-            'height': 10,
-            'mime_type': 'PNG'
-        }
+        expected_results = {"width": 10, "height": 10, "mime_type": "PNG"}
 
         for k, v in list(expected_results.items()):
-            attr = 'set_%s' % k
+            attr = "set_%s" % k
             getattr(image_detail, attr)(v)
 
         for k, v in list(expected_results.items()):
-            attr = 'get_%s' % k
+            attr = "get_%s" % k
             self.assertEqual(getattr(image_detail, attr)(), v)

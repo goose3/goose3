@@ -19,17 +19,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 from goose3.extractors import BaseExtractor
 
 
 class LinksExtractor(BaseExtractor):
-
     def extract(self):
         links = []
-        items = self.parser.getElementsByTag(self.article.top_node, 'a')
+        items = self.parser.getElementsByTag(self.article.top_node, "a")
         for i in items:
-            attr = self.parser.getAttribute(i, 'href')
+            attr = self.parser.getAttribute(i, "href")
             if attr:
                 links.append(attr)
         return links

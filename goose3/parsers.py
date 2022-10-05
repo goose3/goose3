@@ -24,15 +24,14 @@ from copy import deepcopy
 import lxml.html
 from lxml import etree
 
-from goose3.text import innerTrim, encodeValue, get_encodings_from_content, smart_str
+from goose3.text import encodeValue, get_encodings_from_content, innerTrim, smart_str
 
 
 class Parser:
-
     @classmethod
     def xpath_re(cls, node, expression):
         regexp_namespace = "http://exslt.org/regular-expressions"
-        items = node.xpath(expression, namespaces={'re': regexp_namespace})
+        items = node.xpath(expression, namespaces={"re": regexp_namespace})
         return items
 
     @classmethod
@@ -83,8 +82,8 @@ class Parser:
     @classmethod
     def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
         namespace = "http://exslt.org/regular-expressions"
-        sel = tag or '*'
-        selector = f'descendant-or-self::{sel}'
+        sel = tag or "*"
+        selector = f"descendant-or-self::{sel}"
         if attr and value:
             selector = f'{selector}[re:test(@{attr}, "{value}", "i")]'
         elems = node.xpath(selector, namespaces={"re": namespace})
@@ -110,18 +109,18 @@ class Parser:
         if root.text:
             elm = lxml.html.HtmlElement()
             elm.text = root.text
-            elm.tag = 'text'
+            elm.tag = "text"
             root.text = None
             root.insert(0, elm)
         # loop childs
         for _, elm in enumerate(list(root)):
             idx = root.index(elm)
             # don't process texts nodes
-            if elm.tag == 'text':
+            if elm.tag == "text":
                 continue
             # create a text node for tail
             if elm.tail:
-                tmp = cls.createElement(tag='text', text=elm.tail, tail=None)
+                tmp = cls.createElement(tag="text", text=elm.tail, tail=None)
                 root.insert(idx + 1, tmp)
         return list(root)
 
@@ -135,7 +134,7 @@ class Parser:
 
     @classmethod
     def getElementsByTags(cls, node, tags):
-        selector = ','.join(tags)
+        selector = ",".join(tags)
         elems = cls.css_select(node, selector)
         # remove the root node
         # if we have a selection tag
@@ -144,7 +143,7 @@ class Parser:
         return elems
 
     @classmethod
-    def createElement(cls, tag='p', text=None, tail=None):
+    def createElement(cls, tag="p", text=None, tail=None):
         elm = lxml.html.HtmlElement()
         elm.tag = tag
         elm.text = text
@@ -153,7 +152,7 @@ class Parser:
 
     @classmethod
     def getComments(cls, node):
-        return node.xpath('//comment()')
+        return node.xpath("//comment()")
 
     @classmethod
     def getParent(cls, node):
@@ -167,12 +166,12 @@ class Parser:
                 prev = node.getprevious()
                 if prev is None:
                     if not parent.text:
-                        parent.text = ''
-                    parent.text += ' ' + node.tail
+                        parent.text = ""
+                    parent.text += " " + node.tail
                 else:
                     if not prev.tail:
-                        prev.tail = ''
-                    prev.tail += ' ' + node.tail
+                        prev.tail = ""
+                    prev.tail += " " + node.tail
             node.clear()
             parent.remove(node)
 
@@ -182,7 +181,7 @@ class Parser:
 
     @classmethod
     def getText(cls, node):
-        return innerTrim(' '.join(node.itertext()).strip())
+        return innerTrim(" ".join(node.itertext()).strip())
 
     @classmethod
     def previousSiblings(cls, node):
@@ -211,7 +210,7 @@ class Parser:
 
     @classmethod
     def isTextNode(cls, node):
-        return node.tag == 'text'
+        return node.tag == "text"
 
     @classmethod
     def getAttribute(cls, node, attr=None):
@@ -241,10 +240,10 @@ class Parser:
 
 
 class ParserSoup(Parser):
-
     @classmethod
     def fromstring(cls, html):
         from lxml.html import soupparser
+
         html = encodeValue(html)
         doc = soupparser.fromstring(html)
         return doc

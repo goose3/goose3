@@ -1,4 +1,11 @@
 # Goose3
+### Future Release
+* Fix for building Goose3 into an executable; [see issue #144](https://github.com/goose3/goose3/issues/144)
+* Update build system to be [PEP 517](https://peps.python.org/pep-0517/) compliant
+* Code Standardization
+    * Upgrade code using [pyupgrade](https://github.com/asottile/pyupgrade)
+    * Pylint to find and resolve possible issues
+    * Automated code formatting using [psf/black](https://github.com/psf/black)
 
 ### Version 3.1.12
 * Fix for Korean stop words [see PR #138](https://github.com/goose3/goose3/pull/138); Thanks [galaxytemple](https://github.com/galaxytemple)

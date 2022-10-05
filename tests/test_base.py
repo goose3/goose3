@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -20,11 +19,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import codecs
 import json
-from datetime import datetime
 import os
 import unittest
-import codecs
+from datetime import datetime
 
 import requests_mock
 
@@ -33,58 +32,54 @@ from goose3.configuration import Configuration
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
+
 def load_resource(path):
     try:
-        with codecs.open(path, 'r', 'utf-8') as fobj:
+        with codecs.open(path, "r", "utf-8") as fobj:
             content = fobj.read()
         return content
-    except IOError:
-        raise IOError("Couldn't open file %s" % path)
+    except OSError:
+        raise OSError("Couldn't open file %s" % path)
+
 
 class TestExtractionBase(unittest.TestCase):
-    """\
+    """
     Extraction test case
     """
+
     # callback = MockResponseExtractors
 
     def getRawHtml(self):
-        test, suite, module, cls, func = self.id().split('.')
+        test, suite, module, cls, func = self.id().split(".")
         path = os.path.join(
-            os.path.dirname(CURRENT_PATH),
-            "data",
-            suite,
-            module.partition('test_')[2],
-            "%s.html" % func)
+            os.path.dirname(CURRENT_PATH), "data", suite, module.partition("test_")[2], "%s.html" % func
+        )
         path = os.path.abspath(path)
         content = load_resource(path)
         return content
 
     def loadData(self):
-        """\
-
-        """
-        full_id = self.id().split('.')
+        """ """
+        full_id = self.id().split(".")
 
         test, module, cls, func = full_id
         path = os.path.join(
             os.path.dirname(CURRENT_PATH),
-            'tests',
+            "tests",
             "data",
             # suite,
-            module.partition('test_')[2],
-            "%s.json" % func)
+            module.partition("test_")[2],
+            "%s.json" % func,
+        )
         path = os.path.abspath(path)
         content = load_resource(path)
         self.data = json.loads(content)
 
     def loadHtml(self):
-        test, module, cls, func = self.id().split('.')
+        test, module, cls, func = self.id().split(".")
         path = os.path.join(
-            os.path.dirname(CURRENT_PATH),
-            'tests',
-            "data",
-            module.partition('test_')[2],
-            "%s.html" % func)
+            os.path.dirname(CURRENT_PATH), "tests", "data", module.partition("test_")[2], "%s.html" % func
+        )
         path = os.path.abspath(path)
         self.html = load_resource(path)
 
@@ -106,31 +101,29 @@ class TestExtractionBase(unittest.TestCase):
         self.assertTrue(len(expected_value) <= len(result_value), msg=msg)
 
         # clean_text value
-        result_value = result_value[0:len(expected_value)]
+        result_value = result_value[0 : len(expected_value)]
         msg = "The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
 
     def runArticleAssertions(self, article, fields):
-        """\
-
-        """
+        """ """
         for field in fields:
-            expected_value = self.data['expected'][field]
+            expected_value = self.data["expected"][field]
             result_value = getattr(article, field, None)
 
             # handle checking datetimes...
-            if field in ['publish_datetime_utc']:
+            if field in ["publish_datetime_utc"]:
                 self.assertEqual(type(result_value), type(datetime.today()))
-                result_value = result_value.isoformat(sep=' ')
+                result_value = result_value.isoformat(sep=" ")
 
             # custom assertion for a given field
-            assertion = 'assert_%s' % field
+            assertion = "assert_%s" % field
             if hasattr(self, assertion):
                 getattr(self, assertion)(field, expected_value, result_value)
                 continue
 
             # default assertion
-            msg = "Error %s \nexpected: %s\nresult:   %s" % (field, expected_value, result_value)
+            msg = f"Error {field} \nexpected: {expected_value}\nresult:   {result_value}"
             self.assertEqual(expected_value, result_value, msg=msg)
 
     # def extract(self, instance):
@@ -147,9 +140,7 @@ class TestExtractionBase(unittest.TestCase):
         return config
 
     def getArticle(self, config_=None):
-        """\
-
-        """
+        """ """
         # load test case data
         self.loadData()
         self.loadHtml()
@@ -166,28 +157,31 @@ class TestExtractionBase(unittest.TestCase):
 
         # target language
         # needed for non english language most of the time
-        target_language = self.data.get('target_language')
+        target_language = self.data.get("target_language")
         if target_language:
             config.target_language = target_language
             config.use_meta_language = False
 
         # read in the basic image...
-        with open('{}/data/images/50850547cc7310bc53e30e802c6318f1'.format(CURRENT_PATH), 'rb') as fobj:
+        with open(f"{CURRENT_PATH}/data/images/50850547cc7310bc53e30e802c6318f1", "rb") as fobj:
             img_content = fobj.read()
 
         # read in another, blank image
-        with open('{}/data/images/blank.jpeg'.format(CURRENT_PATH), 'rb') as fobj:
+        with open(f"{CURRENT_PATH}/data/images/blank.jpeg", "rb") as fobj:
             blank_img = fobj.read()
 
         # run goose
         with Goose(config=config) as g, requests_mock.Mocker(real_http=False) as m:
             # load images for those tests
-            m.get('http://go.com/images/465395/', content=blank_img)
-            m.get('http://bla.com/images/465395/', content=blank_img)
-            m.get('http://md0.libe.com/photo/465395/?modified_at=1351411813&ratio_x=03&ratio_y=02&width=476', content=img_content)
+            m.get("http://go.com/images/465395/", content=blank_img)
+            m.get("http://bla.com/images/465395/", content=blank_img)
+            m.get(
+                "http://md0.libe.com/photo/465395/?modified_at=1351411813&ratio_x=03&ratio_y=02&width=476",
+                content=img_content,
+            )
             # if the url is not given in the result json, use the raw_html parameter.
             if "url" in self.data:
-                m.get(self.data['url'], text=self.html)
-                return g.extract(url=self.data['url'])
+                m.get(self.data["url"], text=self.html)
+                return g.extract(url=self.data["url"])
             else:
                 return g.extract(raw_html=self.html)

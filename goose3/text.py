@@ -25,11 +25,10 @@ import string
 import warnings
 
 from goose3.utils import FileHelper
-from goose3.utils.encoding import (smart_unicode, smart_str, DjangoUnicodeDecodeError)
+from goose3.utils.encoding import DjangoUnicodeDecodeError, smart_str, smart_unicode
 
-
-SPACE_SYMBOLS = re.compile(r'[\s\xa0\t]')
-TABSSPACE = re.compile(r'[\s\t]+')
+SPACE_SYMBOLS = re.compile(r"[\s\xa0\t]")
+TABSSPACE = re.compile(r"[\s\t]+")
 
 
 def get_encodings_from_content(content):
@@ -46,19 +45,17 @@ def get_encodings_from_content(content):
         r'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
     ).findall
 
-    find_xml = re.compile(
-        r'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
-    ).findall
+    find_xml = re.compile(r'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]').findall
     return find_charset(content) + find_xml(content)
 
 
 def innerTrim(value):
     if isinstance(value, str):
         # remove tab and white space
-        value = re.sub(TABSSPACE, ' ', value)
-        value = ''.join(value.splitlines())
+        value = re.sub(TABSSPACE, " ", value)
+        value = "".join(value.splitlines())
         return value.strip()
-    return ''
+    return ""
 
 
 def encodeValue(value):
@@ -73,7 +70,6 @@ def encodeValue(value):
 
 
 class WordStats:
-
     def __init__(self):
         # total number of stopwords or
         # good words that we can calculate
@@ -108,9 +104,9 @@ class WordStats:
 class StopWords:
     _cached_stop_words = {}
 
-    def __init__(self, language='en'):
+    def __init__(self, language="en"):
         if language not in self._cached_stop_words:
-            path = os.path.join('resources', 'text', f'stopwords-{language}.txt')
+            path = os.path.join("resources", "text", f"stopwords-{language}.txt")
             try:
                 content = FileHelper.loadResourceFile(path)
                 word_list = content.splitlines()
@@ -124,7 +120,7 @@ class StopWords:
         # code taken form
         # http://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string-in-python
         if not isinstance(content, str):
-            content = content.decode('utf-8')
+            content = content.decode("utf-8")
         tbl = dict.fromkeys(ord(x) for x in string.punctuation)
         return content.translate(tbl)
 
@@ -155,9 +151,10 @@ class StopWordsChinese(StopWords):
     """
     Chinese segmentation
     """
-    def __init__(self, language='zh'):
+
+    def __init__(self, language="zh"):
         # force zh languahe code
-        super().__init__(language='zh')
+        super().__init__(language="zh")
 
     @staticmethod
     def candidate_words(stripped_input):
@@ -176,9 +173,10 @@ class StopWordsArabic(StopWords):
     """
     Arabic segmentation
     """
-    def __init__(self, language='ar'):
+
+    def __init__(self, language="ar"):
         # force ar languahe code
-        super().__init__(language='ar')
+        super().__init__(language="ar")
 
     @staticmethod
     def remove_punctuation(content):
@@ -202,11 +200,13 @@ class StopWordsKorean(StopWords):
     """
     Korean segmentation
     """
-    def __init__(self, language='ko'):
-        super().__init__(language='ko')
+
+    def __init__(self, language="ko"):
+        super().__init__(language="ko")
         # Korean StopWords are attached at noun without a space
         # To find the stopwords in given sentences quickly, Ahocorasick is needed
         import ahocorasick
+
         self.auto = ahocorasick.Automaton()
         for word in self._stop_words:
             self.auto.add_word(word, word)
@@ -219,7 +219,7 @@ class StopWordsKorean(StopWords):
         stripped_input = self.remove_punctuation(content)
         candidate_words = self.candidate_words(stripped_input)
         overlapping_stopwords = []
-        for item in self.auto.iter(''.join(candidate_words)):
+        for item in self.auto.iter("".join(candidate_words)):
             overlapping_stopwords.append(item[1])
 
         stats.set_word_count(len(candidate_words))

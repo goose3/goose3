@@ -1,3 +1,3 @@
 from .network import NetworkError
 
-__all__ = ['NetworkError']
+__all__ = ["NetworkError"]

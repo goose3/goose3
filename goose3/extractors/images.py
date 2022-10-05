@@ -19,10 +19,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import re
 import os
-
-from urllib.parse import urlparse, urljoin
+import re
+from urllib.parse import urljoin, urlparse
 
 from goose3.extractors import BaseExtractor
 from goose3.image import Image
@@ -38,7 +37,6 @@ KNOWN_IMG_DOM_NAMES = [
 
 
 class DepthTraversal:
-
     def __init__(self, node, parent_depth, sibling_depth):
         self.node = node
         self.parent_depth = parent_depth
@@ -46,7 +44,6 @@ class DepthTraversal:
 
 
 class ImageExtractor(BaseExtractor):
-
     def __init__(self, fetcher, config, article):
         super().__init__(config, article)
 
@@ -108,8 +105,7 @@ class ImageExtractor(BaseExtractor):
         if good_images:
             scored_images = self.fetch_images(good_images, parent_depth_level)
             if scored_images:
-                highscore_image = sorted(list(scored_images.items()),
-                                         key=lambda x: x[1], reverse=True)[0][0]
+                highscore_image = sorted(list(scored_images.items()), key=lambda x: x[1], reverse=True)[0][0]
                 main_image = Image()
                 main_image._src = highscore_image.src
                 main_image._width = highscore_image.width
@@ -121,8 +117,7 @@ class ImageExtractor(BaseExtractor):
 
         depth_obj = self.get_depth_level(node, parent_depth_level, sibling_depth_level)
         if depth_obj:
-            return self.check_large_images(depth_obj.node, depth_obj.parent_depth,
-                                           depth_obj.sibling_depth)
+            return self.check_large_images(depth_obj.node, depth_obj.parent_depth, depth_obj.sibling_depth)
 
         return None
 
@@ -159,7 +154,7 @@ class ImageExtractor(BaseExtractor):
         cnt = float(1.0)
         min_width = 50
         for image in images[:30]:
-            src = self.parser.getAttribute(image, attr='src')
+            src = self.parser.getAttribute(image, attr="src")
             src = self.build_image_path(src)
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
@@ -168,7 +163,7 @@ class ImageExtractor(BaseExtractor):
             src = local_image.src
             file_extension = local_image.file_extension
 
-            if file_extension != '.gif' or file_extension != 'NA':
+            if file_extension != ".gif" or file_extension != "NA":
                 if (depth_level >= 1 and local_image.width > 300) or depth_level < 1:
                     if not self.is_banner_dimensions(width, height):
                         if width > min_width:
@@ -228,7 +223,7 @@ class ImageExtractor(BaseExtractor):
         return False
 
     def get_node_images(self, node):
-        images = self.parser.getElementsByTag(node, tag='img')
+        images = self.parser.getElementsByTag(node, tag="img")
         if images is not None and len(images) < 1:
             return None
         return images
@@ -249,7 +244,7 @@ class ImageExtractor(BaseExtractor):
         will check the image src against a list
         of bad image files we know of like buttons, etc...
         """
-        src = self.parser.getAttribute(image_node, attr='src')
+        src = self.parser.getAttribute(image_node, attr="src")
 
         if not src:
             return False
@@ -280,7 +275,7 @@ class ImageExtractor(BaseExtractor):
         for image in images:
             if cnt > 30:
                 return good_images
-            src = self.parser.getAttribute(image, attr='src')
+            src = self.parser.getAttribute(image, attr="src")
             src = self.build_image_path(src)
             src = self.add_schema_if_none(src)
             local_image = self.get_local_image(src)
@@ -303,11 +298,11 @@ class ImageExtractor(BaseExtractor):
         find open link_src on this page
         """
         node = self.article.raw_doc
-        meta = self.parser.getElementsByTag(node, tag='link', attr='rel', value='image_src')
+        meta = self.parser.getElementsByTag(node, tag="link", attr="rel", value="image_src")
         for item in meta:
-            src = self.parser.getAttribute(item, attr='href')
+            src = self.parser.getAttribute(item, attr="href")
             if src:
-                return self.get_image(src, extraction_type='linktag')
+                return self.get_image(src, extraction_type="linktag")
         return None
 
     def check_known_schemas(self):
@@ -318,10 +313,10 @@ class ImageExtractor(BaseExtractor):
          - Open Graph
          - schema.org
         """
-        if 'image' in self.article.opengraph:
-            return self.get_image(self.article.opengraph["image"], extraction_type='opengraph')
-        if (self.article.schema and 'image' in self.article.schema and "url" in self.article.schema["image"]):
-            return self.get_image(self.article.schema["image"]["url"], extraction_type='schema.org')
+        if "image" in self.article.opengraph:
+            return self.get_image(self.article.opengraph["image"], extraction_type="opengraph")
+        if self.article.schema and "image" in self.article.schema and "url" in self.article.schema["image"]:
+            return self.get_image(self.article.schema["image"]["url"], extraction_type="schema.org")
         return None
 
     def get_local_image(self, src):
@@ -332,7 +327,7 @@ class ImageExtractor(BaseExtractor):
 
     def get_clean_domain(self):
         if self.article.domain:
-            return self.article.domain.replace('www.', '')
+            return self.article.domain.replace("www.", "")
         return None
 
     def check_known_elements(self):
@@ -346,7 +341,7 @@ class ImageExtractor(BaseExtractor):
         """
         domain = self.get_clean_domain()
         if domain in self.custom_site_mapping:
-            classes = self.custom_site_mapping.get(domain).split('|')
+            classes = self.custom_site_mapping.get(domain).split("|")
             for classname in classes:
                 KNOWN_IMG_DOM_NAMES.append(classname)
 
@@ -356,9 +351,9 @@ class ImageExtractor(BaseExtractor):
         def _check_elements(elements):
             for element in elements:
                 tag = self.parser.getTag(element)
-                if tag == 'img':
+                if tag == "img":
                     return element
-                images = self.parser.getElementsByTag(element, tag='img')
+                images = self.parser.getElementsByTag(element, tag="img")
                 if images:
                     return images[0]
             return None
@@ -368,18 +363,18 @@ class ImageExtractor(BaseExtractor):
             elements = self.parser.getElementsByTag(doc, attr="id", value=css)
             image = _check_elements(elements)
             if image is not None:
-                src = self.parser.getAttribute(image, attr='src')
+                src = self.parser.getAttribute(image, attr="src")
                 if src:
-                    return self.get_image(src, score=90, extraction_type='known')
+                    return self.get_image(src, score=90, extraction_type="known")
 
         # check for elements with known classes
         for css in KNOWN_IMG_DOM_NAMES:
-            elements = self.parser.getElementsByTag(doc, attr='class', value=css)
+            elements = self.parser.getElementsByTag(doc, attr="class", value=css)
             image = _check_elements(elements)
             if image is not None:
-                src = self.parser.getAttribute(image, attr='src')
+                src = self.parser.getAttribute(image, attr="src")
                 if src:
-                    return self.get_image(src, score=90, extraction_type='known')
+                    return self.get_image(src, score=90, extraction_type="known")
 
         return None
 
@@ -393,22 +388,22 @@ class ImageExtractor(BaseExtractor):
         """
         o = urlparse(src)
         # we have a full url
-        if o.netloc != '':
+        if o.netloc != "":
             return o.geturl()
         # we have a relative url
         return urljoin(self.article.final_url, src)
 
     def load_customesite_mapping(self):
-        path = os.path.join('resources', 'images', 'known-image-css.txt')
+        path = os.path.join("resources", "images", "known-image-css.txt")
         data_file = FileHelper.loadResourceFile(path)
         lines = data_file.splitlines()
         for line in lines:
-            domain, css = line.split('^')
+            domain, css = line.split("^")
             self.custom_site_mapping.update({domain: css})
 
     def add_schema_if_none(self, src):
         src_test = urlparse(src)
-        if src_test.scheme == '':
+        if src_test.scheme == "":
             target = urlparse(self.article.final_url)
-            return str(target.scheme) + ':' + src
+            return str(target.scheme) + ":" + src
         return src
