@@ -25,26 +25,28 @@ import weakref
 from tempfile import mkstemp
 from typing import List, Union
 
-from goose3.configuration import ArticleContextPattern, Configuration, PublishDatePattern  # noqa: F401
-from goose3.article import Article  # noqa: F401 - to make it available for documentation!
-from goose3.image import Image  # noqa: F401 - to make it available for documentation!
-from goose3.video import Video  # noqa: F401 - to make it available for documentation!
-from goose3.crawler import (CrawlCandidate, Crawler)
+from goose3.article import Article  # noqa: F401
+from goose3.configuration import (  # noqa: F401
+    ArticleContextPattern,
+    Configuration,
+    PublishDatePattern,
+)
+from goose3.crawler import CrawlCandidate, Crawler
+from goose3.image import Image  # noqa: F401
 from goose3.network import NetworkFetcher
-
+from goose3.video import Video  # noqa: F401
 
 logger = logging.getLogger(__name__)
 
 
 class Goose:
-    ''' Extract most likely article content and aditional metadata from a URL
-        or previously fetched HTML document
+    """Extract most likely article content and aditional metadata from a URL or previously fetched HTML document
 
-        Args:
-            config (Configuration, dict): A configuration file or dictionary \
-            representation of the configuration file
-        Returns:
-            Goose: An instance of the goose extraction object '''
+    Args:
+        config (Configuration, dict): A configuration file or dictionary representation of the configuration file
+    Returns:
+        Goose: An instance of the goose extraction object"""
+
     def __init__(self, config: Union[Configuration, dict] = None):
         # Use the passed in configuration if it is of the right type, otherwise
         # use the default as a base
@@ -72,8 +74,10 @@ class Goose:
             os.makedirs(self.config.local_storage_path)
 
         if not os.path.isdir(self.config.local_storage_path):
-            msg = f'{self.config.local_storage_path} directory does not seem to exist, ' \
-                  'you need to set this for image processing downloads'
+            msg = (
+                f"{self.config.local_storage_path} directory does not seem to exist, "
+                "you need to set this for image processing downloads"
+            )
             raise Exception(msg)
 
         # test to write a dummy file to the directory to check is directory is writable
@@ -83,36 +87,37 @@ class Goose:
                 pass
             os.remove(path)
         except OSError as exc:
-            msg = f'{self.config.local_storage_path} directory is not writeble, '\
-                  'you need to set this for image processing downloads'
+            msg = (
+                f"{self.config.local_storage_path} directory is not writeble, "
+                "you need to set this for image processing downloads"
+            )
             raise Exception(msg) from exc
 
     def __enter__(self):
-        ''' Setup the context manager '''
+        """Setup the context manager"""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        ''' Define what to do when the context manager exits '''
+        """Define what to do when the context manager exits"""
         self.close()
 
     def close(self):
-        ''' Close the network connection and perform any other required cleanup
+        """Close the network connection and perform any other required cleanup
 
-            Note:
-                Auto closed when using goose as a context manager or when garbage collected '''
+        Note:
+            Auto closed when using goose as a context manager or when garbage collected"""
         if self.fetcher is not None:
             self.shutdown_network()
         self.finalizer.atexit = False  # turn off the garbage collection close
 
     def extract(self, url: str = None, raw_html: str = None) -> Article:
-        ''' Extract the most likely article content from the html page
+        """Extract the most likely article content from the html page
 
-            Args:
-                url (str): URL to pull and parse
-                raw_html (str): String representation of the HTML page
-            Returns:
-                Article: Representation of the article contents \
-                including other parsed and extracted metadata '''
+        Args:
+            url (str): URL to pull and parse
+            raw_html (str): String representation of the HTML page
+        Returns:
+            Article: Representation of the article contents including other parsed and extracted metadata"""
         if not url and not raw_html:
             raise ValueError("Either url or raw_html should be provided")
 
@@ -120,15 +125,16 @@ class Goose:
         return self.__crawl(crawl_candidate)
 
     def shutdown_network(self):
-        ''' Close the network connection
+        """Close the network connection
 
-            Note:
-                Auto closed when using goose as a context manager or when garbage collected '''
+        Note:
+            Auto closed when using goose as a context manager or when garbage collected"""
         self.fetcher.close()
         self.fetcher = None
 
     def __crawl(self, crawl_candidate: CrawlCandidate):
-        ''' wrap the crawling functionality '''
+        """wrap the crawling functionality"""
+
         def crawler_wrapper(parser: str, parsers: List[str], crawl_candidate: CrawlCandidate):
             try:
                 crawler = Crawler(self.config, self.fetcher)

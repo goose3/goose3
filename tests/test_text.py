@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -26,37 +25,27 @@ from goose3.text import get_encodings_from_content
 
 
 class TestText(unittest.TestCase):
-
     def test_get_encodings_from_content_with_trail_spaces(self):
+        self.assertEqual(get_encodings_from_content('<meta charset=utf-8 " />'), ["utf-8"])
         self.assertEqual(
-            get_encodings_from_content(
-                '<meta charset=utf-8 " />'),
-            ['utf-8']
+            get_encodings_from_content('<meta http-equiv="content-type" content="text/html; charset=utf-8 " />'),
+            ["utf-8"],
         )
         self.assertEqual(
-            get_encodings_from_content(
-                '<meta http-equiv="content-type" content="text/html; charset=utf-8 " />'),
-            ['utf-8']
+            get_encodings_from_content('<meta http-equiv="content-type" content="text/html; charset=utf-8    " />'),
+            ["utf-8"],
         )
         self.assertEqual(
-            get_encodings_from_content(
-                '<meta http-equiv="content-type" content="text/html; charset=utf-8    " />'),
-            ['utf-8']
-        )
-        self.assertEqual(
-            get_encodings_from_content(
-                b'<meta http-equiv="content-type" content="text/html; charset=utf-8 " />'),
-            ['utf-8']
+            get_encodings_from_content(b'<meta http-equiv="content-type" content="text/html; charset=utf-8 " />'),
+            ["utf-8"],
         )
 
     def test_get_encodings_from_content_with_out_trail_spaces(self):
         self.assertEqual(
-            get_encodings_from_content(
-                '<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
-            ['utf-8']
+            get_encodings_from_content('<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
+            ["utf-8"],
         )
         self.assertEqual(
-            get_encodings_from_content(
-                b'<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
-            ['utf-8']
+            get_encodings_from_content(b'<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
+            ["utf-8"],
         )

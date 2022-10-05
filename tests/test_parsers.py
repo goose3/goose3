@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -24,37 +23,35 @@ import codecs
 import os
 import unittest
 
+from goose3.parsers import Parser, ParserSoup
 from goose3.utils import FileHelper
-from goose3.parsers import Parser
-from goose3.parsers import ParserSoup
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_resource(path):
     try:
-        with codecs.open(path, 'r', 'utf-8') as fobj:
+        with codecs.open(path, "r", "utf-8") as fobj:
             content = fobj.read()
         return content
-    except IOError:
-        raise IOError("Couldn't open file %s" % path)
-        
+    except OSError:
+        raise OSError("Couldn't open file %s" % path)
+
 
 class ParserBase(unittest.TestCase):
-
     def setUp(self):
         self.parser = Parser
 
     def get_html(self, filename):
-        path = os.path.join(CURRENT_PATH, 'data', filename)
+        path = os.path.join(CURRENT_PATH, "data", filename)
         path = os.path.abspath(path)
         return load_resource(path)
 
     def test_cssselect(self):
-        html = '<html><body>'
+        html = "<html><body>"
         html += '<p class="link">this is a test <a class="link">link</a> and this is <strong class="foo">strong</strong></p>'
         html += '<p>this is a test and this is <strong class="link">strong</strong></p>'
-        html += '</body></html>'
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
         # find node with a class attribute
         items_result = self.parser.css_select(doc, "*[class]")
@@ -85,44 +82,44 @@ class ParserBase(unittest.TestCase):
         self.assertEqual(len(items_result), 1)
 
     def test_childNodesWithText(self):
-        html = '<html><body>'
+        html = "<html><body>"
         html += '<p>this is a test <a class="link">link</a> and this is <strong class="link">strong</strong></p>'
         html += '<p>this is a test and this is <strong class="link">strong</strong></p>'
-        html += '</body></html>'
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
-        p = self.parser.getElementsByTag(doc, tag='p')[0]
+        p = self.parser.getElementsByTag(doc, tag="p")[0]
 
     def test_replacetag(self):
-        html = self.get_html('parser/test1.html')
+        html = self.get_html("parser/test1.html")
         doc = self.parser.fromstring(html)
 
         # replace all p with div
-        ps = self.parser.getElementsByTag(doc, tag='p')
-        divs = self.parser.getElementsByTag(doc, tag='div')
+        ps = self.parser.getElementsByTag(doc, tag="p")
+        divs = self.parser.getElementsByTag(doc, tag="div")
         pcount = len(ps)
         divcount = len(divs)
         for p in ps:
-            self.parser.replaceTag(p, 'div')
-        divs2 = self.parser.getElementsByTag(doc, tag='div')
+            self.parser.replaceTag(p, "div")
+        divs2 = self.parser.getElementsByTag(doc, tag="div")
         divcount2 = len(divs2)
         self.assertEqual(divcount2, pcount + divcount)
 
         # replace first div span with center
-        spans = self.parser.getElementsByTag(doc, tag='span')
+        spans = self.parser.getElementsByTag(doc, tag="span")
         spanscount = len(spans)
-        div = self.parser.getElementsByTag(doc, tag='div')[0]
-        span = self.parser.getElementsByTag(div, tag='span')
+        div = self.parser.getElementsByTag(doc, tag="div")[0]
+        span = self.parser.getElementsByTag(div, tag="span")
         self.assertEqual(len(span), 1)
-        self.parser.replaceTag(span[0], 'center')
-        span = self.parser.getElementsByTag(div, tag='span')
+        self.parser.replaceTag(span[0], "center")
+        span = self.parser.getElementsByTag(div, tag="span")
         self.assertEqual(len(span), 0)
-        centers = self.parser.getElementsByTag(div, tag='center')
+        centers = self.parser.getElementsByTag(div, tag="center")
         self.assertEqual(len(centers), 1)
 
     def test_droptag(self):
         # test with 1 node
-        html = '<html><body><div>Hello <b>World!</b></div></body></html>'
-        expecte_html = '<html><body><div>Hello World!</div></body></html>'
+        html = "<html><body><div>Hello <b>World!</b></div></body></html>"
+        expecte_html = "<html><body><div>Hello World!</div></body></html>"
         doc = self.parser.fromstring(html)
         nodes = self.parser.css_select(doc, "b")
         self.assertEqual(len(nodes), 1)
@@ -135,8 +132,8 @@ class ParserBase(unittest.TestCase):
         self.assertEqual(expecte_html, result_html)
 
         # test with 2 nodes
-        html = '<html><body><div>Hello <b>World!</b> bla <b>World!</b></div></body></html>'
-        expecte_html = '<html><body><div>Hello World! bla World!</div></body></html>'
+        html = "<html><body><div>Hello <b>World!</b> bla <b>World!</b></div></body></html>"
+        expecte_html = "<html><body><div>Hello World! bla World!</div></body></html>"
         doc = self.parser.fromstring(html)
         nodes = self.parser.css_select(doc, "b")
         self.assertEqual(len(nodes), 2)
@@ -149,78 +146,78 @@ class ParserBase(unittest.TestCase):
         self.assertEqual(expecte_html, result_html)
 
     def test_tostring(self):
-        html = '<html><body>'
-        html += '<p>this is a test <a>link</a> and this is <strong>strong</strong></p>'
-        html += '</body></html>'
+        html = "<html><body>"
+        html += "<p>this is a test <a>link</a> and this is <strong>strong</strong></p>"
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
         result = self.parser.nodeToString(doc)
         self.assertEqual(html, result)
 
     def test_striptags(self):
-        html = '<html><body>'
-        html += '<p>this is a test <a>link</a> and this is <strong>strong</strong></p>'
-        html += '</body></html>'
-        expected = '<html><body>'
-        expected += '<p>this is a test link and this is strong</p>'
-        expected += '</body></html>'
+        html = "<html><body>"
+        html += "<p>this is a test <a>link</a> and this is <strong>strong</strong></p>"
+        html += "</body></html>"
+        expected = "<html><body>"
+        expected += "<p>this is a test link and this is strong</p>"
+        expected += "</body></html>"
         doc = self.parser.fromstring(html)
-        self.parser.stripTags(doc, 'a', 'strong')
+        self.parser.stripTags(doc, "a", "strong")
         result = self.parser.nodeToString(doc)
         self.assertEqual(expected, result)
 
     def test_getElementsByTags(self):
-        html = '<html><body>'
+        html = "<html><body>"
         html += '<p>this is a test <a class="link">link</a> and this is <strong class="link">strong</strong></p>'
         html += '<p>this is a test and this is <strong class="link">strong</strong></p>'
-        html += '</body></html>'
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
-        elements = self.parser.getElementsByTags(doc, ['p', 'a', 'strong'])
+        elements = self.parser.getElementsByTags(doc, ["p", "a", "strong"])
         self.assertEqual(len(elements), 5)
 
         # find childs within the first p
-        p = self.parser.getElementsByTag(doc, tag='p')[0]
-        elements = self.parser.getElementsByTags(p, ['p', 'a', 'strong'])
+        p = self.parser.getElementsByTag(doc, tag="p")[0]
+        elements = self.parser.getElementsByTags(p, ["p", "a", "strong"])
         self.assertEqual(len(elements), 2)
 
     def test_getElementsByTag(self):
-        html = '<html><body>'
-        html += '<p>this is a test <a>link</a> and this is <strong>strong</strong></p>'
-        html += '</body></html>'
+        html = "<html><body>"
+        html += "<p>this is a test <a>link</a> and this is <strong>strong</strong></p>"
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
         # find all tags
         elements = self.parser.getElementsByTag(doc)
         self.assertEqual(len(elements), 5)
 
         # find all p
-        elements = self.parser.getElementsByTag(doc, tag='p')
+        elements = self.parser.getElementsByTag(doc, tag="p")
         self.assertEqual(len(elements), 1)
 
-        html = '<html><body>'
+        html = "<html><body>"
         html += '<p>this is a test <a class="link classB classc">link</a> and this is <strong class="link">strong</strong></p>'
         html += '<p>this is a test and this is <strong class="Link">strong</strong></p>'
-        html += '</body></html>'
+        html += "</body></html>"
         doc = self.parser.fromstring(html)
         # find all p
-        elements = self.parser.getElementsByTag(doc, tag='p')
+        elements = self.parser.getElementsByTag(doc, tag="p")
         self.assertEqual(len(elements), 2)
 
         # find all a
-        elements = self.parser.getElementsByTag(doc, tag='a')
+        elements = self.parser.getElementsByTag(doc, tag="a")
         self.assertEqual(len(elements), 1)
 
         # find all strong
-        elements = self.parser.getElementsByTag(doc, tag='strong')
+        elements = self.parser.getElementsByTag(doc, tag="strong")
         self.assertEqual(len(elements), 2)
 
         # find first p
         # and find strong elemens within the p
-        elem = self.parser.getElementsByTag(doc, tag='p')[0]
-        elements = self.parser.getElementsByTag(elem, tag='strong')
+        elem = self.parser.getElementsByTag(doc, tag="p")[0]
+        elements = self.parser.getElementsByTag(elem, tag="strong")
         self.assertEqual(len(elements), 1)
 
         # test if the first p in taken in account
-        elem = self.parser.getElementsByTag(doc, tag='p')[0]
-        elements = self.parser.getElementsByTag(elem, tag='p')
+        elem = self.parser.getElementsByTag(doc, tag="p")[0]
+        elements = self.parser.getElementsByTag(elem, tag="p")
         self.assertEqual(len(elements), 0)
 
         # find elem with class "link"
@@ -241,12 +238,12 @@ class ParserBase(unittest.TestCase):
 
         # find elem with class "link" with tag strong
         # within the second p
-        elem = self.parser.getElementsByTag(doc, tag='p')[1]
+        elem = self.parser.getElementsByTag(doc, tag="p")[1]
         elements = self.parser.getElementsByTag(elem, tag="strong", attr="class", value="link")
         self.assertEqual(len(elements), 1)
 
     def test_delAttribute(self):
-        html = self.get_html('parser/test1.html')
+        html = self.get_html("parser/test1.html")
         doc = self.parser.fromstring(html)
 
         # find div element with class foo
@@ -255,14 +252,14 @@ class ParserBase(unittest.TestCase):
 
         # remove the attribute class
         div = elements[0]
-        self.parser.delAttribute(div,  attr="class")
+        self.parser.delAttribute(div, attr="class")
 
         # find div element with class foo
         elements = self.parser.getElementsByTag(doc, tag="div", attr="class", value="foo")
         self.assertEqual(len(elements), 0)
 
         # remove an unexistant attribute
-        self.parser.delAttribute(div,  attr="bla")
+        self.parser.delAttribute(div, attr="bla")
 
     def test_encoding(self):
         """
@@ -271,12 +268,12 @@ class ParserBase(unittest.TestCase):
         Please use bytes input or XML fragments without declaration."
         Test for this case.
         """
-        html = u"""
+        html = """
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         """
-        html += u'<html><body>'
-        html += u'<p>Я рядочок</p>'
-        html += u'</body></html>'
+        html += "<html><body>"
+        html += "<p>Я рядочок</p>"
+        html += "</body></html>"
         self.parser.fromstring(html)
 
 

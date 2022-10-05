@@ -26,16 +26,15 @@ class NetworkError(RuntimeError):
     def __init__(self, status_code, reason):
         self.reason = reason
         self.status_code = status_code
-        self.message = f'NetworkError: status code: {reason}; reason: {status_code}'
+        self.message = f"NetworkError: status code: {reason}; reason: {status_code}"
         super().__init__(self.message)
 
 
 class NetworkFetcher:
-
     def __init__(self, config):
         self.config = config
         self._connection = requests.Session()
-        self._connection.headers['User-agent'] = self.config.browser_user_agent
+        self._connection.headers["User-agent"] = self.config.browser_user_agent
         self._url = None
 
     def close(self):
@@ -60,5 +59,10 @@ class NetworkFetcher:
         return text
 
     def fetch_obj(self, url):
-        return self._connection.get(url, timeout=self.config.http_timeout, headers=self.config.http_headers,
-                                    proxies=self.config.http_proxies, auth=self.config.http_auth)
+        return self._connection.get(
+            url,
+            timeout=self.config.http_timeout,
+            headers=self.config.http_headers,
+            proxies=self.config.http_proxies,
+            auth=self.config.http_auth,
+        )

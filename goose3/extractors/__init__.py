@@ -22,7 +22,6 @@ limitations under the License.
 
 
 class BaseExtractor:
-
     def __init__(self, config, article):
         # config
         self.config = config

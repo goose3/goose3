@@ -19,35 +19,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 import json
 
 from goose3.extractors import BaseExtractor
 
-KNOWN_SCHEMA_TYPES = (
-    "ReportageNewsArticle",
-    "NewsArticle",
-    "Article"
-)
+KNOWN_SCHEMA_TYPES = ("ReportageNewsArticle", "NewsArticle", "Article")
 
 
 class SchemaExtractor(BaseExtractor):
-
     def extract(self):
         node = self.article.doc
-        metas = self.parser.getElementsByTag(node, 'script', attr='type',
-                                             value='application/ld\\+json')
+        metas = self.parser.getElementsByTag(node, "script", attr="type", value="application/ld\\+json")
         for meta in metas:
             try:
                 content = json.loads(meta.text_content())
                 if isinstance(content, list):
                     for context in content:
-                        if (context["@context"] == "http://schema.org" and
-                                context["@type"] in KNOWN_SCHEMA_TYPES):
+                        if context["@context"] == "http://schema.org" and context["@type"] in KNOWN_SCHEMA_TYPES:
                             return content
                 elif isinstance(content, dict):
-                    if (content["@context"] == "http://schema.org" and
-                            content["@type"] in KNOWN_SCHEMA_TYPES):
+                    if content["@context"] == "http://schema.org" and content["@type"] in KNOWN_SCHEMA_TYPES:
                         return content
             except (ValueError, KeyError):
                 # If the contents are not proper JSON or a key we expect

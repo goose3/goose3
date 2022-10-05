@@ -25,12 +25,8 @@ from goose3.extractors import BaseExtractor
 
 
 class ContentExtractor(BaseExtractor):
-
     def get_language(self):
-        """
-        Returns the language is by the article or
-        the configuration language
-        """
+        """Returns the language is by the article or the configuration language"""
         # we don't want to force the target language
         # so we use the article.meta_lang
         if self.config.use_meta_language:
@@ -47,8 +43,7 @@ class ContentExtractor(BaseExtractor):
             if item.domain and self.article.domain != item.domain:
                 continue
 
-            nodes.extend(self.parser.getElementsByTag(self.article.doc, tag=item.tag,
-                                                      attr=item.attr, value=item.value))
+            nodes.extend(self.parser.getElementsByTag(self.article.doc, tag=item.tag, attr=item.attr, value=item.value))
         if nodes:
             return nodes
         return None
@@ -81,14 +76,13 @@ class ContentExtractor(BaseExtractor):
         def loc_update_parent(node, upscore, depth=1):
             parent_node = self.parser.getParent(node)
             if parent_node is not None:
-                self.update_score(parent_node, upscore*(1.5/(depth+0.5)))
+                self.update_score(parent_node, upscore * (1.5 / (depth + 0.5)))
                 self.update_node_count(parent_node, 1)
 
                 if parent_node not in parent_nodes:
                     parent_nodes.append(parent_node)
 
-                loc_update_parent(parent_node, upscore, depth+1)
-
+                loc_update_parent(parent_node, upscore, depth + 1)
 
         starting_boost = float(1.0)
         cnt = 0
@@ -146,14 +140,10 @@ class ContentExtractor(BaseExtractor):
         return top_node
 
     def is_boostable(self, node):
-        """
-        alot of times the first paragraph might be the caption under an image
-        so we'll want to make sure if we're going to boost a parent node that
-        it should be connected to other paragraphs,
-        at least for the first n paragraphs so we'll want to make sure that
-        the next sibling is a paragraph and has at
-        least some substatial weight to it
-        """
+        """a lot of times the first paragraph might be the caption under an image so we'll want to make sure if we're
+        going to boost a parent node that it should be connected to other paragraphs, at least for the first n
+        paragraphs so we'll want to make sure that the next sibling is a paragraph and has at least some substatial
+        weight to it"""
         para = "p"
         steps_away = 0
         minimum_stopword_count = 5
@@ -196,16 +186,14 @@ class ContentExtractor(BaseExtractor):
         return top_node
 
     def get_siblings_content(self, current_sibling, baselinescore_siblings_para):
-        """
-        adds any siblings that may have a decent score to this node
-        """
-        if current_sibling.tag == 'p' and self.parser.getText(current_sibling):
+        """adds any siblings that may have a decent score to this node"""
+        if current_sibling.tag == "p" and self.parser.getText(current_sibling):
             tmp = current_sibling
             if tmp.tail:
                 tmp = deepcopy(tmp)
-                tmp.tail = ''
+                tmp.tail = ""
             return [tmp]
-        potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag='p')
+        potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag="p")
         if potential_paragraphs is None:
             return None
 
@@ -215,28 +203,25 @@ class ContentExtractor(BaseExtractor):
             if text:  # no len(text) > 0
                 word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
                 paragraph_score = word_stats.get_stopword_count()
-                sibling_baseline_score = float(.30)
+                sibling_baseline_score = float(0.30)
                 high_link_density = self.is_highlink_density(first_paragraph)
                 score = float(baselinescore_siblings_para * sibling_baseline_score)
                 if score < paragraph_score and not high_link_density:
-                    para = self.parser.createElement(tag='p', text=text, tail=None)
+                    para = self.parser.createElement(tag="p", text=text, tail=None)
                     paragraphs.append(para)
         return paragraphs
 
     def get_siblings_score(self, top_node):
-        """
-        we could have long articles that have tons of paragraphs
-        so if we tried to calculate the base score against
-        the total text score of those paragraphs it would be unfair.
-        So we need to normalize the score based on the average scoring
-        of the paragraphs within the top node.
-        For example if our total score of 10 paragraphs was 1000
-        but each had an average value of 100 then 100 should be our base.
+        """we could have long articles that have tons of paragraphs so if we tried to calculate the base score against
+        the total text score of those paragraphs it would be unfair. So we need to normalize the score based on the
+        average scoring of the paragraphs within the top node.
+        For example: if our total score of 10 paragraphs was 1000 but each had an average value of 100 then 100 should
+        be our base.
         """
         base = 100000
         paragraphs_number = 0
         paragraphs_score = 0
-        nodes_to_check = self.parser.getElementsByTag(top_node, tag='p')
+        nodes_to_check = self.parser.getElementsByTag(top_node, tag="p")
 
         for node in nodes_to_check:
             text_node = self.parser.getText(node)
@@ -252,13 +237,10 @@ class ContentExtractor(BaseExtractor):
         return base
 
     def update_score(self, node, add_to_score):
-        """
-        adds a score to the gravityScore Attribute we put on divs
-        we'll get the current score then add the score
-        we're passing in to the current
-        """
+        """adds a score to the gravityScore Attribute we put on divs we'll get the current score then add the score
+        we're passing in to the current"""
         current_score = 0
-        score_string = self.parser.getAttribute(node, 'gravityScore')
+        score_string = self.parser.getAttribute(node, "gravityScore")
         if score_string:
             current_score = int(score_string)
 
@@ -266,11 +248,9 @@ class ContentExtractor(BaseExtractor):
         self.parser.setAttribute(node, "gravityScore", str(new_score))
 
     def update_node_count(self, node, add_to_count):
-        """
-        stores how many decent nodes are under a parent node
-        """
+        """stores how many decent nodes are under a parent node"""
         current_score = 0
-        count_string = self.parser.getAttribute(node, 'gravityNodes')
+        count_string = self.parser.getAttribute(node, "gravityNodes")
         if count_string:
             current_score = int(count_string)
 
@@ -278,24 +258,21 @@ class ContentExtractor(BaseExtractor):
         self.parser.setAttribute(node, "gravityNodes", str(new_score))
 
     def is_highlink_density(self, element):
-        """
-        checks the density of links within a node,
-        is there not much text and most of it contains linky shit?
-        if so it's no good
-        """
-        links = self.parser.getElementsByTag(element, tag='a')
+        """checks the density of links within a node, is there not much text and most of it contains linky shit?
+        if so it's no good"""
+        links = self.parser.getElementsByTag(element, tag="a")
         if not links:
             return False
 
         text = self.parser.getText(element)
-        words = text.split(' ')
+        words = text.split(" ")
         words_number = float(len(words))
         link_text_parts = []
         for link in links:
             link_text_parts.append(self.parser.getText(link))
 
-        link_text = ''.join(link_text_parts)
-        link_words = link_text.split(' ')
+        link_text = "".join(link_text_parts)
+        link_words = link_text.split(" ")
         number_of_link_words = float(len(link_words))
         number_of_links = float(len(links))
         link_divisor = float(number_of_link_words / words_number)
@@ -306,38 +283,33 @@ class ContentExtractor(BaseExtractor):
         # return True if score > 1.0 else False
 
     def get_score(self, node):
-        """
-        returns the gravityScore as an integer from this node
-        """
+        """returns the gravityScore as an integer from this node"""
         return self.get_node_gravity_score(node) or 0
 
     def get_node_gravity_score(self, node):
-        grv_score_string = self.parser.getAttribute(node, 'gravityScore')
+        grv_score_string = self.parser.getAttribute(node, "gravityScore")
         if not grv_score_string:
             return None
         return int(grv_score_string)
 
     def nodes_to_check(self, docs):
-        """
-        returns a list of nodes we want to search
-        on like paragraphs and tables
-        """
+        """returns a list of nodes we want to search on like paragraphs and tables"""
         nodes_to_check = []
 
         for doc in docs:
-            for tag in ['p', 'pre', 'td']:
+            for tag in ["p", "pre", "td"]:
                 items = self.parser.getElementsByTag(doc, tag=tag)
                 nodes_to_check += items
         return nodes_to_check
 
     def is_table_and_no_para_exist(self, elm):
-        sub_paragraphs = self.parser.getElementsByTag(elm, tag='p')
+        sub_paragraphs = self.parser.getElementsByTag(elm, tag="p")
         for para in sub_paragraphs:
             txt = self.parser.getText(para)
             if len(txt) < 25:
                 self.parser.remove(para)
 
-        sub_paragraphs2 = self.parser.getElementsByTag(elm, tag='p')
+        sub_paragraphs2 = self.parser.getElementsByTag(elm, tag="p")
         if not sub_paragraphs2 and elm.tag != "td":
             return True
         return False
@@ -345,30 +317,30 @@ class ContentExtractor(BaseExtractor):
     def is_nodescore_threshold_met(self, node, elm):
         top_node_score = self.get_score(node)
         current_node_score = self.get_score(elm)
-        threshold_score = float(top_node_score * .08)
+        threshold_score = float(top_node_score * 0.08)
 
-        if (current_node_score < threshold_score) and elm.tag != 'td':
+        if (current_node_score < threshold_score) and elm.tag != "td":
             return False
         return True
 
     def post_cleanup(self):
-        """
-        remove any divs that looks like non-content,
-        clusters of links, or paras with no gusto
-        """
-        parse_tags = ['p']
+        """remove any divs that looks like non-content, clusters of links, or paras with no gusto"""
+        parse_tags = ["p"]
         if self.config.parse_lists:
-            parse_tags.extend(['ul', 'ol'])
+            parse_tags.extend(["ul", "ol"])
         if self.config.parse_headers:
-            parse_tags.extend(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+            parse_tags.extend(["h1", "h2", "h3", "h4", "h5", "h6"])
 
         target_node = self.article.top_node
         node = self.add_siblings(target_node)
         for elm in self.parser.getChildren(node):
             e_tag = self.parser.getTag(elm)
             if e_tag not in parse_tags:
-                if (self.is_highlink_density(elm) or self.is_table_and_no_para_exist(elm) or
-                        not self.is_nodescore_threshold_met(node, elm)):
+                if (
+                    self.is_highlink_density(elm)
+                    or self.is_table_and_no_para_exist(elm)
+                    or not self.is_nodescore_threshold_met(node, elm)
+                ):
                     self.parser.remove(elm)
         return node
 

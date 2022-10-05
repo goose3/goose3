@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -20,16 +19,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
-from __future__ import absolute_import
-
 from .test_base import TestExtractionBase
 
 
 class TestArticleLinks(TestExtractionBase):
-
     def test_links(self):
         article = self.getArticle()
         number_links = len(article.links)
-        expected_number_links = self.data['expected']['links']
+        expected_number_links = self.data["expected"]["links"]
         self.assertEqual(number_links, expected_number_links)

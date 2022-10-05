@@ -19,37 +19,35 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import glob
 import logging
 import os
-import glob
 from copy import deepcopy
-
-from langdetect import detect, DetectorFactory
-from langdetect.lang_detect_exception import LangDetectException
 
 import dateutil.parser
 from dateutil.tz import tzutc
+from langdetect import DetectorFactory, detect
+from langdetect.lang_detect_exception import LangDetectException
 
-from goose3.configuration import Configuration
 from goose3.article import Article
-from goose3.utils import URLHelper, RawHelper, ParsingCandidate
-from goose3.text import get_encodings_from_content
+from goose3.cleaners import StandardDocumentCleaner
+from goose3.configuration import Configuration
+from goose3.extractors.authors import AuthorsExtractor
 from goose3.extractors.content import StandardContentExtractor
-from goose3.extractors.videos import VideoExtractor
-from goose3.extractors.title import TitleExtractor
 from goose3.extractors.images import ImageExtractor
 from goose3.extractors.links import LinksExtractor
-from goose3.extractors.tweets import TweetsExtractor
-from goose3.extractors.authors import AuthorsExtractor
-from goose3.extractors.tags import TagsExtractor
-from goose3.extractors.opengraph import OpenGraphExtractor
-from goose3.extractors.publishdate import PublishDateExtractor, TIMEZONE_INFO
-from goose3.extractors.schema import SchemaExtractor
 from goose3.extractors.metas import MetasExtractor
-from goose3.cleaners import StandardDocumentCleaner
-from goose3.outputformatters import StandardOutputFormatter
-
+from goose3.extractors.opengraph import OpenGraphExtractor
+from goose3.extractors.publishdate import TIMEZONE_INFO, PublishDateExtractor
+from goose3.extractors.schema import SchemaExtractor
+from goose3.extractors.tags import TagsExtractor
+from goose3.extractors.title import TitleExtractor
+from goose3.extractors.tweets import TweetsExtractor
+from goose3.extractors.videos import VideoExtractor
 from goose3.network import NetworkFetcher
+from goose3.outputformatters import StandardOutputFormatter
+from goose3.text import get_encodings_from_content
+from goose3.utils import ParsingCandidate, RawHelper, URLHelper
 
 logger = logging.getLogger(__name__)
 
@@ -165,13 +163,13 @@ class Crawler:
         # meta
         metas = self.metas_extractor.extract()
         # print(metas)
-        self.article._meta_lang = metas['lang']
-        self.article._meta_favicon = metas['favicon']
-        self.article._meta_description = metas['description']
-        self.article._meta_keywords = metas['keywords']
-        self.article._meta_encoding = metas['encoding']
-        self.article._canonical_link = metas['canonical']
-        self.article._domain = metas['domain']
+        self.article._meta_lang = metas["lang"]
+        self.article._meta_favicon = metas["favicon"]
+        self.article._meta_description = metas["description"]
+        self.article._meta_keywords = metas["keywords"]
+        self.article._meta_encoding = metas["encoding"]
+        self.article._canonical_link = metas["canonical"]
+        self.article._domain = metas["domain"]
 
         # publishdate
         self.article._publish_date = self.publishdate_extractor.extract()
@@ -264,7 +262,7 @@ class Crawler:
         # fetch HTML
         logger.debug("Fetching html from %s", crawl_candidate.url)
         response = self.fetcher.fetch_obj(parsing_candidate.url)
-        if response.encoding != 'ISO-8859-1':  # requests has a good idea; use what it says
+        if response.encoding != "ISO-8859-1":  # requests has a good idea; use what it says
             # return response as a unicode string
             html = response.text
             self.article._meta_encoding = response.encoding
@@ -326,7 +324,7 @@ class Crawler:
         return StandardContentExtractor(self.config, self.article)
 
     def release_resources(self):
-        path = os.path.join(self.config.local_storage_path, f'{self.article.link_hash}_*')
+        path = os.path.join(self.config.local_storage_path, f"{self.article.link_hash}_*")
         for fname in glob.glob(path):
             try:
                 os.remove(fname)

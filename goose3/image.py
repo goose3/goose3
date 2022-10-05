@@ -27,7 +27,7 @@ class Image:
         self._top_image_node = None
 
         # holds the src of the image
-        self._src = ''
+        self._src = ""
 
         # how confident are we in this image extraction?
         # the most images generally the less confident
@@ -48,58 +48,58 @@ class Image:
 
     @property
     def top_image_node(self):
-        ''' etree: The most likely top image element node
+        """etree: The most likely top image element node
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._top_image_node
 
     @property
     def src(self):
-        ''' str: Source URL for the image
+        """str: Source URL for the image
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._src
 
     @property
     def confidence_score(self):
-        ''' float: The confidence score that this is the main image
+        """float: The confidence score that this is the main image
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._confidence_score
 
     @property
     def height(self):
-        ''' int: The image height in pixels
+        """int: The image height in pixels
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._height
 
     @property
     def width(self):
-        ''' int: The image width in pixels
+        """int: The image width in pixels
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._width
 
     @property
     def extraction_type(self):
-        ''' str: The extraction type used
+        """str: The extraction type used
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._extraction_type
 
     @property
     def bytes(self):
-        ''' int: The size of the image in bytes
+        """int: The size of the image in bytes
 
-            Note:
-                Read only '''
+        Note:
+            Read only"""
         return self._bytes
 
     def get_src(self):
@@ -137,7 +137,7 @@ class ImageDetails:
 
 
 class LocallyStoredImage:
-    def __init__(self, src='', local_filename='', link_hash='', size=int(0), file_extension='', height=0, width=0):
+    def __init__(self, src="", local_filename="", link_hash="", size=int(0), file_extension="", height=0, width=0):
         self.src = src
         self.local_filename = local_filename
         self.link_hash = link_hash

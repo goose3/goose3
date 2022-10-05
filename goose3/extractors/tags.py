@@ -19,7 +19,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 from goose3.extractors import BaseExtractor
 
 A_REL_TAG_SELECTOR = "a[rel=tag]"
@@ -27,7 +26,6 @@ A_HREF_TAG_SELECTOR = "a[href*='/tag/'], a[href*='/tags/'], a[href*='/topic/'], 
 
 
 class TagsExtractor(BaseExtractor):
-
     def extract(self):
         node = self.article.doc
         tags = []

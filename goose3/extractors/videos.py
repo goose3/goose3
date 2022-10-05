@@ -19,18 +19,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 from goose3.extractors import BaseExtractor
 from goose3.video import Video
 
-VIDEOS_TAGS = ['iframe', 'embed', 'object', 'video']
-VIDEO_PROVIDERS = ['youtube', 'vimeo', 'dailymotion', 'kewego']
+VIDEOS_TAGS = ["iframe", "embed", "object", "video"]
+VIDEO_PROVIDERS = ["youtube", "vimeo", "dailymotion", "kewego"]
 
 
 class VideoExtractor(BaseExtractor):
-    """
-    Extracts a list of video from Article top node
-    """
+    """Extracts a list of video from Article top node"""
+
     def __init__(self, config, article):
         super().__init__(config, article)
         self.candidates = []
@@ -43,13 +41,13 @@ class VideoExtractor(BaseExtractor):
         return self.parser.getTag(node)
 
     def get_width(self, node):
-        return self.parser.getAttribute(node, 'width')
+        return self.parser.getAttribute(node, "width")
 
     def get_height(self, node):
-        return self.parser.getAttribute(node, 'height')
+        return self.parser.getAttribute(node, "height")
 
     def get_src(self, node):
-        return self.parser.getAttribute(node, 'src')
+        return self.parser.getAttribute(node, "src")
 
     @staticmethod
     def get_provider(src):
@@ -60,9 +58,7 @@ class VideoExtractor(BaseExtractor):
         return None
 
     def get_video(self, node):
-        """
-        Create a video object from a video embed
-        """
+        """Create a video object from a video embed"""
         video = Video()
         video._embed_code = self.get_embed_code(node)
         video._embed_type = self.get_embed_type(node)
@@ -82,7 +78,7 @@ class VideoExtractor(BaseExtractor):
         parent = self.parser.getParent(node)
         if parent is not None:
             parent_tag = self.parser.getTag(parent)
-            if parent_tag == 'object':
+            if parent_tag == "object":
                 return self.get_object_tag(node)
         return self.get_video(node)
 
@@ -90,7 +86,7 @@ class VideoExtractor(BaseExtractor):
         # test if object tag has en embed child
         # in this case we want to remove the embed from
         # the candidate list to avoid parsing it twice
-        child_embed_tag = self.parser.getElementsByTag(node, 'embed')
+        child_embed_tag = self.parser.getElementsByTag(node, "embed")
         if child_embed_tag and child_embed_tag[0] in self.candidates:
             self.candidates.remove(child_embed_tag[0])
 

@@ -19,21 +19,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
 from goose3.extractors import BaseExtractor
 
 
 class TweetsExtractor(BaseExtractor):
-
     def extract(self):
         tweets = []
-        items = self.parser.getElementsByTag(self.article.top_node,
-                                             tag='blockquote',
-                                             attr="class",
-                                             value="twitter-tweet")
+        items = self.parser.getElementsByTag(
+            self.article.top_node, tag="blockquote", attr="class", value="twitter-tweet"
+        )
 
         for i in items:
-            for attr in ['gravityScore', 'gravityNodes']:
+            for attr in ["gravityScore", "gravityNodes"]:
                 self.parser.delAttribute(i, attr)
             tweets.append(self.parser.nodeToString(i))
 

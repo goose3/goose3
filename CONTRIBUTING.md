@@ -93,8 +93,6 @@ documentation in the goose3 library. To create a pull request, you will
 first need to fork the repository, make all necessary changes and then create
 a pull request. There are a few guidelines for creating pull requests:
 
-* If the PR only changes documentation, please add `[ci skip]` to the commit
-message. To learn more, you can [read about skipping integration testing](https://docs.travis-ci.com/user/customizing-the-build#Skipping-a-build)
 
 * Reference ***any and all*** [issues](https://github.com/barrust/mediawiki/issues)
 related to the pull request
@@ -117,27 +115,52 @@ the unittest module to support tests and most are currently found in the
 
 #### Coding Style
 
-The goose3 project generally follows the
-[flake8](https://github.com/PyCQA/flake8) coding style for consistency
-and readability. Code that does not comply with flake8 will not be accepted into
-the project as-is. All code should adhere to the flake8 coding style standard
-where possible.
+The goose3 uses [pfs/black](https://github.com/psf/black) as an automatic code
+formatter. Black makes code review faster by producing the smallest diffs possible.
 
-The goose3 project also uses [pylint](https://www.pylint.org/)
+Code that does not adhere to black formatting will be flagged as a failed CI
+run by the continuous integration by Github Actions.
+
+
+The goose3 project also uses the static code analyzer [pylint](https://www.pylint.org/)
 to help identify potential errors, code duplication, and non-pythonic syntax.
 Adhering to pylint's results is not strictly required.
 
-To install the [flake8 compliance checker](https://pypi.org/project/flake8/),
-you can simply run the following:
+To install the required tools, you can simply run the following prior to committing:
 
-```
-pip install flake8
+``` bash
+pip install black pylint
 ```
 
-To test for flake8 compliance, run the following from the root directory:
+To ensure the code is formatted correctly, run the following from within the root directory:
 
+``` bash
+black .
 ```
-flake8 goose3
+
+To run the static analyzer, simply run the following from the root directory:
+
+``` bash
+pylint goose3
+```
+
+If you use the Visual Studio Code IDE you can have the IDE apply and enforce
+black formatting on save by adding the following workspace configuration:
+
+``` json
+{
+    "editor.formatOnSave": true,
+    "python.formatting.blackArgs": ["--line-length", "120"],
+    "python.formatting.provider": "black",
+    "python.sortImports.args": ["--profile", "black"],
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true
+}
 ```
 
 ### Code Contributors:

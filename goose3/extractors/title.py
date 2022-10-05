@@ -23,17 +23,13 @@ import re
 
 from goose3.extractors import BaseExtractor
 
-
 TITLE_SPLITTERS = ["|", "-", "»", ":"]
 
 
 class TitleExtractor(BaseExtractor):
-
     def clean_title(self, title):
-        """Clean title with the use of og:site_name
-        in this case try to get rid of site name
-        and use TITLE_SPLITTERS to reformat title
-        """
+        """Clean title with the use of og:site_name in this case try to get rid of site name and use
+        TITLE_SPLITTERS to reformat title"""
 
         # try to remove the domain from url
         if self.article.domain:
@@ -43,16 +39,16 @@ class TitleExtractor(BaseExtractor):
         schema = self.article.schema
         site_name = ""
         # check if we have the site name in opengraph data
-        if "site_name" in self.article.opengraph and self.article.opengraph['site_name'] != title:
-            site_name = self.article.opengraph['site_name']
-        elif (schema and "publisher" in schema and "name" in schema["publisher"]):
+        if "site_name" in self.article.opengraph and self.article.opengraph["site_name"] != title:
+            site_name = self.article.opengraph["site_name"]
+        elif schema and "publisher" in schema and "name" in schema["publisher"]:
             site_name = self.article.schema["publisher"]["name"]
 
         # if there is a sperator, speratate and check if site name is present
         seps = [s for s in TITLE_SPLITTERS if s in title]
         if seps:
             # NOTE: Perhaps it should only be removed if, once seperated it is "by itself"
-            title = title.replace(site_name, '').strip()
+            title = title.replace(site_name, "").strip()
 
         # split the title in words
         # TechCrunch | my wonderfull article
@@ -80,25 +76,23 @@ class TitleExtractor(BaseExtractor):
         return title
 
     def get_title(self):
-        """
-        Fetch the article title and analyze it
-        """
-        title = ''
+        """Fetch the article title and analyze it"""
+        title = ""
 
         # rely on opengraph in case we have the data
         if "title" in self.article.opengraph:
-            return self.clean_title(self.article.opengraph['title'])
+            return self.clean_title(self.article.opengraph["title"])
         if self.article.schema and "headline" in self.article.schema:
-            return self.clean_title(self.article.schema['headline'])
+            return self.clean_title(self.article.schema["headline"])
 
         # try to fetch the meta headline
         meta_headline = self.parser.getElementsByTag(self.article.doc, tag="meta", attr="name", value="headline")
         if meta_headline is not None and len(meta_headline) > 0:
-            title = self.parser.getAttribute(meta_headline[0], 'content')
+            title = self.parser.getAttribute(meta_headline[0], "content")
             return self.clean_title(title)
 
         # otherwise use the title meta
-        title_element = self.parser.getElementsByTag(self.article.doc, tag='title')
+        title_element = self.parser.getElementsByTag(self.article.doc, tag="title")
         if title_element is not None and len(title_element) > 0:
             title = self.parser.getText(title_element[0])
             return self.clean_title(title)

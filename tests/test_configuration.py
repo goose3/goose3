@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-"""\
+"""
 This is a python port of "Goose" orignialy licensed to Gravity.com
 under one or more contributor license agreements.  See the NOTICE file
 distributed with this work for additional information
@@ -28,13 +27,12 @@ from goose3 import Goose
 
 
 class TestTempDir(unittest.TestCase):
-
     def test_tmp_defaut(self):
         g = Goose()
-        default_local_storage_path = os.path.join(tempfile.gettempdir(), 'goose')
+        default_local_storage_path = os.path.join(tempfile.gettempdir(), "goose")
         self.assertEqual(g.config.local_storage_path, default_local_storage_path)
 
     def test_tmp_overwritten(self):
-        path = '/tmp/goose'
-        g = Goose({'local_storage_path': path})
+        path = "/tmp/goose"
+        g = Goose({"local_storage_path": path})
         self.assertEqual(g.config.local_storage_path, path)
