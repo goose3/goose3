@@ -65,4 +65,4 @@ jobs:
     - uses: psf/black@stable
       with:
         # src: "./goose3"
-        version: "22"
+        version: "22.8.0"
