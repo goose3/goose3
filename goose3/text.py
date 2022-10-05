@@ -40,24 +40,16 @@ def get_encodings_from_content(content):
     :param content: string to extract encodings from.
     """
     if isinstance(content, bytes):
-        find_charset = re.compile(
-            br'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
-        ).findall
+        content = content.decode()
 
-        find_xml = re.compile(
-            br'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
-        ).findall
-        return [encoding.decode('utf-8') for encoding in
-                find_charset(content) + find_xml(content)]
-    else:
-        find_charset = re.compile(
-            r'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
-        ).findall
+    find_charset = re.compile(
+        r'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
+    ).findall
 
-        find_xml = re.compile(
-            r'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
-        ).findall
-        return find_charset(content) + find_xml(content)
+    find_xml = re.compile(
+        r'^<\?xml.*?encoding=["\']*([a-zA-Z0-9\-_]+?) *?["\'>]'
+    ).findall
+    return find_charset(content) + find_xml(content)
 
 
 def innerTrim(value):
@@ -215,10 +207,10 @@ class StopWordsKorean(StopWords):
         # Korean StopWords are attached at noun without a space
         # To find the stopwords in given sentences quickly, Ahocorasick is needed
         import ahocorasick
-        self.A = ahocorasick.Automaton()
+        self.auto = ahocorasick.Automaton()
         for word in self._stop_words:
-            self.A.add_word(word, word)
-        self.A.make_automaton()
+            self.auto.add_word(word, word)
+        self.auto.make_automaton()
 
     def get_stopword_count(self, content):
         if not content:
@@ -227,7 +219,7 @@ class StopWordsKorean(StopWords):
         stripped_input = self.remove_punctuation(content)
         candidate_words = self.candidate_words(stripped_input)
         overlapping_stopwords = []
-        for item in self.A.iter(''.join(candidate_words)):
+        for item in self.auto.iter(''.join(candidate_words)):
             overlapping_stopwords.append(item[1])
 
         stats.set_word_count(len(candidate_words))

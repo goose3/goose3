@@ -1,3 +1,16 @@
 [build-system]
 requires = ["setuptools>=61.2.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py37', 'py38']
+
+[tool.isort]
+profile = "black"

@@ -29,14 +29,13 @@ from goose3.utils import fnv_1a
 from goose3.utils.encoding import smart_str
 from goose3.image import (ImageDetails, LocallyStoredImage)
 
-LOG = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class ImageUtils:
 
     @classmethod
-    def get_image_dimensions(cls, identify_program, path):
-        # TODO: identify_program is not used
+    def get_image_dimensions(cls, path):
         image_details = ImageDetails()
         try:
             # workaround to force the file to actually be closed by Pillow
@@ -48,11 +47,7 @@ class ImageUtils:
             image_details.set_height(height)
         except OSError:
             image_details.set_mime_type('NA')
-            LOG.exception("Cannot identify image file")
-        except Exception as ex:
-            # TODO: Should we look into other possible exceptions?
-            image_details.set_mime_type('NA')
-            LOG.exception(f"Exception: {ex}")
+            logger.exception("Cannot identify image file")
         return image_details
 
     @classmethod
@@ -98,8 +93,7 @@ class ImageUtils:
     def read_localfile(cls, link_hash, src, config):
         local_image_name = cls.get_localfile_name(link_hash, src, config)
         if os.path.isfile(local_image_name):
-            identify = config.imagemagick_identify_path
-            image_details = cls.get_image_dimensions(identify, local_image_name)
+            image_details = cls.get_image_dimensions(local_image_name)
             file_extension = cls.get_mime_type(image_details)
             filesize = os.path.getsize(local_image_name)
             return LocallyStoredImage(src=src,

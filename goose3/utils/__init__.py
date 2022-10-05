@@ -34,8 +34,8 @@ class FileHelper:
     def loadResourceFile(cls, filename):
         try:
             return pkgutil.get_data("goose3", filename).decode('utf-8')
-        except:
-            raise OSError(f"Couldn't open file {filename}")
+        except OSError as exc:
+            raise OSError(f"Couldn't open file '{filename}' - {exc}") from exc
 
 
 class ParsingCandidate:

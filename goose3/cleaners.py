@@ -162,10 +162,10 @@ class DocumentCleaner:
             self.parser.drop_tag(item)
         return doc
 
-    def get_flushed_buffer(self, replacement_text, doc):
+    def get_flushed_buffer(self, replacement_text):
         return self.parser.textToPara(replacement_text)
 
-    def get_replacement_nodes(self, doc, div):
+    def get_replacement_nodes(self, div):
         replacement_text = []
         nodes_to_return = []
         nodes_to_remove = []
@@ -175,7 +175,7 @@ class DocumentCleaner:
             # node is a p
             # and already have some replacement text
             if self.parser.getTag(kid) == 'p' and len(replacement_text) > 0:
-                new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
+                new_node = self.get_flushed_buffer(''.join(replacement_text))
                 nodes_to_return.append(new_node)
                 replacement_text = []
                 nodes_to_return.append(kid)
@@ -215,7 +215,7 @@ class DocumentCleaner:
 
         # flush out anything still remaining
         if len(replacement_text) > 0:
-            new_node = self.get_flushed_buffer(''.join(replacement_text), doc)
+            new_node = self.get_flushed_buffer(''.join(replacement_text))
             nodes_to_return.append(new_node)
             replacement_text = []
 
@@ -224,7 +224,7 @@ class DocumentCleaner:
 
         return nodes_to_return
 
-    def replace_with_para(self, doc, div):
+    def replace_with_para(self, div):
         self.parser.replaceTag(div, 'p')
 
     def div_to_para(self, doc, dom_type):
@@ -236,10 +236,10 @@ class DocumentCleaner:
         for div in divs:
             items = self.parser.getElementsByTags(div, tags)
             if div is not None and len(items) == 0:
-                self.replace_with_para(doc, div)
+                self.replace_with_para(div)
                 bad_divs += 1
             elif div is not None:
-                replace_nodes = self.get_replacement_nodes(doc, div)
+                replace_nodes = self.get_replacement_nodes(div)
                 for child in self.parser.childNodes(div):
                     div.remove(child)
 

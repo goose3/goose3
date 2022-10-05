@@ -40,11 +40,12 @@ class TitleExtractor(BaseExtractor):
             pattern = re.compile(self.article.domain, re.IGNORECASE)
             title = pattern.sub("", title).strip()
 
+        schema = self.article.schema
         site_name = ""
         # check if we have the site name in opengraph data
-        if "site_name" in list(self.article.opengraph.keys()) and self.article.opengraph['site_name'] != title:
+        if "site_name" in self.article.opengraph and self.article.opengraph['site_name'] != title:
             site_name = self.article.opengraph['site_name']
-        elif (self.article.schema and "publisher" in self.article.schema and "name" in self.article.schema["publisher"]):
+        elif (schema and "publisher" in schema and "name" in schema["publisher"]):
             site_name = self.article.schema["publisher"]["name"]
 
         # if there is a sperator, speratate and check if site name is present
@@ -85,16 +86,13 @@ class TitleExtractor(BaseExtractor):
         title = ''
 
         # rely on opengraph in case we have the data
-        if "title" in list(self.article.opengraph.keys()):
+        if "title" in self.article.opengraph:
             return self.clean_title(self.article.opengraph['title'])
-        elif self.article.schema and "headline" in self.article.schema:
+        if self.article.schema and "headline" in self.article.schema:
             return self.clean_title(self.article.schema['headline'])
 
         # try to fetch the meta headline
-        meta_headline = self.parser.getElementsByTag(self.article.doc,
-                                                     tag="meta",
-                                                     attr="name",
-                                                     value="headline")
+        meta_headline = self.parser.getElementsByTag(self.article.doc, tag="meta", attr="name", value="headline")
         if meta_headline is not None and len(meta_headline) > 0:
             title = self.parser.getAttribute(meta_headline[0], 'content')
             return self.clean_title(title)

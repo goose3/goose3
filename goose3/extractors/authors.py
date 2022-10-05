@@ -24,25 +24,25 @@ from goose3.extractors import BaseExtractor
 
 
 class AuthorsExtractor(BaseExtractor):
-
     def extract(self):
         authors = set()
 
         for known_tag in self.config.known_author_patterns:
-            meta_tags = self.parser.getElementsByTag(self.article.doc,
-                                                     attr=known_tag.attr,
-                                                     value=known_tag.value,
-                                                     tag=known_tag.tag)
+            meta_tags = self.parser.getElementsByTag(
+                self.article.doc, attr=known_tag.attr, value=known_tag.value, tag=known_tag.tag
+            )
             if not meta_tags:
                 continue
 
             for meta_tag in meta_tags:
 
                 if known_tag.subpattern:
-                    name_nodes = self.parser.getElementsByTag(meta_tag,
-                                                              attr=known_tag.subpattern.attr,
-                                                              value=known_tag.subpattern.value,
-                                                              tag=known_tag.subpattern.tag)
+                    name_nodes = self.parser.getElementsByTag(
+                        meta_tag,
+                        attr=known_tag.subpattern.attr,
+                        value=known_tag.subpattern.value,
+                        tag=known_tag.subpattern.tag,
+                    )
 
                     if len(name_nodes) > 0:
                         name = self.parser.getText(name_nodes[0])

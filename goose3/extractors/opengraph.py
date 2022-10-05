@@ -41,7 +41,7 @@ class OpenGraphExtractor(BaseExtractor):
 
         if og_types:
             # make unique set of possible prefixes
-            og_types = tuple([x for x in set(og_types)])
+            og_types = tuple(set(og_types))
 
         for meta in metas:
             attr = self.parser.getAttribute(meta, 'property')
@@ -55,6 +55,6 @@ class OpenGraphExtractor(BaseExtractor):
         # add all the types in... if there are multiple
         if len(og_types) > 1:
             opengraph_dict.pop('type')
-            opengraph_dict['types'] = [x for x in sorted(og_types)]
+            opengraph_dict['types'] = sorted(og_types)
 
         return opengraph_dict

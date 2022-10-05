@@ -77,6 +77,19 @@ class ContentExtractor(BaseExtractor):
         top_node = None
         nodes_to_check = self.nodes_to_check(doc)
 
+        # update all parents
+        def loc_update_parent(node, upscore, depth=1):
+            parent_node = self.parser.getParent(node)
+            if parent_node is not None:
+                self.update_score(parent_node, upscore*(1.5/(depth+0.5)))
+                self.update_node_count(parent_node, 1)
+
+                if parent_node not in parent_nodes:
+                    parent_nodes.append(parent_node)
+
+                loc_update_parent(parent_node, upscore, depth+1)
+
+
         starting_boost = float(1.0)
         cnt = 0
         i = 0
@@ -114,19 +127,7 @@ class ContentExtractor(BaseExtractor):
             word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text_node)
             upscore = int(word_stats.get_stopword_count() + boost_score)
 
-            # update all parents
-            def updateParent(node, depth=1):
-                parent_node = self.parser.getParent(node)
-                if parent_node is not None:
-                    self.update_score(parent_node, upscore*(1.5/(depth+0.5)))
-                    self.update_node_count(parent_node, 1)
-
-                    if parent_node not in parent_nodes:
-                        parent_nodes.append(parent_node)
-
-                    updateParent(parent_node, depth+1)
-
-            updateParent(node)
+            loc_update_parent(node, upscore)
 
             cnt += 1
             i += 1
@@ -204,24 +205,23 @@ class ContentExtractor(BaseExtractor):
                 tmp = deepcopy(tmp)
                 tmp.tail = ''
             return [tmp]
-        else:
-            potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag='p')
-            if potential_paragraphs is None:
-                return None
+        potential_paragraphs = self.parser.getElementsByTag(current_sibling, tag='p')
+        if potential_paragraphs is None:
+            return None
 
-            paragraphs = list()
-            for first_paragraph in potential_paragraphs:
-                text = self.parser.getText(first_paragraph)
-                if text:  # no len(text) > 0
-                    word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
-                    paragraph_score = word_stats.get_stopword_count()
-                    sibling_baseline_score = float(.30)
-                    high_link_density = self.is_highlink_density(first_paragraph)
-                    score = float(baselinescore_siblings_para * sibling_baseline_score)
-                    if score < paragraph_score and not high_link_density:
-                        para = self.parser.createElement(tag='p', text=text, tail=None)
-                        paragraphs.append(para)
-            return paragraphs
+        paragraphs = []
+        for first_paragraph in potential_paragraphs:
+            text = self.parser.getText(first_paragraph)
+            if text:  # no len(text) > 0
+                word_stats = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
+                paragraph_score = word_stats.get_stopword_count()
+                sibling_baseline_score = float(.30)
+                high_link_density = self.is_highlink_density(first_paragraph)
+                score = float(baselinescore_siblings_para * sibling_baseline_score)
+                if score < paragraph_score and not high_link_density:
+                    para = self.parser.createElement(tag='p', text=text, tail=None)
+                    paragraphs.append(para)
+        return paragraphs
 
     def get_siblings_score(self, top_node):
         """
