@@ -24,7 +24,7 @@ import re
 import string
 import warnings
 
-from goose3.utils import FileHelper
+from goose3.utils import FileHelper, deprecated
 from goose3.utils.encoding import DjangoUnicodeDecodeError, smart_str, smart_unicode
 
 SPACE_SYMBOLS = re.compile(r"[\s\xa0\t]")
@@ -64,6 +64,17 @@ def encode_value(value):
     except Exception:
         value = string_org
     return value
+
+
+# Aliases
+@deprecated("Deprecated and to be removed in v3.1.14; use inner_trim instead")
+def innerTrim(value):
+    return inner_trim(value)
+
+
+@deprecated("Deprecated and to be removed in v3.1.14; use encode_value instead")
+def encodeValue(value):
+    return encode_value(value)
 
 
 class WordStats:

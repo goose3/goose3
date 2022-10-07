@@ -25,6 +25,7 @@ import lxml.html
 from lxml import etree
 
 from goose3.text import encode_value, get_encodings_from_content, inner_trim, smart_str
+from goose3.utils import deprecated
 
 
 class Parser:
@@ -237,6 +238,127 @@ class Parser:
             tmp = deepcopy(tmp)
             tmp.tail = None
         return cls.node_to_string(tmp)
+
+    # Aliases to previous names
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use node_to_string instead")
+    def nodeToString(cls, node):
+        return cls.node_to_string(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use replace_tag instead")
+    def replaceTag(cls, node, tag):
+        return cls.replace_tag(node, tag)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use strip_tags instead")
+    def stripTags(cls, node, *tags):
+        return cls.strip_tags(node, tags)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_element_by_id instead")
+    def getElementById(cls, node, idd):
+        return cls.get_element_by_id(node, idd)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_elements_by_tag instead")
+    def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
+        return cls.get_elements_by_tag(node, tag, attr, value, childs)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use append_child instead")
+    def appendChild(cls, node, child):
+        cls.append_child(node, child)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use child_nodes instead")
+    def childNodes(cls, node):
+        return cls.child_nodes(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use child_nodes_with_text instead")
+    def childNodesWithText(cls, node):
+        return cls.child_nodes_with_text(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use text_to_para instead")
+    def textToPara(cls, text):
+        return cls.text_to_para(text)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_children instead")
+    def getChildren(cls, node):
+        return cls.get_children(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_elements_by_tags instead")
+    def getElementsByTags(cls, node, tags):
+        return cls.get_elements_by_tags(node, tags)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use create_element instead")
+    def createElement(cls, tag="p", text=None, tail=None):
+        return cls.create_element(tag, text, tail)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_comments instead")
+    def getComments(cls, node):
+        return cls.get_comments(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_parent instead")
+    def getParent(cls, node):
+        return cls.get_parent(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_tag instead")
+    def getTag(cls, node):
+        return cls.get_tag(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_text instead")
+    def getText(cls, node):
+        return cls.get_text(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use previous_siblings instead")
+    def previousSiblings(cls, node):
+        return cls.previous_siblings(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use previous_sibling instead")
+    def previousSibling(cls, node):
+        return cls.previous_sibling(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use next_sibling instead")
+    def nextSibling(cls, node):
+        return cls.next_sibling(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use is_text_node instead")
+    def isTextNode(cls, node):
+        return cls.is_text_node(node)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use get_attribute instead")
+    def getAttribute(cls, node, attr=None):
+        return cls.get_attribute(node, attr)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use del_attribute instead")
+    def delAttribute(cls, node, attr=None):
+        cls.del_attribute(node, attr)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use set_attribute instead")
+    def setAttribute(cls, node, attr=None, value=None):
+        cls.set_attribute(node, attr, value)
+
+    @classmethod
+    @deprecated("Deprecated and to be removed in v3.1.14; use outer_html instead")
+    def outerHtml(cls, node):
+        return cls.outer_html(node)
 
 
 class ParserSoup(Parser):

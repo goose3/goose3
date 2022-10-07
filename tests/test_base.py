@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import codecs
+import functools
 import json
 import os
 import unittest
@@ -29,8 +30,10 @@ import requests_mock
 
 from goose3 import Goose
 from goose3.configuration import Configuration
+from goose3.version import __version__
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+CAMEL_CASE_DEPRICATION = "3.1.14"
 
 
 def load_resource(path):
@@ -40,6 +43,27 @@ def load_resource(path):
         return content
     except OSError:
         raise OSError("Couldn't open file %s" % path)
+
+
+def fail_after(version):
+    """Decorator to add to tests to ensure that they fail if a deprecated
+    feature is not removed before the specified version
+    Args:
+        version (str): The version to check against"""
+
+    def decorator_wrapper(func):
+        @functools.wraps(func)
+        def test_inner(*args, **kwargs):
+            if [int(x) for x in version.split(".")] <= [int(x) for x in __version__.split(".")]:
+                msg = "The function {} must be fully removed as it is depricated and must be removed by version {}".format(
+                    func.__name__, version
+                )
+                raise AssertionError(msg)
+            return func(*args, **kwargs)
+
+        return test_inner
+
+    return decorator_wrapper
 
 
 class TestExtractionBase(unittest.TestCase):
