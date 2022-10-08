@@ -24,8 +24,8 @@ import os
 import unittest
 
 from goose3.parsers import Parser, ParserSoup
-from goose3.utils import FileHelper
-from tests.test_base import CAMEL_CASE_DEPRICATION, fail_after
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
+from tests.test_base import fail_after
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 

@@ -33,7 +33,6 @@ from goose3.configuration import Configuration
 from goose3.version import __version__
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-CAMEL_CASE_DEPRICATION = "3.1.14"
 
 
 def load_resource(path):

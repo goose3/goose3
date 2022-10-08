@@ -28,8 +28,9 @@ from goose3.text import (
     inner_trim,
     innerTrim,
 )
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
 
-from .test_base import CAMEL_CASE_DEPRICATION, fail_after
+from .test_base import fail_after
 
 
 class TestText(unittest.TestCase):

@@ -25,6 +25,7 @@ import string
 import warnings
 
 from goose3.utils import FileHelper, deprecated
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
 from goose3.utils.encoding import DjangoUnicodeDecodeError, smart_str, smart_unicode
 
 SPACE_SYMBOLS = re.compile(r"[\s\xa0\t]")
@@ -67,12 +68,12 @@ def encode_value(value):
 
 
 # Aliases
-@deprecated("Deprecated and to be removed in v3.1.14; use inner_trim instead")
+@deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use inner_trim instead")
 def innerTrim(value):
     return inner_trim(value)
 
 
-@deprecated("Deprecated and to be removed in v3.1.14; use encode_value instead")
+@deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use encode_value instead")
 def encodeValue(value):
     return encode_value(value)
 
