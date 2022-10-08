@@ -21,7 +21,7 @@ limitations under the License.
 """
 import html
 
-from goose3.text import innerTrim
+from goose3.text import inner_trim
 
 
 class OutputFormatter:
@@ -69,10 +69,10 @@ class OutputFormatter:
     def convert_to_text(self):
         txts = []
         for node in list(self.get_top_node()):
-            txt = self.parser.getText(node)
+            txt = self.parser.get_text(node)
             if txt:
                 txt = html.unescape(txt)
-                txt_lis = innerTrim(txt).split(r"\n")
+                txt_lis = inner_trim(txt).split(r"\n")
                 txts.extend(txt_lis)
         text = "\n\n".join(txts)
         # ensure no double newlines at the beginning of lists
@@ -88,23 +88,23 @@ class OutputFormatter:
         return text
 
     def add_newline_to_br(self):
-        for elm in self.parser.getElementsByTag(self.top_node, tag="br"):
+        for elm in self.parser.get_elements_by_tag(self.top_node, tag="br"):
             elm.text = r"\n"
 
     def links_to_text(self):
         """cleans up and converts any nodes that should be considered text into text"""
-        self.parser.stripTags(self.get_top_node(), "a")
+        self.parser.strip_tags(self.get_top_node(), "a")
 
     def make_list_elms_pretty(self):
         """make any list element read like a list"""
-        for elm in self.parser.getElementsByTag(self.top_node, tag="li"):
+        for elm in self.parser.get_elements_by_tag(self.top_node, tag="li"):
             elm.text = rf"• {elm.text}"
 
     def remove_negativescores_nodes(self):
         """if there are elements inside our top node that have a negative gravity score, let's give em the boot"""
         gravity_items = self.parser.css_select(self.top_node, "*[gravityScore]")
         for item in gravity_items:
-            score = self.parser.getAttribute(item, "gravityScore")
+            score = self.parser.get_attribute(item, "gravityScore")
             score = int(score, 0)
             if score < 1:
                 item.getparent().remove(item)
@@ -114,29 +114,29 @@ class OutputFormatter:
         so replace <br>, <i>, <strong>, etc.... with whatever text is inside them
         code : http://lxml.de/api/lxml.etree-module.html#strip_tags
         """
-        self.parser.stripTags(self.get_top_node(), "b", "strong", "i", "br")
+        self.parser.strip_tags(self.get_top_node(), "b", "strong", "i", "br")
         if self.config.keep_footnotes:
-            self.parser.stripTags(self.get_top_node(), "sup")
+            self.parser.strip_tags(self.get_top_node(), "sup")
 
     def remove_fewwords_paragraphs(self):
         """remove paragraphs that have less than x number of words, would indicate that it's some sort of link"""
-        all_nodes = self.parser.getElementsByTags(self.get_top_node(), ["*"])
+        all_nodes = self.parser.get_elements_by_tags(self.get_top_node(), ["*"])
         all_nodes.reverse()
         for elm in all_nodes:
-            tag = self.parser.getTag(elm)
-            text = self.parser.getText(elm)
+            tag = self.parser.get_tag(elm)
+            text = self.parser.get_text(elm)
             stop_words = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
             if (
                 (tag != "br" or text != "\\r")
                 and stop_words.get_stopword_count() < 3
-                and len(self.parser.getElementsByTag(elm, tag="object")) == 0
-                and len(self.parser.getElementsByTag(elm, tag="embed")) == 0
+                and len(self.parser.get_elements_by_tag(elm, tag="object")) == 0
+                and len(self.parser.get_elements_by_tag(elm, tag="embed")) == 0
             ):
                 self.parser.remove(elm)
             # TODO
             # check if it is in the right place
             else:
-                trimmed = self.parser.getText(elm)
+                trimmed = self.parser.get_text(elm)
                 if trimmed.startswith("(") and trimmed.endswith(")"):
                     self.parser.remove(elm)
 

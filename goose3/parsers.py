@@ -24,7 +24,9 @@ from copy import deepcopy
 import lxml.html
 from lxml import etree
 
-from goose3.text import encodeValue, get_encodings_from_content, innerTrim, smart_str
+from goose3.text import encode_value, get_encodings_from_content, inner_trim, smart_str
+from goose3.utils import deprecated
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
 
 
 class Parser:
@@ -51,7 +53,7 @@ class Parser:
         encoding = get_encodings_from_content(html)
         encoding = encoding[0] if encoding else None
         if not encoding:
-            html = encodeValue(html)
+            html = encode_value(html)
             doc = lxml.html.fromstring(html)
         else:
             html = smart_str(html, encoding=encoding)
@@ -60,19 +62,19 @@ class Parser:
         return doc
 
     @classmethod
-    def nodeToString(cls, node):
+    def node_to_string(cls, node):
         return etree.tostring(node, encoding=str)
 
     @classmethod
-    def replaceTag(cls, node, tag):
+    def replace_tag(cls, node, tag):
         node.tag = tag
 
     @classmethod
-    def stripTags(cls, node, *tags):
+    def strip_tags(cls, node, *tags):
         etree.strip_tags(node, *tags)
 
     @classmethod
-    def getElementById(cls, node, idd):
+    def get_element_by_id(cls, node, idd):
         selector = f'//*[@id="{idd}"]'
         elems = node.xpath(selector)
         if elems:
@@ -80,7 +82,7 @@ class Parser:
         return None
 
     @classmethod
-    def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
+    def get_elements_by_tag(cls, node, tag=None, attr=None, value=None, childs=False):
         namespace = "http://exslt.org/regular-expressions"
         sel = tag or "*"
         selector = f"descendant-or-self::{sel}"
@@ -94,15 +96,15 @@ class Parser:
         return elems
 
     @classmethod
-    def appendChild(cls, node, child):
+    def append_child(cls, node, child):
         node.append(child)
 
     @classmethod
-    def childNodes(cls, node):
+    def child_nodes(cls, node):
         return list(node)
 
     @classmethod
-    def childNodesWithText(cls, node):
+    def child_nodes_with_text(cls, node):
         root = node
         # create the first text node
         # if we have some text in the node
@@ -120,20 +122,20 @@ class Parser:
                 continue
             # create a text node for tail
             if elm.tail:
-                tmp = cls.createElement(tag="text", text=elm.tail, tail=None)
+                tmp = cls.create_element(tag="text", text=elm.tail, tail=None)
                 root.insert(idx + 1, tmp)
         return list(root)
 
     @classmethod
-    def textToPara(cls, text):
+    def text_to_para(cls, text):
         return cls.fromstring(text)
 
     @classmethod
-    def getChildren(cls, node):
+    def get_children(cls, node):
         return node.getchildren()
 
     @classmethod
-    def getElementsByTags(cls, node, tags):
+    def get_elements_by_tags(cls, node, tags):
         selector = ",".join(tags)
         elems = cls.css_select(node, selector)
         # remove the root node
@@ -143,7 +145,7 @@ class Parser:
         return elems
 
     @classmethod
-    def createElement(cls, tag="p", text=None, tail=None):
+    def create_element(cls, tag="p", text=None, tail=None):
         elm = lxml.html.HtmlElement()
         elm.tag = tag
         elm.text = text
@@ -151,11 +153,11 @@ class Parser:
         return elm
 
     @classmethod
-    def getComments(cls, node):
+    def get_comments(cls, node):
         return node.xpath("//comment()")
 
     @classmethod
-    def getParent(cls, node):
+    def get_parent(cls, node):
         return node.getparent()
 
     @classmethod
@@ -176,22 +178,22 @@ class Parser:
             parent.remove(node)
 
     @classmethod
-    def getTag(cls, node):
+    def get_tag(cls, node):
         return node.tag
 
     @classmethod
-    def getText(cls, node):
-        return innerTrim(" ".join(node.itertext()).strip())
+    def get_text(cls, node):
+        return inner_trim(" ".join(node.itertext()).strip())
 
     @classmethod
-    def previousSiblings(cls, node):
+    def previous_siblings(cls, node):
         nodes = []
         for _, val in enumerate(node.itersiblings(preceding=True)):
             nodes.append(val)
         return nodes
 
     @classmethod
-    def previousSibling(cls, node):
+    def previous_sibling(cls, node):
         nodes = []
         for idx, val in enumerate(node.itersiblings(preceding=True)):
             nodes.append(val)
@@ -200,7 +202,7 @@ class Parser:
         return nodes[0] if nodes else None
 
     @classmethod
-    def nextSibling(cls, node):
+    def next_sibling(cls, node):
         nodes = []
         for idx, val in enumerate(node.itersiblings(preceding=False)):
             nodes.append(val)
@@ -209,34 +211,155 @@ class Parser:
         return nodes[0] if nodes else None
 
     @classmethod
-    def isTextNode(cls, node):
+    def is_text_node(cls, node):
         return node.tag == "text"
 
     @classmethod
-    def getAttribute(cls, node, attr=None):
+    def get_attribute(cls, node, attr=None):
         if attr:
             return node.attrib.get(attr, None)
         return attr
 
     @classmethod
-    def delAttribute(cls, node, attr=None):
+    def del_attribute(cls, node, attr=None):
         if attr:
             _attr = node.attrib.get(attr, None)
             if _attr:
                 del node.attrib[attr]
 
     @classmethod
-    def setAttribute(cls, node, attr=None, value=None):
+    def set_attribute(cls, node, attr=None, value=None):
         if attr and value:
             node.set(attr, value)
 
     @classmethod
-    def outerHtml(cls, node):
+    def outer_html(cls, node):
         tmp = node
         if tmp.tail:
             tmp = deepcopy(tmp)
             tmp.tail = None
-        return cls.nodeToString(tmp)
+        return cls.node_to_string(tmp)
+
+    # Aliases to previous names
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use node_to_string instead")
+    def nodeToString(cls, node):
+        return cls.node_to_string(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use replace_tag instead")
+    def replaceTag(cls, node, tag):
+        return cls.replace_tag(node, tag)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use strip_tags instead")
+    def stripTags(cls, node, *tags):
+        return cls.strip_tags(node, tags)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_element_by_id instead")
+    def getElementById(cls, node, idd):
+        return cls.get_element_by_id(node, idd)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_elements_by_tag instead")
+    def getElementsByTag(cls, node, tag=None, attr=None, value=None, childs=False):
+        return cls.get_elements_by_tag(node, tag, attr, value, childs)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use append_child instead")
+    def appendChild(cls, node, child):
+        cls.append_child(node, child)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use child_nodes instead")
+    def childNodes(cls, node):
+        return cls.child_nodes(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use child_nodes_with_text instead")
+    def childNodesWithText(cls, node):
+        return cls.child_nodes_with_text(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use text_to_para instead")
+    def textToPara(cls, text):
+        return cls.text_to_para(text)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_children instead")
+    def getChildren(cls, node):
+        return cls.get_children(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_elements_by_tags instead")
+    def getElementsByTags(cls, node, tags):
+        return cls.get_elements_by_tags(node, tags)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use create_element instead")
+    def createElement(cls, tag="p", text=None, tail=None):
+        return cls.create_element(tag, text, tail)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_comments instead")
+    def getComments(cls, node):
+        return cls.get_comments(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_parent instead")
+    def getParent(cls, node):
+        return cls.get_parent(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_tag instead")
+    def getTag(cls, node):
+        return cls.get_tag(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_text instead")
+    def getText(cls, node):
+        return cls.get_text(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use previous_siblings instead")
+    def previousSiblings(cls, node):
+        return cls.previous_siblings(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use previous_sibling instead")
+    def previousSibling(cls, node):
+        return cls.previous_sibling(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use next_sibling instead")
+    def nextSibling(cls, node):
+        return cls.next_sibling(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use is_text_node instead")
+    def isTextNode(cls, node):
+        return cls.is_text_node(node)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use get_attribute instead")
+    def getAttribute(cls, node, attr=None):
+        return cls.get_attribute(node, attr)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use del_attribute instead")
+    def delAttribute(cls, node, attr=None):
+        cls.del_attribute(node, attr)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use set_attribute instead")
+    def setAttribute(cls, node, attr=None, value=None):
+        cls.set_attribute(node, attr, value)
+
+    @classmethod
+    @deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use outer_html instead")
+    def outerHtml(cls, node):
+        return cls.outer_html(node)
 
 
 class ParserSoup(Parser):
@@ -244,6 +367,6 @@ class ParserSoup(Parser):
     def fromstring(cls, html):
         from lxml.html import soupparser
 
-        html = encodeValue(html)
+        html = encode_value(html)
         doc = soupparser.fromstring(html)
         return doc

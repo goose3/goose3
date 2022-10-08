@@ -483,7 +483,7 @@ var timevars = {"site_url":"http:\/\/timenewsfeed.wordpress.com","site_name":"Ne
 
 		<script type="text/javascript">
 			(function() {
-				var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+				var s = document.createElement('SCRIPT'), s1 = document.get_elements_by_tagName('SCRIPT')[0];
 				s.type = 'text/javascript';
 				s.async = true;
 				s.src = 'http://widgets.digg.com/buttons.js';
@@ -747,7 +747,7 @@ var timevars = {"site_url":"http:\/\/timenewsfeed.wordpress.com","site_name":"Ne
 	var dsq = document.createElement('script'); dsq.type = 'text/javascript';
 	dsq.async = true;
 	dsq.src = 'http://' + disqus_shortname + '.' + disqus_domain + '/embed.js?pname=wordpress&pver=2.40';
-	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	(document.get_elements_by_tagName('head')[0] || document.get_elements_by_tagName('body')[0]).appendChild(dsq);
 })();
 </script>
 			</div>
@@ -1222,7 +1222,7 @@ try{
       jl.type='text/javascript';
       jl.async=true;
       jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
-      var s = document.getElementsByTagName('script')[0];
+      var s = document.get_elements_by_tagName('script')[0];
       s.parentNode.insertBefore(jl, s);
     }
   }
@@ -1306,7 +1306,7 @@ try{
 		var disqus_shortname = 'newsfeed';
 		var disqus_domain = 'disqus.com';
 		(function () {
-			var nodes = document.getElementsByTagName('span');
+			var nodes = document.get_elements_by_tagName('span');
 			for (var i = 0, url; i < nodes.length; i++) {
 				if (nodes[i].className.indexOf('dsq-postid') != -1) {
 					nodes[i].parentNode.setAttribute('data-disqus-identifier', nodes[i].getAttribute('rel'));
@@ -1319,7 +1319,7 @@ try{
 			var s = document.createElement('script'); s.async = true;
 			s.type = 'text/javascript';
 			s.src = 'http://' + disqus_domain + '/forums/' + disqus_shortname + '/count.js';
-			(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+			(document.get_elements_by_tagName('HEAD')[0] || document.get_elements_by_tagName('BODY')[0]).appendChild(s);
 		}());
 	//]]>
 	</script>
@@ -1385,7 +1385,7 @@ addLoadEvent(function(){linktracker_init('12783068',91292);});
   (function() {
     var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
     po.src = 'https://apis.google.com/js/plusone.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+    var s = document.get_elements_by_tagName('script')[0]; s.parentNode.insertBefore(po, s);
   })();
 </script>
 <!-- Google +1 Asynchronous Code - END -->

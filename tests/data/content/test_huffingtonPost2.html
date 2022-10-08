@@ -196,7 +196,7 @@ HPTrack.trackPageview();
 (function() {
   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+  (document.get_elements_by_tagName('head')[0] || document.get_elements_by_tagName('body')[0]).appendChild(ga);
 })();
 
 
@@ -224,7 +224,7 @@ s_265_account ="aolhuffpostbusiness,aolsvc";
 (function(d){
 var s = d.createElement('script');
 s.src = "http://o.aolcdn.com/os_merge/?file=/aol/beacon.min.js&file=/aol/omniture.min.js";
-d.getElementsByTagName('head')[0].appendChild(s);
+d.get_elements_by_tagName('head')[0].appendChild(s);
 })(document);
         </script>    <!-- Modal -->
     <div id="huff_modal_common" class="light_box_modal" style="visibility: hidden;">
@@ -6405,7 +6405,3 @@ BF_BB_DATA = null;
 <!-- Tracking pixels --><script type="text/javascript">huff.use('conf', function(c){ c.set({"mtime":1317943065,"entry":997793,"vertical":"business","vertical-id":5,"vertical-name":"Business","ads\/zone":"","vertical\/bignews":"business","threeup":{"version":2},"collections\/manage":true,"collections\/sidebar":true}); });</script>
 </body>
 </html>
-
-
-
-	

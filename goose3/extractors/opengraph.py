@@ -26,14 +26,14 @@ class OpenGraphExtractor(BaseExtractor):
     def extract(self):
         opengraph_dict = {}
         node = self.article.doc
-        metas = self.parser.getElementsByTag(node, "meta")
+        metas = self.parser.get_elements_by_tag(node, "meta")
 
         # Open Graph type that is supported. In theory it is possible
         # that a page has multiple types
         og_types = [
-            self.parser.getAttribute(meta, "content")
+            self.parser.get_attribute(meta, "content")
             for meta in metas
-            if (self.parser.getAttribute(meta, "property") == "og:type" and self.parser.getAttribute(meta, "content"))
+            if (self.parser.get_attribute(meta, "property") == "og:type" and self.parser.get_attribute(meta, "content"))
         ]
 
         if og_types:
@@ -41,8 +41,8 @@ class OpenGraphExtractor(BaseExtractor):
             og_types = tuple(set(og_types))
 
         for meta in metas:
-            attr = self.parser.getAttribute(meta, "property")
-            value = self.parser.getAttribute(meta, "content")
+            attr = self.parser.get_attribute(meta, "property")
+            value = self.parser.get_attribute(meta, "content")
             if attr and value:
                 if attr.startswith("og:"):
                     opengraph_dict.update({attr.split(":", 1)[1]: value})

@@ -19,8 +19,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+import functools
 import pkgutil
 import time
+import typing
+import warnings
 from typing import Union
 
 from goose3.utils.constants import UINT64_T_MAX
@@ -30,7 +33,7 @@ KeyT = Union[str, bytes]
 
 class FileHelper:
     @classmethod
-    def loadResourceFile(cls, filename):
+    def load_resource_file(cls, filename):
         try:
             return pkgutil.get_data("goose3", filename).decode("utf-8")
         except OSError as exc:
@@ -73,7 +76,7 @@ class StringReplacement:
         self.pattern = pattern
         self.replace_with = replace_with
 
-    def replaceAll(self, string):
+    def replace_all(self, string):
         if not string:
             return ""
         return string.replace(self.pattern, self.replace_with)
@@ -92,14 +95,14 @@ class ReplaceSequence:
     def append(self, pattern, replace_with=None):
         return self.create(pattern, replace_with)
 
-    def replaceAll(self, string):
+    def replace_all(self, string):
         if not string:
             return ""
 
         mutated_string = string
 
         for itm in self.replacements:
-            mutated_string = itm.replaceAll(mutated_string)
+            mutated_string = itm.replace_all(mutated_string)
         return mutated_string
 
 
@@ -122,3 +125,30 @@ def fnv_1a(key: KeyT, seed: int = 0) -> str:
         hval %= max64mod
     # Remove the leading "0x".
     return hex(hval)[2:]
+
+
+def deprecated(message: str = "") -> typing.Callable:
+    """A simplistic decorator to mark functions as deprecated. The function
+    will pass a message to the user on the first use of the function
+
+    Args:
+        message (str): The message to display if the function is deprecated
+    """
+
+    def decorator_wrapper(func):
+        @functools.wraps(func)
+        def function_wrapper(*args, **kwargs):
+            func_name = func.__name__
+            if func_name not in function_wrapper.deprecated_items:
+                msg = f"Function {func.__name__} is now deprecated! {message}"
+                warnings.warn(msg, category=DeprecationWarning, stacklevel=2)
+                function_wrapper.deprecated_items.add(func_name)
+
+            return func(*args, **kwargs)
+
+        # set this up the first time the decorator is called
+        function_wrapper.deprecated_items = set()
+
+        return function_wrapper
+
+    return decorator_wrapper

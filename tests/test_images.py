@@ -71,7 +71,7 @@ class ImageExtractionTests(TestExtractionBase):
 
     def _test_known_image_css(self, article):
         # check if we have an image in article.top_node
-        images = self.parser.getElementsByTag(article.top_node, tag="img")
+        images = self.parser.get_elements_by_tag(article.top_node, tag="img")
         self.assertEqual(len(images), 0)
 
         # we dont' have an image in article.top_node

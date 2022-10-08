@@ -83,22 +83,22 @@ class DocumentCleaner:
         # we don't need body classes
         # in case it matches an unwanted class all the document
         # will be empty
-        elements = self.parser.getElementsByTag(doc, tag="body")
+        elements = self.parser.get_elements_by_tag(doc, tag="body")
         if elements:
-            self.parser.delAttribute(elements[0], attr="class")
+            self.parser.del_attribute(elements[0], attr="class")
         return doc
 
     def clean_article_tags(self, doc):
-        articles = self.parser.getElementsByTag(doc, tag="article")
+        articles = self.parser.get_elements_by_tag(doc, tag="article")
         for article in articles:
             for attr in ["id", "name", "class"]:
-                self.parser.delAttribute(article, attr=attr)
+                self.parser.del_attribute(article, attr=attr)
         return doc
 
     def clean_em_tags(self, doc):
-        ems = self.parser.getElementsByTag(doc, tag="em")
+        ems = self.parser.get_elements_by_tag(doc, tag="em")
         for node in ems:
-            images = self.parser.getElementsByTag(node, tag="img")
+            images = self.parser.get_elements_by_tag(node, tag="img")
             if len(images) == 0:
                 self.parser.drop_tag(node)
         return doc
@@ -112,17 +112,17 @@ class DocumentCleaner:
 
     def remove_scripts_styles(self, doc):
         # remove scripts
-        scripts = self.parser.getElementsByTag(doc, tag="script")
+        scripts = self.parser.get_elements_by_tag(doc, tag="script")
         for item in scripts:
             self.parser.remove(item)
 
         # remove styles
-        styles = self.parser.getElementsByTag(doc, tag="style")
+        styles = self.parser.get_elements_by_tag(doc, tag="style")
         for item in styles:
             self.parser.remove(item)
 
         # remove comments
-        comments = self.parser.getComments(doc)
+        comments = self.parser.get_comments(doc)
         for item in comments:
             self.parser.remove(item)
 
@@ -161,54 +161,54 @@ class DocumentCleaner:
         return doc
 
     def get_flushed_buffer(self, replacement_text):
-        return self.parser.textToPara(replacement_text)
+        return self.parser.text_to_para(replacement_text)
 
     def get_replacement_nodes(self, div):
         replacement_text = []
         nodes_to_return = []
         nodes_to_remove = []
-        childs = self.parser.childNodesWithText(div)
+        childs = self.parser.child_nodes_with_text(div)
 
         for kid in childs:
             # node is a p
             # and already have some replacement text
-            if self.parser.getTag(kid) == "p" and len(replacement_text) > 0:
+            if self.parser.get_tag(kid) == "p" and len(replacement_text) > 0:
                 new_node = self.get_flushed_buffer("".join(replacement_text))
                 nodes_to_return.append(new_node)
                 replacement_text = []
                 nodes_to_return.append(kid)
             # node is a text node
-            elif self.parser.isTextNode(kid):
+            elif self.parser.is_text_node(kid):
                 kid_text_node = kid
-                kid_text = self.parser.getText(kid)
-                replace_text = self.tablines_replacements.replaceAll(kid_text)
+                kid_text = self.parser.get_text(kid)
+                replace_text = self.tablines_replacements.replace_all(kid_text)
                 if (len(replace_text)) > 1:
-                    previous_sibling_node = self.parser.previousSibling(kid_text_node)
+                    previous_sibling_node = self.parser.previous_sibling(kid_text_node)
                     while (
                         previous_sibling_node is not None
-                        and self.parser.getTag(previous_sibling_node) == "a"
-                        and self.parser.getAttribute(previous_sibling_node, "grv-usedalready") != "yes"
+                        and self.parser.get_tag(previous_sibling_node) == "a"
+                        and self.parser.get_attribute(previous_sibling_node, "grv-usedalready") != "yes"
                     ):
-                        outer = " " + self.parser.outerHtml(previous_sibling_node) + " "
+                        outer = " " + self.parser.outer_html(previous_sibling_node) + " "
                         replacement_text.append(outer)
                         nodes_to_remove.append(previous_sibling_node)
-                        self.parser.setAttribute(previous_sibling_node, attr="grv-usedalready", value="yes")
-                        prev = self.parser.previousSibling(previous_sibling_node)
+                        self.parser.set_attribute(previous_sibling_node, attr="grv-usedalready", value="yes")
+                        prev = self.parser.previous_sibling(previous_sibling_node)
                         previous_sibling_node = prev if prev is not None else None
                     # append replace_text
                     replacement_text.append(replace_text)
                     #
-                    next_sibling_node = self.parser.nextSibling(kid_text_node)
+                    next_sibling_node = self.parser.next_sibling(kid_text_node)
                     while (
                         next_sibling_node is not None
-                        and self.parser.getTag(next_sibling_node) == "a"
-                        and self.parser.getAttribute(next_sibling_node, "grv-usedalready") != "yes"
+                        and self.parser.get_tag(next_sibling_node) == "a"
+                        and self.parser.get_attribute(next_sibling_node, "grv-usedalready") != "yes"
                     ):
-                        outer = " " + self.parser.outerHtml(next_sibling_node) + " "
+                        outer = " " + self.parser.outer_html(next_sibling_node) + " "
                         replacement_text.append(outer)
                         nodes_to_remove.append(next_sibling_node)
-                        self.parser.setAttribute(next_sibling_node, attr="grv-usedalready", value="yes")
-                        next_sib = self.parser.nextSibling(next_sibling_node)
+                        self.parser.set_attribute(next_sibling_node, attr="grv-usedalready", value="yes")
+                        next_sib = self.parser.next_sibling(next_sibling_node)
                         previous_sibling_node = next_sib if next_sib is not None else None
 
             # otherwise
@@ -227,22 +227,22 @@ class DocumentCleaner:
         return nodes_to_return
 
     def replace_with_para(self, div):
-        self.parser.replaceTag(div, "p")
+        self.parser.replace_tag(div, "p")
 
     def div_to_para(self, doc, dom_type):
         bad_divs = 0
         else_divs = 0
-        divs = self.parser.getElementsByTag(doc, tag=dom_type)
+        divs = self.parser.get_elements_by_tag(doc, tag=dom_type)
         tags = ["a", "blockquote", "dl", "div", "img", "ol", "p", "pre", "table", "ul"]
 
         for div in divs:
-            items = self.parser.getElementsByTags(div, tags)
+            items = self.parser.get_elements_by_tags(div, tags)
             if div is not None and len(items) == 0:
                 self.replace_with_para(div)
                 bad_divs += 1
             elif div is not None:
                 replace_nodes = self.get_replacement_nodes(div)
-                for child in self.parser.childNodes(div):
+                for child in self.parser.child_nodes(div):
                     div.remove(child)
 
                 for i, node in enumerate(replace_nodes):

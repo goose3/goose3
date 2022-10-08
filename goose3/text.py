@@ -24,7 +24,8 @@ import re
 import string
 import warnings
 
-from goose3.utils import FileHelper
+from goose3.utils import FileHelper, deprecated
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
 from goose3.utils.encoding import DjangoUnicodeDecodeError, smart_str, smart_unicode
 
 SPACE_SYMBOLS = re.compile(r"[\s\xa0\t]")
@@ -46,7 +47,7 @@ def get_encodings_from_content(content):
     return find_charset(content) + find_xml(content)
 
 
-def innerTrim(value):
+def inner_trim(value):
     if isinstance(value, str):
         # remove tab and white space
         value = re.sub(TABSSPACE, " ", value)
@@ -55,7 +56,7 @@ def innerTrim(value):
     return ""
 
 
-def encodeValue(value):
+def encode_value(value):
     string_org = value
     try:
         value = smart_unicode(value)
@@ -64,6 +65,17 @@ def encodeValue(value):
     except Exception:
         value = string_org
     return value
+
+
+# Aliases
+@deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use inner_trim instead")
+def innerTrim(value):
+    return inner_trim(value)
+
+
+@deprecated(f"Deprecated and to be removed in v{CAMEL_CASE_DEPRICATION}; use encode_value instead")
+def encodeValue(value):
+    return encode_value(value)
 
 
 class WordStats:
@@ -105,7 +117,7 @@ class StopWords:
         if language not in self._cached_stop_words:
             path = os.path.join("resources", "text", f"stopwords-{language}.txt")
             try:
-                content = FileHelper.loadResourceFile(path)
+                content = FileHelper.load_resource_file(path)
                 word_list = content.splitlines()
             except OSError:
                 word_list = []

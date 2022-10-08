@@ -2290,7 +2290,7 @@ City of London
 		        (function() {
 		            var s = document.createElement('script'); s.async = "async"; s.type = "text/javascript";
 		            s.src = 'http://asd.tynt.com/ts.js';
-		            var h = document.getElementsByTagName('script')[0]; h.parentNode.insertBefore(s, h);
+		            var h = document.get_elements_by_tagName('script')[0]; h.parentNode.insertBefore(s, h);
 		        })();
 		    }
 		</script>
@@ -2338,7 +2338,7 @@ _tag.dcsCollect();
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		var s = document.get_elements_by_tagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
 
 </script>

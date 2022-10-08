@@ -19,7 +19,7 @@ def smart_unicode(string, encoding="utf-8", strings_only=False, errors="strict")
     If strings_only is True, don't convert (some) non-string-like objects.
     """
     # if isinstance(s, Promise):
-    #     # The input is the result of a gettext_lazy() call.
+    #     # The input is the result of a get_text_lazy() call.
     #     return s
     return force_unicode(string, encoding, strings_only, errors)
 

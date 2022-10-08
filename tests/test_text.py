@@ -21,7 +21,16 @@ limitations under the License.
 """
 import unittest
 
-from goose3.text import get_encodings_from_content
+from goose3.text import (
+    encode_value,
+    encodeValue,
+    get_encodings_from_content,
+    inner_trim,
+    innerTrim,
+)
+from goose3.utils.constants import CAMEL_CASE_DEPRICATION
+
+from .test_base import fail_after
 
 
 class TestText(unittest.TestCase):
@@ -49,3 +58,17 @@ class TestText(unittest.TestCase):
             get_encodings_from_content(b'<meta http-equiv="content-type" content="text/html; charset=utf-8" />'),
             ["utf-8"],
         )
+
+    def test_inner_trim(self):
+        self.assertEqual(inner_trim("Some    Crazy  looking text"), "Some Crazy looking text")
+
+    def test_encode_value(self):
+        self.assertEqual(encode_value(b"something here"), "something here")
+
+    @fail_after(CAMEL_CASE_DEPRICATION)
+    def test_inner_trim_old(self):
+        self.assertEqual(innerTrim("Some    Crazy  looking text"), "Some Crazy looking text")
+
+    @fail_after(CAMEL_CASE_DEPRICATION)
+    def test_encode_value_old(self):
+        self.assertEqual(encodeValue(b"something here"), "something here")

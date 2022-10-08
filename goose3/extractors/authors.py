@@ -27,7 +27,7 @@ class AuthorsExtractor(BaseExtractor):
         authors = set()
 
         for known_tag in self.config.known_author_patterns:
-            meta_tags = self.parser.getElementsByTag(
+            meta_tags = self.parser.get_elements_by_tag(
                 self.article.doc, attr=known_tag.attr, value=known_tag.value, tag=known_tag.tag
             )
             if not meta_tags:
@@ -36,7 +36,7 @@ class AuthorsExtractor(BaseExtractor):
             for meta_tag in meta_tags:
 
                 if known_tag.subpattern:
-                    name_nodes = self.parser.getElementsByTag(
+                    name_nodes = self.parser.get_elements_by_tag(
                         meta_tag,
                         attr=known_tag.subpattern.attr,
                         value=known_tag.subpattern.value,
@@ -44,11 +44,11 @@ class AuthorsExtractor(BaseExtractor):
                     )
 
                     if len(name_nodes) > 0:
-                        name = self.parser.getText(name_nodes[0])
+                        name = self.parser.get_text(name_nodes[0])
                         authors.add(name)
                 else:
                     if known_tag.tag is None:
-                        name = self.parser.getAttribute(meta_tag, known_tag.content)
+                        name = self.parser.get_attribute(meta_tag, known_tag.content)
                         if not name:
                             continue
 

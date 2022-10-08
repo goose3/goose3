@@ -552,7 +552,7 @@ if (window.jstiming) window.jstiming.load.tick('headEnd');
 var script = document.createElement('script');
 script.type = 'text/javascript';
 script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
-var head = document.getElementsByTagName('head')[0];
+var head = document.get_elements_by_tagName('head')[0];
 if (head) {
 head.appendChild(script);
 }})();
@@ -711,11 +711,11 @@ head.appendChild(script);
 <!-- google_ad_section_start(name=default) -->
 
           <div class="date-outer">
-        
+
 <h2 class='date-header'><span>Thursday, October 27, 2011</span></h2>
 
           <div class="date-posts">
-        
+
 <div class='post-outer'>
 <div class='post hentry uncustomized-post-template' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
 <meta content='5761095693213568868' itemprop='blogId'/>
@@ -866,7 +866,7 @@ at
           var script = document.createElement('script');
           script.type = 'text/javascript';
           script.src = url;
-          document.getElementsByTagName('head')[0].appendChild(script);
+          document.get_elements_by_tagName('head')[0].appendChild(script);
         }
       };
       var hasMore = function() {
@@ -980,7 +980,7 @@ at
 </div>
 
         </div></div>
-      
+
 <!-- google_ad_section_end -->
 </div>
 <div class='blog-pager' id='blog-pager'>
@@ -1028,50 +1028,50 @@ Subscribe to:
       if (!window.registeredBloggerCallbacks) {
         window.registeredBloggerCallbacks = true;
 
-        
 
-        
+
+
         gadgets.rpc.register('requestReload', function() {
           document.location.reload();
         });
 
-        
+
         gadgets.rpc.register('requestSignOut', function(siteId) {
-          
+
           google.friendconnect.container.openSocialSiteId = siteId;
           google.friendconnect.requestSignOut();
         });
       }
     </script>
 <script type="text/javascript">
-    
+
     function registerGetBlogUrls() {
       gadgets.rpc.register('getBlogUrls', function() {
         var holder = {};
-        
-          
-            
-            
+
+
+
+
               holder.currentPost = "http://www.blogger.com/feeds/5761095693213568868/posts/default/4365261822998854267";
-            
-            
-            
+
+
+
               holder.currentComments = "http://www.blogger.com/feeds/5761095693213568868/4365261822998854267/comments/default";
-            
+
             holder.currentPostUrl = "";
             holder.currentPostId = 4365261822998854267
-          
-          
-          
+
+
+
             holder.postFeed = "http://www.blogger.com/feeds/5761095693213568868/posts/default";
-          
-          
-          
+
+
+
             holder.commentFeed = "http://www.blogger.com/feeds/5761095693213568868/comments/default";
-          
+
           holder.currentBlogUrl = "http://lostinjit.blogspot.com/";
           holder.currentBlogId = "5761095693213568868";
-        
+
         return holder;
       });
     }
@@ -1087,7 +1087,7 @@ Subscribe to:
       }
     });
 
-    
+
     gadgets.rpc.register('set_pref', function() {});
 
     registerGetBlogUrls();
@@ -1104,7 +1104,7 @@ Subscribe to:
     skin['ENDCAP_TEXT_COLOR'] = "#222222";
     skin['ENDCAP_LINK_COLOR'] = "#2288bb";
     skin['ALTERNATE_BG_COLOR'] = "transparent";
-    
+
     skin['CONTENT_BG_COLOR'] = "transparent";
     skin['CONTENT_LINK_COLOR'] = "#2288bb";
     skin['CONTENT_TEXT_COLOR'] = "#222222";
@@ -1116,11 +1116,11 @@ Subscribe to:
     google.friendconnect.container["renderMembersGadget"](
     {id: "div-1c5vz08p6brin",
      height: 260,
-     
-     
-     
+
+
+
      site: "09937614739564950641",
-     
+
      locale: 'en' },
      skin);
   </script>
@@ -1176,7 +1176,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/search?updated-min=2013-01-01T00:00:00-08:00&amp;updated-max=2014-01-01T00:00:00-08:00&amp;max-results=1'>2013</a>
@@ -1187,7 +1187,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2013_11_01_archive.html'>November</a>
@@ -1202,7 +1202,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/search?updated-min=2012-01-01T00:00:00-08:00&amp;updated-max=2013-01-01T00:00:00-08:00&amp;max-results=4'>2012</a>
@@ -1213,7 +1213,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2012_12_01_archive.html'>December</a>
@@ -1226,7 +1226,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2012_07_01_archive.html'>July</a>
@@ -1239,7 +1239,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2012_04_01_archive.html'>April</a>
@@ -1252,7 +1252,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2012_02_01_archive.html'>February</a>
@@ -1274,7 +1274,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2011_12_01_archive.html'>December</a>
@@ -1287,7 +1287,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2011_11_01_archive.html'>November</a>
@@ -1314,7 +1314,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2011_07_01_archive.html'>July</a>
@@ -1327,7 +1327,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2011_06_01_archive.html'>June</a>
@@ -1340,7 +1340,7 @@ Maciej Fijalkowski
 <span class='zippy'>
 
           &#9658;&#160;
-        
+
 </span>
 </a>
 <a class='post-count-link' href='http://lostinjit.blogspot.fr/2011_01_01_archive.html'>January</a>
