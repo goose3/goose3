@@ -5,7 +5,7 @@
         "title": "'Boaty McBoatface' tops ship name poll",
         "final_url":"https://www.bbc.com/news/uk-england-36064659",
         "schema": {
-            "@context":"http:\/\/schema.org",
+            "@context":"https:\/\/schema.org",
             "@type":"ReportageNewsArticle",
             "url":"https:\/\/www.bbc.com\/news\/uk-england-36064659",
             "publisher":{
