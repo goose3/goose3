@@ -4,6 +4,7 @@
 * ***Deprecation Notice:***
     * `camelCase` functions have been deprecated; [see issue #151](https://github.com/goose3/goose3/issues/151)
 * Fix for building Goose3 into an executable; [see issue #144](https://github.com/goose3/goose3/issues/144)
+* Fix `schema.org` check; [see PR #154](https://github.com/goose3/goose3/pull/154); Thanks [mromanelli9](https://github.com/mromanelli9)
 * Update build system to be [PEP 517](https://peps.python.org/pep-0517/) compliant
 * Code Standardization
     * Upgrade code using [pyupgrade](https://github.com/asottile/pyupgrade)
