@@ -267,7 +267,7 @@ body{ font-family: 'Lato'; font-weight: normal; font-size: 15px; color: #666666;
 				.review-desc{width: 100%;}
 				.review-wrapper{border: none; overflow: visible;}
 			</style></head>
-<body id ="blog" class="single single-post postid-13131 single-format-standard main" itemscope itemtype="http://schema.org/WebPage">
+<body id ="blog" class="single single-post postid-13131 single-format-standard main" itemscope itemtype="https://schema.org/WebPage">
 	<div class="main-container-wrap">
 		<header class="main-header">
 						<div class="container">
@@ -341,12 +341,12 @@ body{ font-family: 'Lato'; font-weight: normal; font-size: 15px; color: #666666;
 <pre class="brush: php; title: ; notranslate" title="">
 function shortcode_printaddress($atts)
 {
-$val.= '&lt;div itemscope itemtype=&quot;http://schema.org/LocalBusiness&quot;&gt;';
+$val.= '&lt;div itemscope itemtype=&quot;https://schema.org/LocalBusiness&quot;&gt;';
 $val.= '&lt;a itemprop=&quot;url&quot; href=&quot;' . site_url() . '&quot;&gt;';
 $val.= '&lt;div itemprop=&quot;name&quot;&gt;';
 $val.= '&lt;strong&gt;' . $atts[&quot;name&quot;] . '&lt;/strong&gt;';
 $val.= '&lt;/div&gt;'; $val.= '&lt;/a&gt;';
-$val.= '&lt;div itemprop=&quot;address&quot; itemscope itemtype=&quot;http://schema.org/PostalAddress&quot;&gt;';
+$val.= '&lt;div itemprop=&quot;address&quot; itemscope itemtype=&quot;https://schema.org/PostalAddress&quot;&gt;';
 $val.= '&lt;span itemprop=&quot;streetAddress&quot;&gt;';
 $val.= $atts[&quot;address1&quot;]; if(!empty($atts[&quot;address2&quot;]))
 {
@@ -365,7 +365,7 @@ add_shortcode('printaddress', 'shortcode_printaddress');
 <p><strong>[printaddress name="OKay Marketing" address1="8275 E Bell RD" address2="Suite 250" city="Scottsdale" state="AZ" zip="85260"]</strong></p>
 <p>The shortcode will display like our address below.</p>
 <div class="divider"></div>
-<div itemscope itemtype="http://schema.org/LocalBusiness"><a itemprop="url" href="http://okaymarketing.com"><div itemprop="name"><strong>OKay Marketing</strong></div></a><div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress"><span itemprop="streetAddress">8275 E Bell RD<br />Suite 250</span><br /><span itemprop="addressLocality">Scottsdale</span>, <span itemprop="addressRegion">AZ</span> <span itemprop="postalCode">85260</span></div></div>
+<div itemscope itemtype="https://schema.org/LocalBusiness"><a itemprop="url" href="http://okaymarketing.com"><div itemprop="name"><strong>OKay Marketing</strong></div></a><div itemprop="address" itemscope itemtype="https://schema.org/PostalAddress"><span itemprop="streetAddress">8275 E Bell RD<br />Suite 250</span><br /><span itemprop="addressLocality">Scottsdale</span>, <span itemprop="addressRegion">AZ</span> <span itemprop="postalCode">85260</span></div></div>
 <div class="divider"></div>
 <p>The reason we like this method better is because it is much easier to style, there aren&#8217;t any line breaks and to the general user, it looks just like a normal address listing.</p>
 <h2>Step 5</h2>
