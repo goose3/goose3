@@ -17,7 +17,7 @@ Goose3 - Article Extractor
     :target: https://badge.fury.io/py/goose3
     :alt: PyPi Release
 .. image:: http://pepy.tech/badge/goose3
-    :target: http://pepy.tech/count/goose3
+    :target: https://pepy.tech/project/goose3
     :alt: Downloads
 
 Intro

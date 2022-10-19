@@ -44,7 +44,7 @@ def load_resource(path):
         raise OSError("Couldn't open file %s" % path)
 
 
-def fail_after(version):
+def fail_after(version, method=None):
     """Decorator to add to tests to ensure that they fail if a deprecated
     feature is not removed before the specified version
     Args:
@@ -54,8 +54,8 @@ def fail_after(version):
         @functools.wraps(func)
         def test_inner(*args, **kwargs):
             if [int(x) for x in version.split(".")] <= [int(x) for x in __version__.split(".")]:
-                msg = "The function {} must be fully removed as it is depricated and must be removed by version {}".format(
-                    func.__name__, version
+                msg = "{} is depricated and must be removed by version {}".format(
+                    method if method else func.__name__, version
                 )
                 raise AssertionError(msg)
             return func(*args, **kwargs)

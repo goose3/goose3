@@ -278,7 +278,7 @@ class ParserBase(unittest.TestCase):
         html += "</body></html>"
         self.parser.fromstring(html)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "nodeToString")
     def test_tostring_old(self):
         html = "<html><body>"
         html += "<p>this is a test <a>link</a> and this is <strong>strong</strong></p>"
@@ -287,7 +287,7 @@ class ParserBase(unittest.TestCase):
         result = self.parser.nodeToString(doc)
         self.assertEqual(html, result)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "replaceTag")
     def test_replace_tag_old(self):
         html = self.get_html("parser/test1.html")
         doc = self.parser.fromstring(html)
@@ -303,7 +303,7 @@ class ParserBase(unittest.TestCase):
         divcount2 = len(divs2)
         self.assertEqual(divcount2, pcount + divcount)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "stripTags")
     def test_strip_tags_old(self):
         html = "<html><body>"
         html += "<p>this is a test <a>link</a> and this is <strong>strong</strong></p>"
@@ -316,11 +316,11 @@ class ParserBase(unittest.TestCase):
         result = self.parser.node_to_string(doc)
         self.assertEqual(expected, result)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getElementById")
     def test_get_element_by_id_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getElementsByTag")
     def test_get_elements_by_tag_old(self):
         html = "<html><body>"
         html += '<p>this is a test <a class="link">link</a> and this is <strong class="link">strong</strong></p>'
@@ -331,27 +331,27 @@ class ParserBase(unittest.TestCase):
 
         self.assertEqual(len(p), 2)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "appendChild")
     def test_append_child_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "childNodes")
     def test_child_nodes_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "childNodesWithText")
     def test_child_nodes_with_text_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "textToPara")
     def test_text_to_para_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getChildren")
     def test_get_children_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getElementsByTags")
     def test_get_elements_by_tags_old(self):
         html = "<html><body>"
         html += '<p>this is a test <a class="link">link</a> and this is <strong class="link">strong</strong></p>'
@@ -366,47 +366,43 @@ class ParserBase(unittest.TestCase):
         elements = self.parser.getElementsByTags(p, ["p", "a", "strong"])
         self.assertEqual(len(elements), 2)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "createElement")
     def test_create_element_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getComments")
     def test_get_comments_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getParent")
     def test_get_parent_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getTag")
     def test_get_tag_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getText")
     def test_get_text_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "previousSiblings")
     def test_previous_siblings_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
-    def test_previous_sibling_old(self):  # TODO: currently there isn't one that tests this functionality directly
-        self.assertTrue(True)
-
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "nextSibling")
     def test_next_sibling_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "isTextNode")
     def test_is_text_node_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "getAttribute")
     def test_get_attribute_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "delAttribute")
     def test_del_attribute_old(self):
         html = self.get_html("parser/test1.html")
         doc = self.parser.fromstring(html)
@@ -425,11 +421,11 @@ class ParserBase(unittest.TestCase):
         elements = self.parser.get_elements_by_tag(doc, tag="div", attr="class", value="foo")
         self.assertEqual(len(elements), 0)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "setAttribute")
     def test_set_attribute_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "outerHtml")
     def test_outer_html_old(self):  # TODO: currently there isn't one that tests this functionality directly
         self.assertTrue(True)
 

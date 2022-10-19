@@ -65,10 +65,10 @@ class TestText(unittest.TestCase):
     def test_encode_value(self):
         self.assertEqual(encode_value(b"something here"), "something here")
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "innerTrim")
     def test_inner_trim_old(self):
         self.assertEqual(innerTrim("Some    Crazy  looking text"), "Some Crazy looking text")
 
-    @fail_after(CAMEL_CASE_DEPRICATION)
+    @fail_after(CAMEL_CASE_DEPRICATION, "encodeValue")
     def test_encode_value_old(self):
         self.assertEqual(encodeValue(b"something here"), "something here")
