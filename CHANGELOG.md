@@ -1,6 +1,6 @@
 # Goose3
 
-### Future Release
+### 3.1.13
 * ***Deprecation Notice:***
     * `camelCase` functions have been deprecated; [see issue #151](https://github.com/goose3/goose3/issues/151)
 * Fix for building Goose3 into an executable; [see issue #144](https://github.com/goose3/goose3/issues/144)
