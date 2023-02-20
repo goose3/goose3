@@ -41,7 +41,7 @@ class TitleExtractor(BaseExtractor):
         # check if we have the site name in opengraph data
         if "site_name" in self.article.opengraph and self.article.opengraph["site_name"] != title:
             site_name = self.article.opengraph["site_name"]
-        elif schema and "publisher" in schema and "name" in schema["publisher"]:
+        elif schema and schema.get("publisher") and schema["publisher"].get("name"):
             site_name = self.article.schema["publisher"]["name"]
 
         # if there is a sperator, speratate and check if site name is present
