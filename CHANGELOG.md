@@ -4,7 +4,8 @@
 * ***Deprecation Notice:***
     * `camelCase` functions have been deprecated; [see issue #151](https://github.com/goose3/goose3/issues/151)
 * Fix for building Goose3 into an executable; [see issue #144](https://github.com/goose3/goose3/issues/144)
-* Fix `schema.org` check; [see PR #154](https://github.com/goose3/goose3/pull/154); Thanks [mromanelli9](https://github.com/mromanelli9)
+* Fix `schema.org` check; [see PR #154](https://github.com/goose3/goose3/pull/154); Thanks [@mromanelli9](https://github.com/mromanelli9)
+* Fix `TypeError` issues in publisher and title extractions; [see PR #157](https://github.com/goose3/goose3/pull/157) and [PR #156](https://github.com/goose3/goose3/pull/156); Thanks [@Amaimersion](https://github.com/Amaimersion)
 * Update build system to be [PEP 517](https://peps.python.org/pep-0517/) compliant
 * Code Standardization
     * Upgrade code using [pyupgrade](https://github.com/asottile/pyupgrade)
@@ -12,7 +13,7 @@
     * Automated code formatting using [psf/black](https://github.com/psf/black)
 
 ### Version 3.1.12
-* Fix for Korean stop words [see PR #138](https://github.com/goose3/goose3/pull/138); Thanks [galaxytemple](https://github.com/galaxytemple)
+* Fix for Korean stop words [see PR #138](https://github.com/goose3/goose3/pull/138); Thanks [@galaxytemple](https://github.com/galaxytemple)
 * Allow for extra dependencies [see issue #141](https://github.com/goose3/goose3/issues/141)
 * Fix leading and trailing charset characters [see issue #139](https://github.com/goose3/goose3/issues/139); Thanks [@nnick14](https://github.com/nnick14)
 * Added basic logging and typing
@@ -46,7 +47,7 @@
 * Added additional date parsing [see PR #71](https://github.com/goose3/goose3/pull/71) Thanks [@dlrobertson](https://github.com/dlrobertson)!
 * Added datetime representation of the publish date `publish_datetime_utc` [see issue #72](https://github.com/goose3/goose3/issues/72)
 * Fixed mismatch encoding error [see issue #74](https://github.com/goose3/goose3/issues/74)
-* Fixed og_type with NoneType error [see issue #81](https://github.com/goose3/goose3/issues/81) Thanks [dust0x](https://github.com/dust0x)!
+* Fixed og_type with NoneType error [see issue #81](https://github.com/goose3/goose3/issues/81) Thanks [@dust0x](https://github.com/dust0x)!
 
 ### Version 3.1.4
 * Fix IndexError when title has only an title splitter or is the site name [see issue #59](https://github.com/goose3/goose3/issues/59) Thanks [@dlrobertson](https://github.com/dlrobertson)!
@@ -95,8 +96,7 @@ from goose3 import Goose
 with Goose() as g:
     g.extract(url='some-url-here')
 ```
-***NOTE:*** No need to change code as it will attempt to automatically close
-the connection on garbage collection
+***NOTE:*** No need to change code as it will attempt to automatically close the connection on garbage collection
 * Configuration object changes
     * Better handling of the `known_context_patterns` configuration
     * Added http_headers configuration option to be passed to `requests`
