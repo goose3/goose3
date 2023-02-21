@@ -337,7 +337,7 @@ class Crawler:
             if publish_datetime.tzinfo:
                 return publish_datetime.astimezone(tzutc())
             return publish_datetime
-        except (ValueError, OverflowError):
+        except (ValueError, OverflowError, TypeError):
             logger.warning("Publish date %s could not be resolved to UTC", self.article.publish_date)
             return None
 
