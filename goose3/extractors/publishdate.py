@@ -20,6 +20,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import json
+from datetime import datetime, timezone
 
 from goose3.extractors import BaseExtractor
 
@@ -265,7 +266,25 @@ class PublishDateExtractor(BaseExtractor):
         if "article:published_time" in self.article.opengraph:
             return self.article.opengraph["article:published_time"]
         if self.article.schema and "datePublished" in self.article.schema:
-            return self.article.schema["datePublished"]
+            date = self.article.schema["datePublished"]
+
+            if type(date) == int or type(date) == float:
+                t = None
+
+                try:
+                    # First except UNIX epoch in seconds.
+                    t = datetime.fromtimestamp(date, tz=timezone.utc)
+                except ValueError:
+                    # In case if `date` was milliseconds we will get `ValueError: year N is out of range`.
+                    # Then let's treat this `date` as UNIX epoch in milliseconds.
+                    t = datetime.fromtimestamp(date / 1000, tz=timezone.utc)
+
+                if t:
+                    date = t.isoformat()
+                else:
+                    return None
+
+            return date
         for known_meta_tag in self.config.known_publish_date_tags:
             # if this is a domain specific config and the current
             # article domain does not match the configured domain,
