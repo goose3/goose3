@@ -45,6 +45,10 @@ class TestPublishDate(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=["publish_date", "publish_datetime_utc"])
 
+    def test_publish_date_unix_seconds(self):
+        article = self.getArticle()
+        self.runArticleAssertions(article=article, fields=["publish_date", "publish_datetime_utc"])
+
     def test_publish_date_parsely_page(self):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=["publish_date", "publish_datetime_utc"])
