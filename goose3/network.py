@@ -47,22 +47,21 @@ class NetworkFetcher:
 
     def fetch(self, url):
         response = self.fetch_obj(url)
-        if response.ok:
-            self._url = response.url
-            text = response.content
-        else:
-            self._url = None
-            text = None
-            if self.config.strict:
-                raise NetworkError(response.status_code, response.reason)
-
-        return text
+        return response.content
 
     def fetch_obj(self, url):
-        return self._connection.get(
+        response = self._connection.get(
             url,
             timeout=self.config.http_timeout,
             headers=self.config.http_headers,
             proxies=self.config.http_proxies,
             auth=self.config.http_auth,
         )
+        if response.ok:
+            self._url = response.url
+        else:
+            self._url = None
+            if self.config.strict:
+                raise NetworkError(response.status_code, response.reason)
+
+        return response
