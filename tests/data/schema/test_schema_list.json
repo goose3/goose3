@@ -1,0 +1,45 @@
+{
+    "schema": {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "鄭文燦：多元方案解決蛋荒 預估3月初緩解",
+        "about": "行政院副院長鄭文燦今天表示，這一波是全球性的雞蛋減產的問題，美國與日本蛋價上漲也非常驚人，也出現蛋荒的現象，目前日產量與需求數有個差距，必須進口，不論進口或增產都需要時間，預估3月初才能緩解，目前採取多元方案緩解蛋供應不足的問題。",
+        "articleSection": "政治",
+        "dateModified": "2023/02/21 22:08",
+        "datePublished": "2023/02/21 21:20",
+        "thumbnailUrl": "https://imgcdn.cna.com.tw/www/webphotos/WebCover/800/20230221/858x643_768234673050.jpg",
+        "image": [
+            "https://imgcdn.cna.com.tw/www/WebPhotos/1024/20230221/1088x768_wmky_806152247333.jpg"
+        ],
+        "author": {
+            "@type": "Organization",
+            "name": "中央通訊社 Central News Agency",
+            "description": "24小時報導國際、財經、科技、醫藥、生活、運動、教育、政治、影劇、社會、地方即時新聞的網站，並提供社群討論、分享功能。",
+            "url": "https://www.cna.com.tw",
+            "logo": {
+                "@type": "ImageObject",
+                "caption": "Logo of Central News Agency",
+                "url": "https://imgcdn.cna.com.tw/www/website/img/footerinfo/logo/cnalogo_176x117.jpg"
+            }
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "中央通訊社 Central News Agency",
+            "description": "24小時報導國際、財經、科技、醫藥、生活、運動、教育、政治、影劇、社會、地方即時新聞的網站，並提供社群討論、分享功能。",
+            "url": "https://www.cna.com.tw",
+            "logo": {
+                "@type": "ImageObject",
+                "caption": "Logo of Central News Agency",
+                "url": "https://imgcdn.cna.com.tw/www/website/img/footerinfo/logo/cnalogo_176x117.jpg"
+            }
+        },
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "xPath": [
+                "/html/head/title",
+                "/html/head/meta[@name='description']/@content"
+            ],
+            "url": "https://www.cna.com.tw/news/aipl/202302210388.aspx"
+        }
+    }
+}

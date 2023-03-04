@@ -1,5 +1,8 @@
 # Goose3
 
+### Future Release
+* Fix `article.schema` failing when returns a list instead of a dictionary; [PR #160](https://github.com/goose3/goose3/pull/160); Thanks [@catdingding](https://github.com/catdingding)
+
 ### 3.1.13
 * ***Deprecation Notice:***
     * `camelCase` functions have been deprecated; [see issue #151](https://github.com/goose3/goose3/issues/151)
