@@ -39,7 +39,7 @@ class SchemaExtractor(BaseExtractor):
                             context["@context"] in ("https://schema.org", "http://schema.org")
                             and context["@type"] in KNOWN_SCHEMA_TYPES
                         ):
-                            return content
+                            return context
                 elif isinstance(content, dict):
                     if (
                         content["@context"] in ("https://schema.org", "http://schema.org")
