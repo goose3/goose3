@@ -39,7 +39,8 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         file: ./coverage.xml
-        fail_ci_if_error: true
+        # Turn off fail on error since CodeCov seems to have issues uploading...
+        fail_ci_if_error: false
 
   build-verification:
 
