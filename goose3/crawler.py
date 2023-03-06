@@ -231,6 +231,7 @@ class Crawler:
                 self.get_image()
 
             # post cleanup
+            self.article._top_node_raw = self.article.top_node
             self.article._top_node = self.extractor.post_cleanup()
 
             # clean_text
