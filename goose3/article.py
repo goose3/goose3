@@ -133,7 +133,7 @@ class Article:
 
     @property
     def top_node_raw_html(self):
-        """etree: The top Element that is a candidate for the main body of the article without cleaning
+        """etree: The top html of Element that is a candidate for the main body of the article without cleaning
 
         Note:
             Read only"""
