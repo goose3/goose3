@@ -28,6 +28,7 @@ import dateutil.parser
 from dateutil.tz import tzutc
 from langdetect import DetectorFactory, detect
 from langdetect.lang_detect_exception import LangDetectException
+from lxml import etree
 
 from goose3.article import Article
 from goose3.cleaners import StandardDocumentCleaner
@@ -231,7 +232,7 @@ class Crawler:
                 self.get_image()
 
             # post cleanup
-            self.article._top_node_raw = self.article.top_node
+            self.article._top_node_raw_html = etree.tostring(self.article.top_node).decode('utf-8')
             self.article._top_node = self.extractor.post_cleanup()
 
             # clean_text
