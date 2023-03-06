@@ -43,11 +43,20 @@ class OpenGraphExtractor(BaseExtractor):
         for meta in metas:
             attr = self.parser.get_attribute(meta, "property")
             value = self.parser.get_attribute(meta, "content")
+            key = None
+
             if attr and value:
                 if attr.startswith("og:"):
-                    opengraph_dict.update({attr.split(":", 1)[1]: value})
+                    key = attr.split(":", 1)[1]
                 elif og_types and attr.startswith(og_types):
-                    opengraph_dict.update({attr: value})
+                    key = attr
+
+                if key and key not in opengraph_dict:
+                    opengraph_dict.update({key: value})
+                elif key and isinstance(opengraph_dict.get(key), list):
+                    opengraph_dict.update({key: opengraph_dict.get(key).append(value)})
+                elif key:
+                    opengraph_dict.update({key: [opengraph_dict.get(key), value]})
 
         # add all the types in... if there are multiple
         if len(og_types) > 1:
