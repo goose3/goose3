@@ -61,8 +61,6 @@ class OpenGraphExtractor(BaseExtractor):
 
     @staticmethod
     def __update_graph_dict(graph, key, val):
-        if not key:
-            return
         if key not in graph:
             graph.update({key: val})
         elif not isinstance(graph.get(key), list):
