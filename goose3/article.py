@@ -33,6 +33,7 @@ class Article:
         self._canonical_link = ""
         self._domain = ""
         self._top_node = None
+        self._top_node_raw_html = None
         self._top_image = None
         self._tags = []
         self._opengraph = {}
@@ -129,6 +130,14 @@ class Article:
         Note:
             Read only"""
         return self._top_node
+
+    @property
+    def top_node_raw_html(self):
+        """etree: The top html of Element that is a candidate for the main body of the article without cleaning
+
+        Note:
+            Read only"""
+        return self._top_node_raw_html
 
     @property
     def top_image(self):
