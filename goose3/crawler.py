@@ -232,7 +232,7 @@ class Crawler:
                 self.get_image()
 
             # post cleanup
-            self.article._top_node_raw_html = etree.tostring(self.article.top_node).decode('utf-8')
+            self.article._top_node_raw_html = etree.tostring(self.article.top_node).decode("utf-8")
             self.article._top_node = self.extractor.post_cleanup()
 
             # clean_text
