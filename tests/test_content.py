@@ -268,7 +268,7 @@ class TestExtractions(TestExtractionBase):
 
     def test_retry_top_node(self):
         article = self.getArticle()
-        self.runArticleAssertions(article=article, fields=["cleaned_text"])
+        self.runArticleAssertions(article=article, fields=["cleaned_text", "top_node_raw_html"])
 
     def test_wiwo(self):
         article = self.getArticle()

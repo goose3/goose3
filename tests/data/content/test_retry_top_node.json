@@ -1,6 +1,7 @@
 {
     "url": "http://example.com/test_retry_top_node.html",
     "expected": {
-        "cleaned_text": "This is the real article!"
+        "cleaned_text": "This is the real article!",
+        "top_node_raw_html": "<div gravityScore=\"3\" gravityNodes=\"1\">\n      <p>\n        This is the <b>real</b> article!\n      </p>\n    </div>\n  "
     }
 }
