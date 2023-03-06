@@ -3,14 +3,16 @@
     "expected": {
         "opengraph": {
             "url": "http://example.com/article",
-            "type": [
-                "article",
-                "article"
-            ],
+            "type": "article",
             "description": "This is not a very good description",
             "title": "This article contains a title",
             "article:section": "Awesome",
-            "article:published_time": "Sun Nov 23 16:00:00 EDT 2014"
+            "article:published_time": "Sun Nov 23 16:00:00 EDT 2014",
+            "article:tag": [
+                "simple",
+                "test",
+                "array"
+            ]
         },
         "publish_date": "Sun Nov 23 16:00:00 EDT 2014"
     }
