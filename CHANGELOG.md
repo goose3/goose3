@@ -1,6 +1,6 @@
 # Goose3
 
-### ### 3.1.14
+### 3.1.14
 * Fix `article.schema` failing when returns a list instead of a dictionary; [PR #160](https://github.com/goose3/goose3/pull/160); Thanks [@catdingding](https://github.com/catdingding)
 * Add `article.top_node_raw_html` which keeps the base html of the top node; [see issue #112](https://github.com/goose3/goose3/issues/112) and [PR #162](https://github.com/goose3/goose3/pull/162); Thanks [@markowanga](https://github.com/markowanga)
 * Handle opengraph arrays if multiple tags are present; [see issue #91](https://github.com/goose3/goose3/issues/91)
