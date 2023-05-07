@@ -30,24 +30,29 @@ class SchemaExtractor(BaseExtractor):
     def extract(self):
         node = self.article.doc
         metas = self.parser.get_elements_by_tag(node, "script", attr="type", value="application/ld\\+json")
-        for meta in metas:
+        linked_data_nodes = self.parse_linked_data_nodes(metas)
+        for linked_data in linked_data_nodes:
             try:
-                content = json.loads(meta.text_content())
-                if isinstance(content, list):
-                    for context in content:
-                        if (
-                            context["@context"] in ("https://schema.org", "http://schema.org")
-                            and context["@type"] in KNOWN_SCHEMA_TYPES
-                        ):
+                if isinstance(linked_data, list):
+                    for context in linked_data:
+                        if context["@type"] in KNOWN_SCHEMA_TYPES:
                             return context
-                elif isinstance(content, dict):
-                    if (
-                        content["@context"] in ("https://schema.org", "http://schema.org")
-                        and content["@type"] in KNOWN_SCHEMA_TYPES
-                    ):
-                        return content
+                elif isinstance(linked_data, dict):
+                    if linked_data["@type"] in KNOWN_SCHEMA_TYPES:
+                        return linked_data
             except (ValueError, KeyError):
                 # If the contents are not proper JSON or a key we expect
                 # to exist does not, continue to the next tag.
                 continue
         return None
+
+    def parse_linked_data_nodes(self, metas):
+        linked_data = []
+        for meta in metas:
+            content = json.loads(meta.text_content())
+            if content["@context"] in ("https://schema.org", "http://schema.org"):
+                if content["@graph"]:
+                    linked_data.extend(content["@graph"])
+                else:
+                    linked_data.extend(content)
+        return linked_data
