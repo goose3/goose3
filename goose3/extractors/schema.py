@@ -30,24 +30,37 @@ class SchemaExtractor(BaseExtractor):
     def extract(self):
         node = self.article.doc
         metas = self.parser.get_elements_by_tag(node, "script", attr="type", value="application/ld\\+json")
-        for meta in metas:
+        linked_data_nodes = self.__parse_linked_data_nodes(metas)
+        for linked_data in linked_data_nodes:
             try:
-                content = json.loads(meta.text_content())
-                if isinstance(content, list):
-                    for context in content:
-                        if (
-                            context["@context"] in ("https://schema.org", "http://schema.org")
-                            and context["@type"] in KNOWN_SCHEMA_TYPES
-                        ):
-                            return context
-                elif isinstance(content, dict):
-                    if (
-                        content["@context"] in ("https://schema.org", "http://schema.org")
-                        and content["@type"] in KNOWN_SCHEMA_TYPES
-                    ):
-                        return content
+                if linked_data["@type"] in KNOWN_SCHEMA_TYPES:
+                    return linked_data
             except (ValueError, KeyError):
                 # If the contents are not proper JSON or a key we expect
                 # to exist does not, continue to the next tag.
                 continue
         return None
+
+    def __parse_linked_data_nodes(self, metas):
+        linked_data = []
+        for meta in metas:
+            try:
+                content = json.loads(meta.text_content())
+                print(content)
+                if isinstance(content, list):
+                    linked_data.extend([context for context in content if self.__validate_context(context)])
+                elif isinstance(content, dict) and self.__validate_context(content):
+                    if '@graph' in content:
+                        linked_data.extend(content["@graph"])
+                    else:
+                        linked_data.append(content)
+            except (ValueError, KeyError):
+                continue
+        return linked_data
+
+    def __validate_context(self, content):
+        if '@context' in content:
+            return content["@context"] in ("https://schema.org", "http://schema.org")
+        return False
+
+
