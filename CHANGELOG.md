@@ -1,11 +1,8 @@
 # Goose3
 
-<<<<<<< HEAD
-=======
 ### 3.1.15
 * Add `article.schema` support for `@graph` data; [PR #168](https://github.com/goose3/goose3/pull/168); Thanks [julianofnascimento](https://github.com/julianofnascimento)
 
->>>>>>> aaee521 (update changelog)
 ### 3.1.14
 * Fix `article.schema` failing when returns a list instead of a dictionary; [PR #160](https://github.com/goose3/goose3/pull/160); Thanks [@catdingding](https://github.com/catdingding)
 * Add `article.top_node_raw_html` which keeps the base html of the top node; [see issue #112](https://github.com/goose3/goose3/issues/112) and [PR #162](https://github.com/goose3/goose3/pull/162); Thanks [@markowanga](https://github.com/markowanga)
