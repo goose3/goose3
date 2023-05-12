@@ -29,3 +29,7 @@ class TestSchema(TestExtractionBase):
         # doesn't match!
         article = self.getArticle()
         self.assertEqual(article.schema, self.data["schema"])
+
+    def test_schema_graph(self):
+        article = self.getArticle()
+        self.assertEqual(article.schema, self.data["schema"])
