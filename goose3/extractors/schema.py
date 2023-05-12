@@ -32,13 +32,8 @@ class SchemaExtractor(BaseExtractor):
         metas = self.parser.get_elements_by_tag(node, "script", attr="type", value="application/ld\\+json")
         linked_data_nodes = self.__parse_linked_data_nodes(metas)
         for linked_data in linked_data_nodes:
-            try:
-                if linked_data["@type"] in KNOWN_SCHEMA_TYPES:
-                    return linked_data
-            except (ValueError, KeyError):
-                # If the contents are not proper JSON or a key we expect
-                # to exist does not, continue to the next tag.
-                continue
+            if linked_data["@type"] in KNOWN_SCHEMA_TYPES:
+                return linked_data
         return None
 
     def __parse_linked_data_nodes(self, metas):
@@ -50,17 +45,17 @@ class SchemaExtractor(BaseExtractor):
                 if isinstance(content, list):
                     linked_data.extend([context for context in content if self.__validate_context(context)])
                 elif isinstance(content, dict) and self.__validate_context(content):
-                    if '@graph' in content:
+                    if "@graph" in content:
                         linked_data.extend(content["@graph"])
                     else:
                         linked_data.append(content)
             except (ValueError, KeyError):
+                # If the contents are not proper JSON or a key we expect
+                # to exist does not, continue to the next tag.
                 continue
         return linked_data
 
     def __validate_context(self, content):
-        if '@context' in content:
+        if "@context" in content:
             return content["@context"] in ("https://schema.org", "http://schema.org")
         return False
-
-

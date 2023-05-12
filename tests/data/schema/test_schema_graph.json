@@ -1,0 +1,77 @@
+{
+    "schema": {
+        "@type": "NewsArticle",
+        "@id": "https://techcrunch.com/2023/05/05/hacked-verified-facebook-pages-impersonating-meta-are-buying-ads-from-meta/#article",
+        "isPartOf": {
+            "@id": "https://techcrunch.com/2023/05/05/hacked-verified-facebook-pages-impersonating-meta-are-buying-ads-from-meta/"
+        },
+        "author": [
+            {
+                "@type": [
+                    "Person",
+                    "Organization"
+                ],
+                "@id": "https://techcrunch.com/#/schema/person/757d241fd925ad471eae43e6da2613c4",
+                "name": "Taylor Hatmaker",
+                "description": ""
+            }
+        ],
+        "headline": "Hacked verified Facebook pages impersonating Meta are buying ads from Meta",
+        "datePublished": "2023-05-05T23:00:57+00:00",
+        "dateModified": "2023-05-06T00:01:34+00:00",
+        "mainEntityOfPage": {
+            "@id": "https://techcrunch.com/2023/05/05/hacked-verified-facebook-pages-impersonating-meta-are-buying-ads-from-meta/",
+            "@type": "WebPage"
+        },
+        "wordCount": 598,
+        "commentCount": 0,
+        "publisher": {
+            "@type": "Organization",
+            "name": "TechCrunch",
+            "logo": {
+                "@type": "imageObject",
+                "url": "https://techcrunch.com/wp-content/themes/techcrunch-2017/images/logo-json-ld.png",
+                "width": "600",
+                "height": "60"
+            }
+        },
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://techcrunch.com/wp-content/uploads/2021/11/facebook-meta-rotate-pattern.jpg?w=680",
+            "width": 680,
+            "height": 383
+        },
+        "thumbnailUrl": "https://techcrunch.com/wp-content/uploads/2021/11/facebook-meta-rotate-pattern.jpg",
+        "keywords": [
+            "Facebook",
+            "malware",
+            "meta",
+            "security"
+        ],
+        "articleSection": [
+            "Social"
+        ],
+        "inLanguage": "en-US",
+        "potentialAction": [
+            {
+                "@type": "CommentAction",
+                "name": "Comment",
+                "target": [
+                    "https://techcrunch.com/2023/05/05/hacked-verified-facebook-pages-impersonating-meta-are-buying-ads-from-meta/#respond"
+                ]
+            }
+        ],
+        "copyrightYear": "2023",
+        "copyrightHolder": {
+            "@id": "https://techcrunch.com/#organization"
+        },
+        "description": "Sketchy Facebook pages impersonating businesses are nothing new, but a flurry of recent scams is particularly brazen. A handful of verified Facebook pages were hacked recently and spotted slinging likely malware through ads approved by and purchased through the platform. But the accounts should be easy to catch — in some cases, they were impersonating [&hellip;]",
+        "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [
+                ".alpha",
+                "#speakable-summary"
+            ]
+        }
+    }
+}
