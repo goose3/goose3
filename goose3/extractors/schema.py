@@ -41,7 +41,6 @@ class SchemaExtractor(BaseExtractor):
         for meta in metas:
             try:
                 content = json.loads(meta.text_content())
-                print(content)
                 if isinstance(content, list):
                     linked_data.extend([context for context in content if self.__validate_context(context)])
                 elif isinstance(content, dict) and self.__validate_context(content):
