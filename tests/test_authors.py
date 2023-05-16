@@ -79,8 +79,5 @@ class TestArticleAuthor(TestExtractionBase):
         expected_value.sort()
         result_value.sort()
 
-        # default assertion
         msg = f"Error {field} \nexpected: {expected_value}\nresult: {result_value}"
         self.assertEqual(expected_value, result_value, msg=msg)
-
-

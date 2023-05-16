@@ -61,7 +61,7 @@ class AuthorsExtractor(BaseExtractor):
                     else:
                         authors.add(meta_tag.text_content().strip())
         return list(authors)
-    
+
     def __get_authors_from_schema(self):
         authors = list()
         if self.article.schema and "author" in self.article.schema:
