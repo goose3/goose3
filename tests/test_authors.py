@@ -67,3 +67,17 @@ class TestArticleAuthor(TestExtractionBase):
         # default assertion
         msg = f"Error {field} \nexpected: {expected_value}\nresult: {result_value}"
         self.assertEqual(expected_value, result_value, msg=msg)
+
+    def test_author_linked_data(self):
+        field = "authors"
+
+        article = self.getArticle()
+
+        expected_value = self.data["expected"][field]
+        result_value = getattr(article, field, None)
+
+        expected_value.sort()
+        result_value.sort()
+
+        msg = f"Error {field} \nexpected: {expected_value}\nresult: {result_value}"
+        self.assertEqual(expected_value, result_value, msg=msg)

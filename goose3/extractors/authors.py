@@ -24,8 +24,14 @@ from goose3.extractors import BaseExtractor
 
 class AuthorsExtractor(BaseExtractor):
     def extract(self):
-        authors = set()
+        authors_from_schema = self.__get_authors_from_schema()
+        authors_from_meta = self.__get_authors_from_meta()
+        if authors_from_schema:
+            return authors_from_schema
+        return authors_from_meta
 
+    def __get_authors_from_meta(self):
+        authors = set()
         for known_tag in self.config.known_author_patterns:
             meta_tags = self.parser.get_elements_by_tag(
                 self.article.doc, attr=known_tag.attr, value=known_tag.value, tag=known_tag.tag
@@ -34,7 +40,6 @@ class AuthorsExtractor(BaseExtractor):
                 continue
 
             for meta_tag in meta_tags:
-
                 if known_tag.subpattern:
                     name_nodes = self.parser.get_elements_by_tag(
                         meta_tag,
@@ -56,3 +61,13 @@ class AuthorsExtractor(BaseExtractor):
                     else:
                         authors.add(meta_tag.text_content().strip())
         return list(authors)
+
+    def __get_authors_from_schema(self):
+        authors = list()
+        if self.article.schema and "author" in self.article.schema:
+            schema_authors = self.article.schema["author"]
+            if isinstance(schema_authors, dict):
+                schema_authors = [schema_authors]
+            for author in schema_authors:
+                authors.append(author["name"])
+        return authors
