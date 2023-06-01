@@ -2,6 +2,8 @@
 
 ### 3.1.15
 * Add `article.schema` support for `@graph` data; [PR #168](https://github.com/goose3/goose3/pull/168); Thanks [julianofnascimento](https://github.com/julianofnascimento)
+* Retrieve authors from linked data; [see issue #170](https://github.com/goose3/goose3/pull/170)
+* Fix `article.title` extraction when `opengraph` returns a list instead of a single string; [see issue #172](https://github.com/goose3/goose3/pull/172)
 
 ### 3.1.14
 * Fix `article.schema` failing when returns a list instead of a dictionary; [PR #160](https://github.com/goose3/goose3/pull/160); Thanks [@catdingding](https://github.com/catdingding)
