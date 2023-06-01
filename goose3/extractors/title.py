@@ -33,6 +33,8 @@ class TitleExtractor(BaseExtractor):
 
         # try to remove the domain from url
         if self.article.domain:
+            print(title)
+            print(type(title))
             pattern = re.compile(self.article.domain, re.IGNORECASE)
             title = pattern.sub("", title).strip()
 
@@ -81,6 +83,8 @@ class TitleExtractor(BaseExtractor):
 
         # rely on opengraph in case we have the data
         if "title" in self.article.opengraph:
+            if isinstance(self.article.opengraph["title"], list):  # choose one!
+                return self.clean_title(self.article.opengraph["title"][0])
             return self.clean_title(self.article.opengraph["title"])
         if self.article.schema and "headline" in self.article.schema:
             return self.clean_title(self.article.schema["headline"])
