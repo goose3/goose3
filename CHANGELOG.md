@@ -1,4 +1,6 @@
 # Goose3
+### 3.1.16
+* Fix issue with author parsing; [see issue #175](https://github.com/goose3/goose3/issues/175)
 
 ### 3.1.15
 * Add `article.schema` support for `@graph` data; [PR #168](https://github.com/goose3/goose3/pull/168); Thanks [julianofnascimento](https://github.com/julianofnascimento)
