@@ -33,8 +33,6 @@ class TitleExtractor(BaseExtractor):
 
         # try to remove the domain from url
         if self.article.domain:
-            print(title)
-            print(type(title))
             pattern = re.compile(self.article.domain, re.IGNORECASE)
             title = pattern.sub("", title).strip()
 
