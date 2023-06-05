@@ -69,5 +69,8 @@ class AuthorsExtractor(BaseExtractor):
             if isinstance(schema_authors, dict):
                 schema_authors = [schema_authors]
             for author in schema_authors:
-                authors.append(author["name"])
+                if isinstance(author, dict):
+                    authors.append(author["name"])
+                else:
+                    authors.append(author)
         return authors

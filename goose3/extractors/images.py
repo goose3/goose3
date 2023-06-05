@@ -52,9 +52,6 @@ class ImageExtractor(BaseExtractor):
 
         self.load_customesite_mapping()
 
-        # What's the minimum bytes for an image we'd accept is
-        self.images_min_bytes = 4000
-
         # this lists all the known bad button names that we have
         self.badimages_names_re = re.compile(
             ".html|.gif|.ico|button|twitter.jpg|facebook.jpg|ap_buy_photo"
@@ -261,7 +258,7 @@ class ImageExtractor(BaseExtractor):
             local_image = self.get_local_image(src)
             if local_image:
                 filesize = local_image.bytes
-                if (filesize == 0 or filesize > self.images_min_bytes) and filesize < max_bytes_size:
+                if (filesize == 0 or filesize > self.config.images_min_bytes) and filesize < max_bytes_size:
                     good_images.append(image)
                 else:
                     images.remove(image)

@@ -188,7 +188,7 @@ class Configuration:
 
         # image extraction
         self._enable_image_fetching = False
-        self._images_min_bytes = 4500
+        self._images_min_bytes = 4000
         # Do we need to allow setting one's own ImageExtractor class?
 
         self._parse_lists = True
