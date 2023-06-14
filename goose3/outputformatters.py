@@ -62,14 +62,15 @@ class OutputFormatter:
         self.links_to_text()
         self.add_newline_to_br()
         self.replace_with_text()
-        self.remove_fewwords_paragraphs()
+        # self.remove_fewwords_paragraphs()
         self.make_list_elms_pretty()
         return self.convert_to_text()
 
     def convert_to_text(self):
         txts = []
-        for node in list(self.get_top_node()):
-            txt = self.parser.get_text(node)
+        # for node in list(self.get_top_node()):
+        #     txt = self.parser.get_text(node)
+        for txt in self.get_top_node().itertext():
             if txt:
                 txt = html.unescape(txt)
                 txt_lis = inner_trim(txt).split(r"\n")

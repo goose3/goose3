@@ -174,7 +174,7 @@ class Crawler:
 
         # publishdate
         self.article._publish_date = self.publishdate_extractor.extract()
-        self.article._publish_datetime_utc = self._publish_date_to_utc() if self.article.publish_date else None
+        # self.article._publish_datetime_utc = self._publish_date_to_utc() if self.article.publish_date else None
 
         # tags
         self.article._tags = self.tags_extractor.extract()
@@ -185,9 +185,9 @@ class Crawler:
         # title
         self.article._title = self.title_extractor.extract()
 
-        # jump through some hoops on attempting to get a language if not found
-        if self.article._meta_lang is None:
-            self.article._meta_lang = self._alternative_language_extractor()
+        # # jump through some hoops on attempting to get a language if not found
+        # if self.article._meta_lang is None:
+        #     self.article._meta_lang = self._alternative_language_extractor()
 
         # check for known node as content body
         # if we find one force the article.doc to be the found node
