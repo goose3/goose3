@@ -23,7 +23,7 @@ import re
 
 from goose3.extractors import BaseExtractor
 
-TITLE_SPLITTERS = ["|", "-", "»", ":"]
+TITLE_SPLITTERS = ["|", "-", "»", ":", "|"]
 
 
 class TitleExtractor(BaseExtractor):
@@ -43,6 +43,9 @@ class TitleExtractor(BaseExtractor):
             site_name = self.article.opengraph["site_name"]
         elif schema and schema.get("publisher") and schema["publisher"].get("name"):
             site_name = self.article.schema["publisher"]["name"]
+
+        if isinstance(site_name, list):  # sometimes the metadata adds two sitenames
+            site_name = site_name[0]
 
         # if there is a sperator, speratate and check if site name is present
         seps = [s for s in TITLE_SPLITTERS if s in title]
