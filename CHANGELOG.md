@@ -1,6 +1,6 @@
 # Goose3
 
-### Future Release
+### 3.1.17
 * Fix issue with multiple site names in the metadata; [see issue #179](https://github.com/goose3/goose3/issues/179)
 * Fix key error in author extraction; [PR #177](https://github.com/goose3/goose3/pull/177); Thanks [anchitshrivastava](https://github.com/anchitshrivastava)
 
