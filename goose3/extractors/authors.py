@@ -24,10 +24,7 @@ from goose3.extractors import BaseExtractor
 
 class AuthorsExtractor(BaseExtractor):
     def extract(self):
-        authors_from_schema = self.__get_authors_from_schema()
-        if authors_from_schema:
-            return authors_from_schema
-        return self.__get_authors_from_meta()
+        return self.__get_authors_from_schema() or self.__get_authors_from_meta()
 
     def __get_authors_from_meta(self):
         authors = set()
