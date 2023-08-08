@@ -31,7 +31,8 @@ RE_LANG = r"^[A-Za-z]{2}$"
 class MetasExtractor(BaseExtractor):
     def get_domain(self):
         if self.article.final_url:
-            o = urlparse(self.article.final_url)
+            url = self.article.final_url[0] if isinstance(self.article.final_url, list) else self.article.final_url
+            o = urlparse(url)
             return o.hostname
         return None
 
