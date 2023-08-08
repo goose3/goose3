@@ -140,7 +140,6 @@ class Crawler:
         doc = self.get_document(raw_html)
 
         # article
-        self.article._final_url = final_url
         self.article._link_hash = link_hash
         self.article._raw_html = raw_html
         self.article._doc = doc
@@ -160,6 +159,8 @@ class Crawler:
                 self.article._final_url = self.article.opengraph["url"]
             elif self.article.schema and "url" in self.article.schema:
                 self.article._final_url = self.article.schema["url"]
+            else:
+                self.article._final_url = final_url
 
         # meta
         metas = self.metas_extractor.extract()
