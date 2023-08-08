@@ -32,7 +32,7 @@ class SchemaExtractor(BaseExtractor):
         metas = self.parser.get_elements_by_tag(node, "script", attr="type", value="application/ld\\+json")
         linked_data_nodes = self.__parse_linked_data_nodes(metas)
         for linked_data in linked_data_nodes:
-            if linked_data["@type"] in KNOWN_SCHEMA_TYPES:
+            if "@type" in linked_data and linked_data["@type"] in KNOWN_SCHEMA_TYPES:
                 return linked_data
         return None
 
