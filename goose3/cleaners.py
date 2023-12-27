@@ -65,6 +65,7 @@ class DocumentCleaner:
         doc_to_clean = self.clean_body_classes(doc_to_clean)
         doc_to_clean = self.clean_article_tags(doc_to_clean)
         doc_to_clean = self.clean_em_tags(doc_to_clean)
+        doc_to_clean = self.clean_small_tags(doc_to_clean)
         doc_to_clean = self.remove_drop_caps(doc_to_clean)
         doc_to_clean = self.remove_scripts_styles(doc_to_clean)
         doc_to_clean = self.clean_bad_tags(doc_to_clean)
@@ -97,6 +98,14 @@ class DocumentCleaner:
 
     def clean_em_tags(self, doc):
         ems = self.parser.get_elements_by_tag(doc, tag="em")
+        for node in ems:
+            images = self.parser.get_elements_by_tag(node, tag="img")
+            if len(images) == 0:
+                self.parser.drop_tag(node)
+        return doc
+
+    def clean_small_tags(self, doc):
+        ems = self.parser.get_elements_by_tag(doc, tag="small")
         for node in ems:
             images = self.parser.get_elements_by_tag(node, tag="img")
             if len(images) == 0:
