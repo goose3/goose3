@@ -20,10 +20,9 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../../"))
-sys.path.append(os.path.abspath("_themes"))
+# sys.path.append(os.path.abspath("_themes"))
 import goose3
 import goose3.version as gver
-
 
 # -- General configuration ------------------------------------------------
 
@@ -75,7 +74,7 @@ release = gver.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -95,19 +94,20 @@ todo_include_todos = True
 # a list of builtin themes.
 #
 # html_theme = 'alabaster'
-html_theme = "custom_theme"
+# html_theme = "custom_theme"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 # html_theme_options = {}
-html_theme_path = ["_themes"]
+# html_theme_path = ["_themes"]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+# html_static_path = ["_static"]
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
