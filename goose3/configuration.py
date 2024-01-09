@@ -294,7 +294,7 @@ class Configuration:
         return self._known_author_patterns
 
     @known_author_patterns.setter
-    def known_author_patterns(self, val: Union[dict, List[dict]]):
+    def known_author_patterns(self, val: Union[dict, List[dict], AuthorPattern]):
         """val must be a dictionary or list of dictionaries
         e.g., {'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'}
             or [{'attrribute': 'name', 'value': 'my-pubdate', 'content': 'datetime'},

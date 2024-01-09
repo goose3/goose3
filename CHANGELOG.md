@@ -1,5 +1,9 @@
 # Goose3
 
+### 3.1.19
+
+* Clean `small` tags by removing them; [see issue #190](https://github.com/goose3/goose3/issues/190)
+
 ### 3.1.18
 
 * Simplify author extraction; [PR #185](https://github.com/goose3/goose3/pull/185)

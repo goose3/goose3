@@ -26,11 +26,7 @@ from tempfile import mkstemp
 from typing import List, Union
 
 from goose3.article import Article  # noqa: F401
-from goose3.configuration import (  # noqa: F401
-    ArticleContextPattern,
-    Configuration,
-    PublishDatePattern,
-)
+from goose3.configuration import ArticleContextPattern, AuthorPattern, Configuration, PublishDatePattern  # noqa: F401
 from goose3.crawler import CrawlCandidate, Crawler
 from goose3.image import Image  # noqa: F401
 from goose3.network import NetworkFetcher
