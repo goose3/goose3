@@ -3,6 +3,7 @@
 ### 3.1.19
 
 * Clean `small` tags by removing them; [see issue #190](https://github.com/goose3/goose3/issues/190)
+* Update stopword files with additional languages; [see issue #194](https://github.com/goose3/goose3/issues/194)
 
 ### 3.1.18
 
