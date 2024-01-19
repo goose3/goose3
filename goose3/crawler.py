@@ -24,11 +24,11 @@ import logging
 import os
 from copy import deepcopy
 
-import dateutil.parser
-from dateutil.tz import tzutc
-from langdetect import DetectorFactory, detect
-from langdetect.lang_detect_exception import LangDetectException
-from lxml import etree
+import dateutil.parser  # type: ignore
+from dateutil.tz import tzutc  # type: ignore
+from langdetect import DetectorFactory, detect  # type: ignore
+from langdetect.lang_detect_exception import LangDetectException  # type: ignore
+from lxml import etree  # type: ignore
 
 from goose3.article import Article
 from goose3.cleaners import StandardDocumentCleaner
@@ -121,7 +121,6 @@ class Crawler:
         self.image_extractor = self.get_image_extractor()
 
     def crawl(self, crawl_candidate):
-
         # parser candidate
         parse_candidate = self.get_parse_candidate(crawl_candidate)
 
@@ -135,7 +134,6 @@ class Crawler:
         return self.process(raw_html, parse_candidate.url, parse_candidate.link_hash)
 
     def process(self, raw_html: str, final_url: str, link_hash: str) -> Article:
-
         # create document
         doc = self.get_document(raw_html)
 
@@ -218,7 +216,6 @@ class Crawler:
         # if we have a top node
         # let's process it
         if self.article._top_node is not None:
-
             # article links
             self.article._links = self.links_extractor.extract()
 

@@ -21,7 +21,7 @@ limitations under the License.
 """
 import os
 import tempfile
-from typing import List, Type, Union
+from typing import Any, List, Type, Union
 
 from goose3.parsers import Parser, ParserSoup
 from goose3.text import StopWords
@@ -601,7 +601,7 @@ class Configuration:
         """set if headers should be parsed"""
         self._keep_footnotes = bool(val)
 
-    def get_parser(self) -> Union[Parser, ParserSoup, any]:
+    def get_parser(self) -> Union[Parser, ParserSoup, Any]:
         """Retrieve the current parser class to use for extraction
 
         Returns:

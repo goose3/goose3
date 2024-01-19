@@ -23,6 +23,7 @@ import os
 import re
 import string
 import warnings
+from typing import Dict, Set
 
 from goose3.utils import FileHelper, deprecated
 from goose3.utils.constants import CAMEL_CASE_DEPRICATION
@@ -111,7 +112,7 @@ class WordStats:
 
 
 class StopWords:
-    _cached_stop_words = {}
+    _cached_stop_words: Dict[str, Set[str]] = {}
 
     def __init__(self, language="en"):
         if language not in self._cached_stop_words:
@@ -169,7 +170,7 @@ class StopWordsChinese(StopWords):
         # avoid building the tree if we don't use
         # chinese language
         try:
-            import jieba
+            import jieba  # type: ignore
         except ImportError:
             warnings.warn("jieba is not installed. To use Chinese, one must install the jieba package")
             return []
@@ -190,7 +191,7 @@ class StopWordsArabic(StopWords):
     @staticmethod
     def candidate_words(stripped_input):
         try:
-            import nltk
+            import nltk  # type: ignore
         except ImportError:
             warnings.warn("NLTK is not installed. To use Arabic, one must install the nltk package")
             return []
@@ -208,7 +209,7 @@ class StopWordsKorean(StopWords):
         super().__init__(language="ko")
         # Korean StopWords are attached at noun without a space
         # To find the stopwords in given sentences quickly, Ahocorasick is needed
-        import ahocorasick
+        import ahocorasick  # type: ignore
 
         self.auto = ahocorasick.Automaton()
         for word in self._stop_words:

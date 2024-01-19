@@ -43,7 +43,7 @@ class Goose:
     Returns:
         Goose: An instance of the goose extraction object"""
 
-    def __init__(self, config: Union[Configuration, dict] = None):
+    def __init__(self, config: Union[Configuration, dict, None] = None):
         # Use the passed in configuration if it is of the right type, otherwise
         # use the default as a base
         if isinstance(config, Configuration):
@@ -106,7 +106,7 @@ class Goose:
             self.shutdown_network()
         self.finalizer.atexit = False  # turn off the garbage collection close
 
-    def extract(self, url: str = None, raw_html: str = None) -> Article:
+    def extract(self, url: Union[str, None] = None, raw_html: Union[str, None] = None) -> Article:
         """Extract the most likely article content from the html page
 
         Args:
@@ -116,7 +116,8 @@ class Goose:
             Article: Representation of the article contents including other parsed and extracted metadata"""
         if not url and not raw_html:
             raise ValueError("Either url or raw_html should be provided")
-
+        if url is None and raw_html is None:
+            raise ValueError("Either url or raw_html should be provided")
         crawl_candidate = CrawlCandidate(self.config, url, raw_html)
         return self.__crawl(crawl_candidate)
 
