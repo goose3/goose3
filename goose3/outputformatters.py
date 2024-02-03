@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import html
 
 from goose3.text import inner_trim
@@ -62,7 +63,8 @@ class OutputFormatter:
         self.links_to_text()
         self.add_newline_to_br()
         self.replace_with_text()
-        self.remove_fewwords_paragraphs()
+        if not self.config.keep_few_word_paragraphs:
+            self.remove_fewwords_paragraphs()
         self.make_list_elms_pretty()
         return self.convert_to_text()
 

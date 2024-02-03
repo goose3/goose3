@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import os
 import tempfile
 from typing import Any, List, Type, Union
@@ -196,6 +197,8 @@ class Configuration:
         self._parse_headers = True
         self._keep_footnotes = True
 
+        self._keep_few_word_paragraphs = False
+
     @property
     def known_context_patterns(self) -> list:
         """list: The context patterns to search to find the likely article content
@@ -206,7 +209,7 @@ class Configuration:
         return self._known_context_patterns
 
     @known_context_patterns.setter
-    def known_context_patterns(self, val: Union[dict, List[dict]]):
+    def known_context_patterns(self, val: Union[dict, List[dict], ArticleContextPattern]):
         """val must be an ArticleContextPattern, a dictionary, or list of dictionaries
         e.g., {'attr': 'class', 'value': 'my-article-class'}
             or [{'attr': 'class', 'value': 'my-article-class'},
@@ -600,6 +603,19 @@ class Configuration:
     def keep_footnotes(self, val: bool):
         """set if headers should be parsed"""
         self._keep_footnotes = bool(val)
+
+    @property
+    def keep_few_word_paragraphs(self) -> bool:
+        """bool: Specify if paragraphs with too few words should be kept or not in the cleaned_text output
+
+        Note:
+            Defaults to `True`"""
+        return self._keep_few_word_paragraphs
+
+    @keep_few_word_paragraphs.setter
+    def keep_few_word_paragraphs(self, val: bool):
+        """set if to few words pargraphs should be kep"""
+        self._keep_few_word_paragraphs = bool(val)
 
     def get_parser(self) -> Union[Parser, ParserSoup, Any]:
         """Retrieve the current parser class to use for extraction
