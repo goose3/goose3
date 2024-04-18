@@ -64,6 +64,8 @@ class AuthorsExtractor(BaseExtractor):
             schema_authors = self.article.schema["author"]
             if isinstance(schema_authors, dict):
                 schema_authors = [schema_authors]
+            if schema_authors is None:
+                schema_authors = []
             for author in schema_authors:
                 if isinstance(author, dict):
                     extracted_author = author.get("name", None)
