@@ -160,6 +160,9 @@ class Crawler:
             else:
                 self.article._final_url = final_url
 
+            if isinstance(self.article._final_url, list):
+                self.article._final_url = self.article._final_url[0]
+
         # meta
         metas = self.metas_extractor.extract()
         # print(metas)
