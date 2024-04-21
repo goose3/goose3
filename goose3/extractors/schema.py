@@ -44,8 +44,10 @@ class SchemaExtractor(BaseExtractor):
                 if isinstance(content, list):
                     linked_data.extend([context for context in content if self.__validate_context(context)])
                 elif isinstance(content, dict) and self.__validate_context(content):
-                    if "@graph" in content:
+                    if "@graph" in content and isinstance(content["@graph"], list):
                         linked_data.extend(content["@graph"])
+                    elif "@graph" in content:
+                        linked_data.append(content["@graph"])
                     else:
                         linked_data.append(content)
             except (ValueError, KeyError):
