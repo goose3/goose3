@@ -41,8 +41,11 @@ class TitleExtractor(BaseExtractor):
         # check if we have the site name in opengraph data
         if "site_name" in self.article.opengraph and self.article.opengraph["site_name"] != title:
             site_name = self.article.opengraph["site_name"]
-        elif schema and schema.get("publisher") and schema["publisher"].get("name"):
-            site_name = self.article.schema["publisher"]["name"]
+        elif schema and schema.get("publisher"):
+            if isinstance(schema["publisher"], str):
+                site_name = schema["publisher"]
+            else:
+                site_name = schema["publisher"].get("name", "")
 
         if isinstance(site_name, list):  # sometimes the metadata adds two sitenames
             site_name = site_name[0]
