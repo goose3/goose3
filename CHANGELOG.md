@@ -1,5 +1,11 @@
 # Goose3
 
+### 3.1.20
+
+* Handle `None` result for schema author; [see issue #197](https://github.com/goose3/goose3/issues/197) and [PR #198](https://github.com/goose3/goose3/pull/198); Thanks [adonisnafeh](https://github.com/adonisnafeh)
+* Hanlde `@graph` as a dictionary or list from metadata extraction; [see PR #203](https://github.com/goose3/goose3/pull/203); Thanks [adonisnafeh](https://github.com/adonisnafeh)
+* Ensure that the `final_url` is not a list, but a single entry; [see issue #199](https://github.com/goose3/goose3/issues/199)
+
 ### 3.1.19
 
 * Clean `small` tags by removing them; [see issue #190](https://github.com/goose3/goose3/issues/190)
@@ -14,7 +20,7 @@
 ### 3.1.17
 
 * Fix issue with multiple site names in the metadata; [see issue #179](https://github.com/goose3/goose3/issues/179)
-* Fix key error in author extraction; [PR #177](https://github.com/goose3/goose3/pull/177) and [PR #183](https://github.com/goose3/goose3/pull/183); Thanks [anchitshrivastava](https://github.com/anchitshrivastava)and [erikvullings](https://github.com/erikvullings)
+* Fix key error in author extraction; [PR #177](https://github.com/goose3/goose3/pull/177) and [PR #183](https://github.com/goose3/goose3/pull/183); Thanks [anchitshrivastava](https://github.com/anchitshrivastava) and [erikvullings](https://github.com/erikvullings)
 
 ### 3.1.16
 
