@@ -1,6 +1,6 @@
 requests
 Pillow
-lxml
+lxml<6.0.0
 cssselect
 beautifulsoup4
 python-dateutil
