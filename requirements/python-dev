@@ -2,3 +2,4 @@ flake8
 requests_mock
 jieba
 nltk
+fugashi[unidic-lite]

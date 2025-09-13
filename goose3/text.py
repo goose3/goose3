@@ -24,6 +24,7 @@ import re
 import string
 import warnings
 from typing import Dict, Set
+import unicodedata
 
 from goose3.utils import FileHelper, deprecated
 from goose3.utils.constants import CAMEL_CASE_DEPRICATION
@@ -230,3 +231,22 @@ class StopWordsKorean(StopWords):
         stats.set_stopword_count(len(overlapping_stopwords))
         stats.set_stop_words(overlapping_stopwords)
         return stats
+
+
+class StopWordsJapanese(StopWords):
+    """Japanese segmentation"""
+
+    def __init__(self, language="ja"):
+        super().__init__(language)
+
+    @staticmethod
+    def candidate_words(stripped_input):
+        try:
+            from fugashi import Tagger
+        except ImportError:
+            warnings.warn("fugashi is not installed. To use Japanese, one must install the fugashi[unidic-lite] package")
+            return []
+
+        tagger = Tagger()
+        s = unicodedata.normalize("NFKC", stripped_input)
+        return [el.surface for el in tagger(s)]
