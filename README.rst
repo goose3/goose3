@@ -79,6 +79,7 @@ To install just the dependencies for a single language:
 
     pip install goose3[chinese]
     pip install goose3[arabic]
+    pip install goose3[japanese]
 
 To install from source:
 
@@ -258,6 +259,26 @@ class.
     경기도 용인에 자리 잡은 민간 시험인증 전문기업 ㈜디지털이엠씨(www.digitalemc.com).
     14년째 세계 각국의 통신·안전·전파 규격 시험과 인증 한 우물만 파고 있는 이 회사 박채규 대표가 만나기로 한 주인공이다.
     그는 전기전자·무선통신·자동차 전장품 분야에
+
+
+Goose in Japanese
+--------------------------------------------------------------------------------
+
+In order to use Goose in Japanese you have to use the StopWordsJapanese
+class.
+
+.. code-block:: python
+
+    >>> from goose3 import Goose
+    >>> from goose3.text import StopWordsJapanese
+    >>> url='https://www.cnn.co.jp/usa/35237967.html'
+    >>> g = Goose({'stopwords_class':StopWordsJapanese})
+    >>> article = g.extract(url=url)
+    >>> print article.cleaned_text[:150]
+    イリーナ・ザルツカさん（２３）。今年８月、ノースカロライナ州シャーロットのライトレール列車に乗っていた際に刺されて死亡した/Iryna Zarutska/Instagram
+
+    （ＣＮＮ） 米ノースカロライナ州シャーロット中心部から数キロ離れたスケイリーバーク駅。駅に到着した深夜の列車に乗り込んだとき
+
 
 TODO
 --------------------------------------------------------------------------------
