@@ -2,9 +2,12 @@
 
 ### 3.1.20
 
+* Remove suppot for python `3.7`, and `3.8`
 * Handle `None` result for schema author; [see issue #197](https://github.com/goose3/goose3/issues/197) and [PR #198](https://github.com/goose3/goose3/pull/198); Thanks [adonisnafeh](https://github.com/adonisnafeh)
-* Hanlde `@graph` as a dictionary or list from metadata extraction; [see PR #203](https://github.com/goose3/goose3/pull/203); Thanks [adonisnafeh](https://github.com/adonisnafeh)
+* Hanlde `@graph` as a dictionary or list from metadata extraction; [PR #203](https://github.com/goose3/goose3/pull/203); Thanks [adonisnafeh](https://github.com/adonisnafeh)
 * Ensure that the `final_url` is not a list, but a single entry; [see issue #199](https://github.com/goose3/goose3/issues/199)
+* Add Japanese tokenizer; [PR #213](https://github.com/goose3/goose3/pull/213); Thanks [Vasniktel](https://github.com/Vasniktel)
+* Pin `lxml` to less than 6.0.0
 
 ### 3.1.19
 
