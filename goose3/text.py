@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import os
 import re
 import string
@@ -244,7 +245,9 @@ class StopWordsJapanese(StopWords):
         try:
             from fugashi import Tagger
         except ImportError:
-            warnings.warn("fugashi is not installed. To use Japanese, one must install the fugashi[unidic-lite] package")
+            warnings.warn(
+                "fugashi is not installed. To use Japanese, one must install the fugashi[unidic-lite] package"
+            )
             return []
 
         tagger = Tagger()
