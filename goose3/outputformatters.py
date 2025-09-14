@@ -83,9 +83,9 @@ class OutputFormatter:
             txt = [x.strip() for x in txt]
 
             if self.config.pretty_lists:
-                text = "\n• ".join(txt)
+                text = "\n• ".join(el for el in txt if el)
             else:
-                text = "\n".join(txt)
+                text = "\n".join(el for el in txt if el)
         return text
 
     def add_newline_to_br(self):
