@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 import html
 
 from goose3.text import inner_trim
@@ -82,9 +83,9 @@ class OutputFormatter:
             txt = [x.strip() for x in txt]
 
             if self.config.pretty_lists:
-                text = "\n• ".join(txt)
+                text = "\n• ".join(el for el in txt if el)
             else:
-                text = "\n".join(txt)
+                text = "\n".join(el for el in txt if el)
         return text
 
     def add_newline_to_br(self):
@@ -98,7 +99,9 @@ class OutputFormatter:
     def make_list_elms_pretty(self):
         """make any list element read like a list"""
         for elm in self.parser.get_elements_by_tag(self.top_node, tag="li"):
-            elm.text = rf"• {elm.text}"
+            # If there is any text directly inside the <li> tag, prepend a bullet.
+            # If not (`elm.text is None`) - set it to a bullet.
+            elm.text = rf"• {elm.text or ''}"
 
     def remove_negativescores_nodes(self):
         """if there are elements inside our top node that have a negative gravity score, let's give em the boot"""
