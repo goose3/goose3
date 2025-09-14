@@ -19,6 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+
 from copy import deepcopy
 
 import lxml.html
@@ -128,7 +129,10 @@ class Parser:
 
     @classmethod
     def text_to_para(cls, text):
-        return cls.fromstring(text)
+        try:
+            return cls.fromstring(text)
+        except etree.ParserError:
+            return etree.Element("empty")
 
     @classmethod
     def get_children(cls, node):
