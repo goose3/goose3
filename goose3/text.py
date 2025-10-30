@@ -237,19 +237,23 @@ class StopWordsKorean(StopWords):
 class StopWordsJapanese(StopWords):
     """Japanese segmentation"""
 
+    _tagger = None
+
     def __init__(self, language="ja"):
         super().__init__(language)
 
-    @staticmethod
-    def candidate_words(stripped_input):
-        try:
-            from fugashi import Tagger
-        except ImportError:
-            warnings.warn(
-                "fugashi is not installed. To use Japanese, one must install the fugashi[unidic-lite] package"
-            )
-            return []
+    @classmethod
+    def candidate_words(cls, stripped_input):
+        if cls._tagger is None:
+            try:
+                from fugashi import Tagger
 
-        tagger = Tagger()
+                cls._tagger = Tagger()
+            except ImportError:
+                warnings.warn(
+                    "fugashi is not installed. To use Japanese, one must install the fugashi[unidic-lite] package"
+                )
+                return []
+
         s = unicodedata.normalize("NFKC", stripped_input)
-        return [el.surface for el in tagger(s)]
+        return [el.surface for el in cls._tagger(s)]
