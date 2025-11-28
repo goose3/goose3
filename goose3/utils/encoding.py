@@ -1,4 +1,5 @@
 """Handle Encoding"""
+
 import datetime
 from decimal import Decimal
 
