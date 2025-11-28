@@ -1,5 +1,10 @@
 # Goose3
 
+### 3.1.21
+
+* Fix memory bloat using Japanese tokenizer; [PR #221](https://github.com/goose3/goose3/pull/221); Thanks [gy-chen](https://github.com/gy-chen)
+* Add Kurdish stopwords; [PR #219](https://github.com/goose3/goose3/pull/219); Thanks [cikay](https://github.com/cikay)
+
 ### 3.1.20
 
 * Remove suppot for python `3.7`, and `3.8`
