@@ -3,6 +3,7 @@
 From https://github.com/ryan-roemer/sphinx-bootstrap-theme.
 
 """
+
 from os import path
 
 __version__ = "0.4.1"
