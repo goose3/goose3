@@ -1,6 +1,9 @@
 a
+an
 ber
+belê
 bi
+bo
 çawa
 çend
 çi
@@ -10,6 +13,7 @@ da
 de
 di
 divê
+e
 ê
 em
 ên
@@ -20,16 +24,15 @@ ez
 gelek
 hemû
 her
+hê
 hin
 hîn
 hûn
 hwd
 in
 jê
-jêr
 ji
 jî
-jor
 kê
 kêm
 kengî
@@ -37,6 +40,7 @@ kes
 kî
 ku
 lê
+lêbelê
 li
 me
 min
@@ -63,4 +67,5 @@ wekî
 wî
 ya
 yan
+ye
 yên
