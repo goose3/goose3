@@ -38,7 +38,7 @@ jobs:
         # Run tests while also generating coverage statistics
         pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
       with:
         files: ./coverage.xml
         # Turn off fail on error since CodeCov seems to have issues uploading...
