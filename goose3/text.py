@@ -40,7 +40,7 @@ def get_encodings_from_content(content):
     Return encodings from given content string.
     :param content: string to extract encodings from."""
     if isinstance(content, bytes):
-        content = content.decode()
+        content = content.decode("utf-8", errors="ignore")
 
     find_charset = re.compile(
         r'<meta.*?charset=["\']*[^a-zA-z0-9]*([a-zA-Z0-9\-_]+?)[^a-zA-z0-9]* *?["\'>]', flags=re.I
