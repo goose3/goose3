@@ -196,6 +196,7 @@ class Configuration:
         self._pretty_lists = True
         self._parse_headers = True
         self._keep_footnotes = True
+        self._combine_known_article_tags = False
 
     @property
     def known_context_patterns(self) -> list:
@@ -601,6 +602,21 @@ class Configuration:
     def keep_footnotes(self, val: bool):
         """set if headers should be parsed"""
         self._keep_footnotes = bool(val)
+
+    @property
+    def combine_known_article_tags(self) -> bool:
+        """bool: When multiple `known_context_patterns` match nodes on a page, combine them all
+        into the article body instead of letting scoring pick a single highest-scoring node.
+        Useful when content is split across complementary patterns the user configured (e.g.
+        ``itemprop=articleBody`` and ``figcaption``).
+
+        Note:
+            Defaults to `False`"""
+        return self._combine_known_article_tags
+
+    @combine_known_article_tags.setter
+    def combine_known_article_tags(self, val: bool):
+        self._combine_known_article_tags = bool(val)
 
     def get_parser(self) -> Union[Parser, ParserSoup, Any]:
         """Retrieve the current parser class to use for extraction

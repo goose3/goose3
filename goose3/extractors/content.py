@@ -313,14 +313,32 @@ class ContentExtractor(BaseExtractor):
                 self.parser.remove(para)
 
         sub_paragraphs2 = self.parser.get_elements_by_tag(elm, tag="p")
-        if not sub_paragraphs2 and elm.tag != "td":
-            return True
-        return False
+        if sub_paragraphs2 or elm.tag == "td":
+            return False
+        # Tables (e.g. Wikipedia lists) often hold text directly in <td> cells
+        # with no <p> wrappers — treat substantial cell text as content too.
+        for cell in self.parser.get_elements_by_tag(elm, tag="td"):
+            if len(self.parser.get_text(cell)) >= 25:
+                return False
+        return True
 
     def is_nodescore_threshold_met(self, node, elm):
         top_node_score = self.get_score(node)
         current_node_score = self.get_score(elm)
-        threshold_score = float(top_node_score * 0.08)
+        # Scale threshold to the number of direct children: keep any child with
+        # at least half the average sibling score. The original fixed 8% was
+        # tuned for sites with a handful of large children; modern markup nests
+        # each <p> in its own wrapper div, spreading score across hundreds of
+        # children so none can clear an absolute 8%.
+        n_children = len(self.parser.get_children(node))
+        # Use the stricter of 8% (legacy heuristic, filters out short fragments
+        # like image captions on simply-structured pages) or half-mean
+        # (relaxes the threshold on modern sites that wrap each paragraph in a
+        # styling div, where score is spread thin across many children).
+        if n_children:
+            threshold_score = min(top_node_score * 0.08, top_node_score / (2 * n_children))
+        else:
+            threshold_score = top_node_score * 0.08
 
         if (current_node_score < threshold_score) and elm.tag != "td":
             return False

@@ -271,6 +271,45 @@ class TestExtractions(TestExtractionBase):
         article = self.getArticle()
         self.runArticleAssertions(article=article, fields=["cleaned_text", "top_node_raw_html"])
 
+    def test_combine_known_article_tags(self):
+        """Issue #100: combine multiple known_context_patterns matches into one body."""
+        from goose3 import Goose
+
+        html = (
+            "<html><body><div>"
+            '<article itemprop="articleBody">'
+            "<p>The main news story explains the important event clearly and in many words for context.</p>"
+            "</article>"
+            '<div class="sidebar">'
+            "<p>Sidebar promo and unrelated newsletter signup pitch the reader can ignore safely.</p>"
+            "</div>"
+            "<figure><img/>"
+            "<figcaption>This caption is part of the news and adds important context to the image shown.</figcaption>"
+            "</figure>"
+            "</div></body></html>"
+        )
+        patterns = [
+            {"attr": "itemprop", "value": "articleBody"},
+            {"tag": "figcaption"},
+        ]
+
+        # Off (default): scoring picks one node, figcaption is dropped
+        with Goose() as g:
+            g.config.known_context_patterns = patterns
+            txt_default = g.extract(raw_html=html).cleaned_text
+        assert "main news story" in txt_default
+        assert "caption is part of the news" not in txt_default
+
+        # On: both matches are combined; sidebar noise stays out
+        with Goose({"combine_known_article_tags": True}) as g:
+            g.config.known_context_patterns = patterns
+            txt_combined = g.extract(raw_html=html).cleaned_text
+        assert "main news story" in txt_combined
+        assert "caption is part of the news" in txt_combined
+        assert "Sidebar promo" not in txt_combined
+        # Same article element matched by multiple default patterns must dedupe
+        assert txt_combined.count("main news story") == 1
+
     def test_wiwo(self):
         article = self.getArticle()
         fields = ["cleaned_text"]

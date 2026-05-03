@@ -197,6 +197,12 @@ class Crawler:
         # this will prevent the cleaner to remove unwanted text content
         article_body = self.extractor.get_known_article_tags()
         if article_body is not None:
+            # The same node can match more than one configured pattern
+            # (e.g. `<article itemprop="articleBody">` matches both the
+            # default `tag=article` and `attr=itemprop value=articleBody`
+            # patterns). Dedupe so combine logic doesn't include duplicates.
+            seen = set()
+            article_body = [n for n in article_body if id(n) not in seen and not seen.add(id(n))]
             doc = article_body
 
         # before we do any calcs on the body itself let's clean up the document
@@ -205,8 +211,21 @@ class Crawler:
         else:
             doc = [self.cleaner.clean(deepcopy(x)) for x in doc]
 
-        # big stuff
-        self.article._top_node = self.extractor.calculate_best_node(doc)
+        # When `combine_known_article_tags` is enabled and known patterns
+        # matched multiple nodes, combine them all into a synthetic top_node
+        # rather than letting scoring pick a single highest-scoring node.
+        # Useful when content is split across complementary patterns the user
+        # configured (e.g. articleBody + figcaption). Off by default to keep
+        # the existing scoring-based extraction for typical sites.
+        is_synthetic_top_node = False
+        if article_body is not None and len(doc) > 1 and self.config.combine_known_article_tags:
+            synthetic = etree.Element("div")
+            for body in doc:
+                synthetic.append(deepcopy(body))
+            self.article._top_node = synthetic
+            is_synthetic_top_node = True
+        else:
+            self.article._top_node = self.extractor.calculate_best_node(doc)
 
         # if we do not find an article within the discovered possible article nodes,
         # try again with the root node.
@@ -233,9 +252,13 @@ class Crawler:
             if self.config.enable_image_fetching:
                 self.get_image()
 
-            # post cleanup
+            # post cleanup — skip when the user explicitly combined known
+            # patterns; their configuration is the source of truth and the
+            # post-cleanup heuristics (designed for scored single-node bodies)
+            # would strip elements like <figcaption> that hold text directly.
             self.article._top_node_raw_html = etree.tostring(self.article.top_node).decode("utf-8")
-            self.article._top_node = self.extractor.post_cleanup()
+            if not is_synthetic_top_node:
+                self.article._top_node = self.extractor.post_cleanup()
 
             # clean_text
             self.article._cleaned_text = self.formatter.get_formatted_text()

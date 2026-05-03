@@ -127,6 +127,11 @@ class OutputFormatter:
         all_nodes.reverse()
         for elm in all_nodes:
             tag = self.parser.get_tag(elm)
+            # Table cells are short by design (e.g. Wikipedia list pages put a
+            # title in one cell and description in another). Stripping them by
+            # stopword count loses the labels.
+            if tag in ("td", "th", "tr"):
+                continue
             text = self.parser.get_text(elm)
             stop_words = self.stopwords_class(language=self.get_language()).get_stopword_count(text)
             if (
