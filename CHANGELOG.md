@@ -1,5 +1,13 @@
 # Goose3
 
+### 3.1.22
+
+* Update to the Kurdish language stopwords; Thanks [cikay](https://github.com/cikay)
+* Fix decode bytes error for non UTF-8 data; Thanks [danishashko](https://github.com/danishashko)
+* Fix for quadratic search; Thanks [lababidi](https://github.com/lababidi)
+* Other bug fixes; Thanks [lababidi](https://github.com/lababidi)
+* Dependabot updates
+
 ### 3.1.21
 
 * Fix memory bloat using Japanese tokenizer; [PR #221](https://github.com/goose3/goose3/pull/221); Thanks [gy-chen](https://github.com/gy-chen)
